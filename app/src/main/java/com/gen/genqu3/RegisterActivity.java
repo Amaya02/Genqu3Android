@@ -1,0 +1,136 @@
+package com.gen.genqu3;
+
+import android.content.Intent;
+import android.content.pm.ActivityInfo;
+import android.os.AsyncTask;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+
+public class RegisterActivity extends AppCompatActivity {
+
+    EditText regPassword, regName, regEmail;
+    Button btnLog, btnReg;
+
+    String URL= "http://192.168.22.5/Android_Login/index.php";
+
+    JSONParser jsonParser=new JSONParser();
+
+    int i=0;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_register);
+
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+
+        ActionBar actionBar = getSupportActionBar();
+        if(actionBar != null){
+            actionBar.hide();
+        }
+
+        regName=(EditText)findViewById(R.id.regName);
+        regEmail=(EditText)findViewById(R.id.regEmail);
+        regPassword=(EditText)findViewById(R.id.regPassword);
+
+        btnLog=(Button)findViewById(R.id.btnLog);
+        btnReg=(Button)findViewById(R.id.btnReg);
+
+        btnReg.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String enteredUser = regName.getText().toString();
+                String enteredEmail = regEmail.getText().toString();
+                String enteredPassword = regPassword.getText().toString();
+
+                if(TextUtils.isEmpty(enteredEmail) || TextUtils.isEmpty(enteredPassword) || TextUtils.isEmpty(enteredEmail)){
+                    Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                RegisterActivity.AttemptLogin attemptLogin= new RegisterActivity.AttemptLogin();
+                attemptLogin.execute(regName.getText().toString(),regPassword.getText().toString(),regEmail.getText().toString());
+            }
+        });
+
+        btnLog.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
+
+    }
+
+    private class AttemptLogin extends AsyncTask<String, String, JSONObject> {
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+
+        protected JSONObject doInBackground(String... args) {
+
+            String email = args[2];
+            String password = args[1];
+            String name = args[0];
+
+            ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("username", name));
+            params.add(new BasicNameValuePair("password", password));
+            params.add(new BasicNameValuePair("email", email));
+
+            JSONObject json = jsonParser.makeHttpRequest(URL, "POST", params);
+
+
+            return json;
+
+        }
+
+        protected void onPostExecute(JSONObject result) {
+
+            // dismiss the dialog once product deleted
+            //Toast.makeText(getApplicationContext(),result,Toast.LENGTH_LONG).show();
+
+            try {
+                if (result != null) {
+                    if (result.getString("success").equals("1")) {
+                        Toast.makeText(getApplicationContext(), result.getString("message"), Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(getApplicationContext(), result.getString("message"), Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    Toast.makeText(getApplicationContext(), "Unable to Retrieve Data from Server", Toast.LENGTH_LONG).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+    }
+}

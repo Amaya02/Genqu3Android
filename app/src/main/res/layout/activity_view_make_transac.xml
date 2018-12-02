@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ViewMakeTransac"
+    android:padding="16dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <TextView android:id="@+id/com_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Company Name"
+            android:textSize="30sp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/colorTxt"/>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/colorBg"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/icon_round"
+                android:layout_marginRight="5dp"/>
+
+            <TextView android:id="@+id/com_email"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="email@yahoo.com"
+                android:textSize="13dp"
+                android:layout_marginRight="10dp"/>
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/icon_round"
+                android:layout_marginRight="5dp"/>
+
+            <TextView android:id="@+id/com_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:text="091234567890"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
+            <ImageView
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@mipmap/icon_round"
+                android:layout_marginRight="5dp"/>
+
+            <TextView android:id="@+id/com_address"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Silang Cavite"
+                android:textSize="13dp" />
+
+            <TextView android:id="@+id/com_country"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="13dp"
+                android:text=" - PH"/>
+
+        </LinearLayout>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp">
+
+            <HorizontalScrollView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TableLayout android:id="@+id/table2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:stretchColumns="0">
+
+                    <TableRow>
+
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Available Transactions"
+                            android:textSize="20dp"
+                            android:layout_marginBottom="25dp"/>
+
+                    </TableRow>
+
+
+
+                </TableLayout>
+
+
+
+            </HorizontalScrollView>
+
+
+
+        </ScrollView>
+
+
+    </LinearLayout>
+
+
+
+</RelativeLayout>
