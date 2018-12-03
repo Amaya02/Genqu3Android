@@ -8,4 +8,6 @@
     <color name="endblue">#f7a832</color>
     <color name="colorBg">#ffe38d</color>
     <color name="colorTxt">#252525</color>
+    <color name="black">#000000</color>
+    <color name="white">#ffffff</color>
 </resources>

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 
 public class ViewMakeTransac extends AppCompatActivity {
 
+    String URL2= "http://192.168.22.5/Android_Login/addtransaction.php";
     String URL= "http://192.168.22.5/Android_Login/getcompany.php";
 
     TextView com_name, com_email, com_num, com_address, com_country;
@@ -89,6 +90,8 @@ public class ViewMakeTransac extends AppCompatActivity {
 
             Button b[] = new Button[100];
             final String tn[] = new String[100];
+            final String ti[] = new String[100];
+            final String tc[] = new String[100];
 
             try{
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")) {
@@ -105,6 +108,8 @@ public class ViewMakeTransac extends AppCompatActivity {
                         Log.i("log_tag", "Name: " + json_data.getString("transacname"));
                         b[i] = new Button(ViewMakeTransac.this);
                         String stime = String.valueOf(json_data.getString("transacname"));
+                        ti[i]= String.valueOf(json_data.getString("transacid"));
+                        tc[i]=String.valueOf(json_data.getString("companyid"));
                         b[i].setText(stime);
                         b[i].setTextColor(Color.BLACK);
                         b[i].setTextSize(15);
@@ -112,6 +117,13 @@ public class ViewMakeTransac extends AppCompatActivity {
                         tr.addView(b[i]);
                         tv.addView(tr);
                         final int count = i;
+                        b[i].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                ViewMakeTransac.AddUserTran getCompany= new ViewMakeTransac.AddUserTran();
+                                getCompany.execute(MainActivity.userid,ti[count]);
+                            }
+                        });
                     }
                 }
                 else{
@@ -122,6 +134,49 @@ public class ViewMakeTransac extends AppCompatActivity {
                 Toast.makeText(getApplicationContext(), "JsonArray fail", Toast.LENGTH_SHORT).show();
             }
 
+
+        }
+    }
+
+    private class AddUserTran extends AsyncTask<String, String, JSONArray> {
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+
+        protected JSONArray doInBackground(String... args) {
+
+            String userid = args[0];
+            String transacid = args[1];
+            ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("userid", userid));
+            params.add(new BasicNameValuePair("transacid", transacid));
+
+            JSONArray json = jsonParser.makeHttpRequest(URL2,params);
+
+            return json;
+
+        }
+
+        protected void onPostExecute(JSONArray jArray) {
+            try {
+                if(!jArray.getJSONObject(0).getString("result").equals("error")){
+                    Toast.makeText(getApplicationContext(), "Transaction Added Successfully", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(ViewMakeTransac.this, ProfileActivity.class);
+                    startActivity(intent);
+                }
+                else{
+                    Toast.makeText(getApplicationContext(), "Transaction Failed", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
         }
     }
