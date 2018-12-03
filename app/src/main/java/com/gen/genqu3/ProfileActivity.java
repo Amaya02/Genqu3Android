@@ -52,6 +52,14 @@ public class ProfileActivity extends AppCompatActivity {
             }
         });
 
+        viewTran.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(ProfileActivity.this, ViewTransac.class);
+                startActivity(intent);
+            }
+        });
+
     }
 
     @Override
