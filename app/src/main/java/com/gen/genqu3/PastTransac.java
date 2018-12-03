@@ -1,11 +1,13 @@
 package com.gen.genqu3;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TextView;
@@ -63,6 +65,11 @@ public class PastTransac extends AppCompatActivity {
         protected void onPostExecute(JSONArray jArray) {
             LinearLayout b[] = new LinearLayout[100];
 
+            final String n[] = new String[100];
+            final String c[] = new String[100];
+            final String d[] = new String[100];
+            final String s[] = new String[100];
+
             try{
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")) {
                     LinearLayout tv = (LinearLayout) findViewById(R.id.pastlayout);
@@ -94,10 +101,29 @@ public class PastTransac extends AppCompatActivity {
                         ts.setText("Status: "+String.valueOf(json_data.getString("status")));
                         ts.setTextSize(15);
                         ts.setTextColor(Color.WHITE);
+                        ts.setAllCaps(true);
 
                         b[i].addView(tn);
                         b[i].addView(td);
                         b[i].addView(ts);
+
+                        n[i]=json_data.getString("transacname");
+                        c[i]=json_data.getString("companyname");
+                        d[i]=String.valueOf(json_data.getString("date_tran"));
+                        s[i]=String.valueOf(json_data.getString("status"));
+
+                        final int count = i;
+                        b[i].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(PastTransac.this, QRTransac.class);
+                                intent.putExtra("TRANSACNAME", n[count]);
+                                intent.putExtra("COMPANYNAME", c[count]);
+                                intent.putExtra("DATE", d[count]);
+                                intent.putExtra("STATUS", s[count]);
+                                startActivity(intent);
+                            }
+                        });
                     }
                 }
                 else{

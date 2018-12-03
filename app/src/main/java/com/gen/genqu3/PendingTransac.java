@@ -67,7 +67,10 @@ public class PendingTransac extends AppCompatActivity {
         protected void onPostExecute(JSONArray jArray) {
 
             LinearLayout b[] = new LinearLayout[100];
-
+            final String n[] = new String[100];
+            final String c[] = new String[100];
+            final String d[] = new String[100];
+            final String s[] = new String[100];
 
             try{
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")) {
@@ -100,16 +103,26 @@ public class PendingTransac extends AppCompatActivity {
                         ts.setText("Status: "+String.valueOf(json_data.getString("status")));
                         ts.setTextSize(15);
                         ts.setTextColor(Color.WHITE);
+                        ts.setAllCaps(true);
 
                         b[i].addView(tn);
                         b[i].addView(td);
                         b[i].addView(ts);
+
+                        n[i]=json_data.getString("transacname");
+                        c[i]=json_data.getString("companyname");
+                        d[i]=String.valueOf(json_data.getString("date_tran"));
+                        s[i]=String.valueOf(json_data.getString("status"));
 
                         final int count = i;
                         b[i].setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {
                                 Intent intent = new Intent(PendingTransac.this, QRTransac.class);
+                                intent.putExtra("TRANSACNAME", n[count]);
+                                intent.putExtra("COMPANYNAME", c[count]);
+                                intent.putExtra("DATE", d[count]);
+                                intent.putExtra("STATUS", s[count]);
                                 startActivity(intent);
                             }
                         });

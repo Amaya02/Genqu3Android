@@ -36,8 +36,8 @@
                 android:layout_marginBottom="40dp" />
 
             <ImageView android:id="@+id/imgqr"
-                android:layout_width="300dp"
-                android:layout_height="200dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:background="#000000"
                 android:layout_gravity="center"/>
 
@@ -60,7 +60,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Transaction:"
-                    android:layout_marginRight="68dp"/>
+                    android:layout_marginRight="69dp"/>
 
                 <TextView android:id="@+id/tran_name"
                     android:layout_width="wrap_content"
@@ -83,7 +83,7 @@
                     android:layout_marginRight="85dp"
                     android:textAlignment="textStart"/>
 
-                <TextView
+                <TextView android:id="@+id/com_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cashier"/>
@@ -101,10 +101,10 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Date of Transaction:"
-                    android:layout_marginRight="20dp"
+                    android:layout_marginRight="21dp"
                     android:textAlignment="textStart"/>
 
-                <TextView
+                <TextView android:id="@+id/tran_date"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Cashier"/>
@@ -124,19 +124,20 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="STATUS: "
+                android:text="STATUS:"
                 android:textColor="#ff0505"
                 android:textSize="15dp"
                 android:textAlignment="center"/>
 
-            <TextView
+            <TextView android:id="@+id/tran_stat"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="PENDING "
+                android:text="pending"
                 android:textColor="#ffffff"
                 android:textSize="20dp"
                 android:textAlignment="center"
-                android:textStyle="bold"/>
+                android:textStyle="bold"
+                android:textAllCaps="true"/>
 
         </LinearLayout>
 
