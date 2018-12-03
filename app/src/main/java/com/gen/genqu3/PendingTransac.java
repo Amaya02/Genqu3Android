@@ -1,5 +1,6 @@
 package com.gen.genqu3;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
@@ -67,6 +68,7 @@ public class PendingTransac extends AppCompatActivity {
 
             LinearLayout b[] = new LinearLayout[100];
 
+
             try{
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")) {
                     LinearLayout tv = (LinearLayout) findViewById(R.id.penlayout);
@@ -102,6 +104,15 @@ public class PendingTransac extends AppCompatActivity {
                         b[i].addView(tn);
                         b[i].addView(td);
                         b[i].addView(ts);
+
+                        final int count = i;
+                        b[i].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(PendingTransac.this, QRTransac.class);
+                                startActivity(intent);
+                            }
+                        });
                     }
                 }
                 else{

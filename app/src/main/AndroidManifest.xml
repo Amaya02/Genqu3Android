@@ -25,7 +25,8 @@
         <activity android:name=".ViewMakeTransac" />
         <activity android:name=".ViewTransac" />
         <activity android:name=".PendingTransac" />
-        <activity android:name=".PastTransac"></activity>
+        <activity android:name=".PastTransac" />
+        <activity android:name=".QRTransac"></activity>
     </application>
 
 </manifest>
