@@ -7,141 +7,152 @@
     tools:context=".QRTransac"
     android:padding="16dp">
 
-    <LinearLayout
+    <LinearLayout android:id="@+id/qrcode"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:layout_gravity="center">
 
-
-
-        <LinearLayout android:id="@+id/qrcode"
+        <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_gravity="center">
+            android:text="QR CODE"
+            android:textAlignment="center"
+            android:textColor="@color/colorTxt"
+            android:textSize="25dp"
+            android:layout_marginBottom="10dp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="QR CODE"
-                android:textAlignment="center"
-                android:textColor="@color/colorTxt"
-                android:textSize="25dp"
-                android:layout_marginBottom="10dp"/>
-
-            <ImageView
-                android:layout_width="match_parent"
-                android:layout_height="3dp"
-                android:background="@color/colorBg"
-                android:layout_marginBottom="40dp" />
-
-            <ImageView android:id="@+id/imgqr"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:background="#000000"
-                android:layout_gravity="center"/>
-
-        </LinearLayout>
-
-        <LinearLayout
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:layout_marginTop="20dp"
-            android:padding="16dp">
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingLeft="15dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Transaction:"
-                    android:layout_marginRight="69dp"/>
-
-                <TextView android:id="@+id/tran_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cashier"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:paddingLeft="15dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Company:"
-                    android:layout_marginRight="85dp"
-                    android:textAlignment="textStart"/>
-
-                <TextView android:id="@+id/com_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cashier"/>
-
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginTop="10dp"
-                android:paddingLeft="15dp">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Date of Transaction:"
-                    android:layout_marginRight="21dp"
-                    android:textAlignment="textStart"/>
-
-                <TextView android:id="@+id/tran_date"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Cashier"/>
-
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:background="@drawable/gradientbackground"
-            android:padding="5dp"
-            android:layout_marginTop="10dp">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="STATUS:"
-                android:textColor="#ff0505"
-                android:textSize="15dp"
-                android:textAlignment="center"/>
-
-            <TextView android:id="@+id/tran_stat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="pending"
-                android:textColor="#ffffff"
-                android:textSize="20dp"
-                android:textAlignment="center"
-                android:textStyle="bold"
-                android:textAllCaps="true"/>
-
-        </LinearLayout>
+            android:layout_height="3dp"
+            android:background="@color/colorBg" />
 
     </LinearLayout>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="70dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <ImageView android:id="@+id/imgqr"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#000000"
+                    android:layout_gravity="center"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginTop="10dp"
+                android:padding="16dp">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Transaction:"
+                        android:layout_marginRight="69dp"/>
+
+                    <TextView android:id="@+id/tran_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cashier"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Company:"
+                        android:layout_marginRight="85dp"
+                        android:textAlignment="textStart"/>
+
+                    <TextView android:id="@+id/com_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cashier"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="10dp"
+                    android:paddingLeft="15dp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Date of Transaction:"
+                        android:layout_marginRight="21dp"
+                        android:textAlignment="textStart"/>
+
+                    <TextView android:id="@+id/tran_date"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Cashier"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@drawable/gradientbackground"
+                android:padding="5dp"
+                android:layout_marginTop="5dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="STATUS:"
+                    android:textColor="#ff0505"
+                    android:textSize="15dp"
+                    android:textAlignment="center"/>
+
+                <TextView android:id="@+id/tran_stat"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="pending"
+                    android:textColor="#ffffff"
+                    android:textSize="20dp"
+                    android:textAlignment="center"
+                    android:textStyle="bold"
+                    android:textAllCaps="true"/>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 
 </RelativeLayout>

@@ -31,6 +31,8 @@ public class QRTransac extends AppCompatActivity {
         String companyname = intent.getStringExtra("COMPANYNAME");
         String date = intent.getStringExtra("DATE");
         String status = intent.getStringExtra("STATUS");
+        String id = intent.getStringExtra("ID");
+        String time = intent.getStringExtra("TIME");
 
         iv = (ImageView) findViewById(R.id.imgqr);
         tran_name = (TextView) findViewById(R.id.tran_name);
@@ -40,11 +42,11 @@ public class QRTransac extends AppCompatActivity {
 
         tran_name.setText(transacname);
         com_name.setText(companyname);
-        tran_date.setText(date);
+        tran_date.setText(date+" - "+time);
         tran_stat.setText(status);
 
         try {
-            bitmap = TextToImageEncode(MainActivity.userid);
+            bitmap = TextToImageEncode(id);
             iv.setImageBitmap(bitmap);
         } catch (WriterException e) {
             e.printStackTrace();

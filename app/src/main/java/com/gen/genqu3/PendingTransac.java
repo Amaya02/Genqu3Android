@@ -71,6 +71,8 @@ public class PendingTransac extends AppCompatActivity {
             final String c[] = new String[100];
             final String d[] = new String[100];
             final String s[] = new String[100];
+            final String id[] = new String[100];
+            final String time[] = new String[100];
 
             try{
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")) {
@@ -95,7 +97,7 @@ public class PendingTransac extends AppCompatActivity {
                         tn.setTextColor(Color.BLACK);
 
                         TextView td = new TextView(PendingTransac.this);
-                        td.setText("Generated: "+String.valueOf(json_data.getString("date_tran")));
+                        td.setText("Generated: "+String.valueOf(json_data.getString("date_tran"))+" - "+String.valueOf(json_data.getString("time_tran")));
                         td.setTextSize(15);
                         td.setTextColor(Color.WHITE);
 
@@ -110,9 +112,11 @@ public class PendingTransac extends AppCompatActivity {
                         b[i].addView(ts);
 
                         n[i]=json_data.getString("transacname");
+                        id[i]=json_data.getString("u_tranid");
                         c[i]=json_data.getString("companyname");
                         d[i]=String.valueOf(json_data.getString("date_tran"));
                         s[i]=String.valueOf(json_data.getString("status"));
+                        time[i]=String.valueOf(json_data.getString("time_tran"));
 
                         final int count = i;
                         b[i].setOnClickListener(new View.OnClickListener() {
@@ -123,6 +127,8 @@ public class PendingTransac extends AppCompatActivity {
                                 intent.putExtra("COMPANYNAME", c[count]);
                                 intent.putExtra("DATE", d[count]);
                                 intent.putExtra("STATUS", s[count]);
+                                intent.putExtra("ID", id[count]);
+                                intent.putExtra("TIME", time[count]);
                                 startActivity(intent);
                             }
                         });
