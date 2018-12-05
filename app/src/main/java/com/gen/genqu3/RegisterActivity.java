@@ -24,7 +24,8 @@ public class RegisterActivity extends AppCompatActivity {
     EditText regPassword, regName, regEmail;
     Button btnLog, btnReg;
 
-    String URL= "http://192.168.22.5/Android_Login/index.php";
+    //String URL= "http://192.168.1.100/Android_Login/index.php";
+    String URL= "http://192.168.1.38/Android_Login/index.php";
 
     JSONParser jsonParser=new JSONParser();
 

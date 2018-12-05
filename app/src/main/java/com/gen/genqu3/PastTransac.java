@@ -23,8 +23,8 @@ import java.util.ArrayList;
 
 public class PastTransac extends AppCompatActivity {
 
-    String URL= "http://192.168.22.5/Android_Login/getusertransaction.php";
-
+    //String URL= "http://192.168.1.100/Android_Login/getusertransaction.php";
+    String URL= "http://192.168.1.38/Android_Login/getusertransaction.php";
     JSONParser2 jsonParser=new JSONParser2();
 
     @Override
@@ -68,6 +68,7 @@ public class PastTransac extends AppCompatActivity {
             final String n[] = new String[100];
             final String c[] = new String[100];
             final String d[] = new String[100];
+            final String d2[] = new String[100];
             final String s[] = new String[100];
             final String id[] = new String[100];
             final String time[] = new String[100];
@@ -95,9 +96,15 @@ public class PastTransac extends AppCompatActivity {
                         tn.setTextColor(Color.BLACK);
 
                         TextView td = new TextView(PastTransac.this);
-                        td.setText("Generated: "+String.valueOf(json_data.getString("date_tran"))+" - "+String.valueOf(json_data.getString("time_tran")));
+                        td.setText("Generated: "+String.valueOf(json_data.getString("date_tran")));
                         td.setTextSize(15);
                         td.setTextColor(Color.WHITE);
+
+                        TextView tst = new TextView(PastTransac.this);
+                        tst.setText("Arrive At: "+String.valueOf(json_data.getString("esti_date"))+" - "+String.valueOf(json_data.getString("esti_start")));
+                        tst.setTextSize(15);
+                        tst.setTextColor(Color.RED);
+                        tst.setAllCaps(true);
 
                         TextView ts = new TextView(PastTransac.this);
                         ts.setText("Status: "+String.valueOf(json_data.getString("status")));
@@ -108,13 +115,15 @@ public class PastTransac extends AppCompatActivity {
                         b[i].addView(tn);
                         b[i].addView(td);
                         b[i].addView(ts);
+                        b[i].addView(tst);
 
                         n[i]=json_data.getString("transacname");
                         id[i]=json_data.getString("u_tranid");
                         c[i]=json_data.getString("companyname");
                         d[i]=String.valueOf(json_data.getString("date_tran"));
+                        d2[i]=String.valueOf(json_data.getString("esti_date"));
                         s[i]=String.valueOf(json_data.getString("status"));
-                        time[i]=String.valueOf(json_data.getString("time_tran"));
+                        time[i]=String.valueOf(json_data.getString("esti_start"));
 
                         final int count = i;
                         b[i].setOnClickListener(new View.OnClickListener() {
@@ -124,6 +133,7 @@ public class PastTransac extends AppCompatActivity {
                                 intent.putExtra("TRANSACNAME", n[count]);
                                 intent.putExtra("COMPANYNAME", c[count]);
                                 intent.putExtra("DATE", d[count]);
+                                intent.putExtra("DATE2", d2[count]);
                                 intent.putExtra("STATUS", s[count]);
                                 intent.putExtra("ID", id[count]);
                                 intent.putExtra("TIME", time[count]);

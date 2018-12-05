@@ -18,7 +18,7 @@ public class QRTransac extends AppCompatActivity {
     public final static int QRcodeWidth = 500 ;
     Bitmap bitmap ;
     private ImageView iv;
-    TextView tran_name, com_name, tran_date, tran_stat;
+    TextView tran_name, com_name, tran_date, tran_stat, tran_start;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +30,7 @@ public class QRTransac extends AppCompatActivity {
         String transacname = intent.getStringExtra("TRANSACNAME");
         String companyname = intent.getStringExtra("COMPANYNAME");
         String date = intent.getStringExtra("DATE");
+        String date2 = intent.getStringExtra("DATE2");
         String status = intent.getStringExtra("STATUS");
         String id = intent.getStringExtra("ID");
         String time = intent.getStringExtra("TIME");
@@ -39,11 +40,13 @@ public class QRTransac extends AppCompatActivity {
         com_name = (TextView) findViewById(R.id.com_name);
         tran_date = (TextView) findViewById(R.id.tran_date);
         tran_stat = (TextView) findViewById(R.id.tran_stat);
+        tran_start = (TextView) findViewById(R.id.tran_start);
 
         tran_name.setText(transacname);
         com_name.setText(companyname);
-        tran_date.setText(date+" - "+time);
+        tran_date.setText(date);
         tran_stat.setText(status);
+        tran_start.setText(date2+" - "+time);
 
         try {
             bitmap = TextToImageEncode(id);
