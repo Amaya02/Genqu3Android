@@ -1,6 +1,8 @@
 package com.gen.genqu3;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
 import android.support.v7.app.ActionBar;
@@ -29,6 +31,7 @@ public class LoginActivity extends AppCompatActivity {
     String URL= "http://192.168.1.38/Android_Login/index.php";
 
     JSONParser jsonParser=new JSONParser();
+
 
     int i=0;
 
@@ -113,14 +116,15 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 if (result != null) {
                     if (result.getString("success").equals("1")) {
+                        SaveSharedPreference.setUserName(LoginActivity.this,result.getString("username"));
+                        SaveSharedPreference.setUserEmail(LoginActivity.this,result.getString("email"));
+                        SaveSharedPreference.setUserPass(LoginActivity.this,result.getString("password"));
+                        SaveSharedPreference.setUserId(LoginActivity.this,result.getString("id"));
+
                         MainActivity.userid = result.getString("id");
                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
-                        intent.putExtra("USERNAME",result.getString("username"));
-                        intent.putExtra("EMAIL",result.getString("email"));
-                        intent.putExtra("PASSWORD",result.getString("password"));
-                        intent.putExtra("ID",result.getString("id"));
                         startActivity(intent);
-                        finish();
+
                     } else {
                         Toast.makeText(getApplicationContext(), result.getString("message"), Toast.LENGTH_LONG).show();
                     }

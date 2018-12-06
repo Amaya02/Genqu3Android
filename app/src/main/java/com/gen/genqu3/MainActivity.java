@@ -31,9 +31,16 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run(){
-                Intent homeIntent = new Intent(MainActivity.this, LoginActivity.class);
-                startActivity(homeIntent);
-                finish();
+                if(SaveSharedPreference.getUserName(MainActivity.this).length()==0) {
+                    Intent homeIntent = new Intent(MainActivity.this, LoginActivity.class);
+                    startActivity(homeIntent);
+                    finish();
+                }
+                else{
+                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                    startActivity(intent);
+                    finish();
+                }
             }
 
         },SPLASH_TIME_OUT);

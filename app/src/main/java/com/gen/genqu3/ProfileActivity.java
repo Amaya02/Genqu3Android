@@ -1,11 +1,13 @@
 package com.gen.genqu3;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -30,10 +32,12 @@ public class ProfileActivity extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String username = intent.getStringExtra("USERNAME");
-        String id = intent.getStringExtra("ID");
-        String password = intent.getStringExtra("PASSWORD");
-        String email = intent.getStringExtra("EMAIL");
+        String username = SaveSharedPreference.getUserName(ProfileActivity.this);
+        String id = SaveSharedPreference.getUserId(ProfileActivity.this);
+        String password = SaveSharedPreference.getUserPass(ProfileActivity.this);
+        String email = SaveSharedPreference.getUserEmail(ProfileActivity.this);
+
+        MainActivity.userid = id;
 
         user_Name=(TextView)findViewById(R.id.user_Name);
         user_Email=(TextView)findViewById(R.id.user_Email);
@@ -66,5 +70,21 @@ public class ProfileActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu (Menu menu){
         getMenuInflater().inflate(R.menu.main_menu, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.logout:
+                SharedPreferences.Editor editor = SaveSharedPreference.getSharedPreferences(ProfileActivity.this).edit();
+                editor.clear();
+                editor.commit();
+                Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 }

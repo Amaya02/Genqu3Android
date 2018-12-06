@@ -10,12 +10,14 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -139,6 +141,26 @@ public class MakeTransac extends AppCompatActivity {
     public boolean onCreateOptionsMenu (Menu menu){
         getMenuInflater().inflate(R.menu.main_menu2, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.logout:
+                SharedPreferences.Editor editor = SaveSharedPreference.getSharedPreferences(MakeTransac.this).edit();
+                editor.clear();
+                editor.commit();
+                Intent intent = new Intent(MakeTransac.this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.profile:
+                Intent intent1 = new Intent(MakeTransac.this, ProfileActivity.class);
+                startActivity(intent1);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
 }

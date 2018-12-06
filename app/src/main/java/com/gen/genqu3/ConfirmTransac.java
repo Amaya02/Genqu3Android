@@ -1,10 +1,12 @@
 package com.gen.genqu3;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -178,6 +180,26 @@ public class ConfirmTransac extends AppCompatActivity {
     public boolean onCreateOptionsMenu (Menu menu){
         getMenuInflater().inflate(R.menu.main_menu2, menu);
         return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item){
+        switch (item.getItemId()){
+            case R.id.logout:
+                SharedPreferences.Editor editor = SaveSharedPreference.getSharedPreferences(ConfirmTransac.this).edit();
+                editor.clear();
+                editor.commit();
+                Intent intent = new Intent(ConfirmTransac.this, LoginActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.profile:
+                Intent intent1 = new Intent(ConfirmTransac.this, ProfileActivity.class);
+                startActivity(intent1);
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+
+        }
     }
 
 }
