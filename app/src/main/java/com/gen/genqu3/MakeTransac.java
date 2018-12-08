@@ -29,8 +29,7 @@ import android.widget.TableRow.LayoutParams;
 
 public class MakeTransac extends AppCompatActivity {
 
-    //String URL= "http://192.168.1.100/Android_Login/getcompany.php";
-    String URL= "http://192.168.1.38/Android_Login/getcompany.php";
+    String URL= "http://192.168.43.43/Android_Login/getcompany.php";
 
     TextView Example;
 

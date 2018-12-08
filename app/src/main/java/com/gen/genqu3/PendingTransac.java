@@ -27,8 +27,7 @@ import java.util.ArrayList;
 
 public class PendingTransac extends AppCompatActivity {
 
-    //String URL= "http://192.168.1.100/Android_Login/getusertransaction.php";
-    String URL= "http://192.168.1.38/Android_Login/getusertransaction.php";
+    String URL= "http://192.168.43.43/Android_Login/getusertransaction.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 

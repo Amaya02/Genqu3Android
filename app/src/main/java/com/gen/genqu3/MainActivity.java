@@ -1,5 +1,7 @@
 package com.gen.genqu3;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.Handler;
@@ -9,10 +11,14 @@ import android.os.Bundle;
 import android.view.Window;
 import android.view.WindowManager;
 
+import java.util.Calendar;
+
 public class MainActivity extends AppCompatActivity {
 
     private static int SPLASH_TIME_OUT = 4000;
     public static String userid;
+    public static String date_notif;
+    public static String time_notif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

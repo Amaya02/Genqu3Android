@@ -1,5 +1,7 @@
 package com.gen.genqu3;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
@@ -19,17 +21,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 
 public class ConfirmTransac extends AppCompatActivity {
 
     Button t_back, t_confirm;
     TextView t_name,t_time,t_esti,t_arriv,t_date;
 
-    //String URL= "http://192.168.1.100/Android_Login/confirmtransaction.php";
-    //String URL2= "http://192.168.1.100/Android_Login/addtransaction.php";
-
-    String URL= "http://192.168.1.38/Android_Login/confirmtransaction.php";
-    String URL2= "http://192.168.1.38/Android_Login/addtransaction.php";
+    String URL= "http://192.168.43.43/Android_Login/confirmtransaction.php";
+    String URL2= "http://192.168.43.43/Android_Login/addtransaction.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -110,6 +110,9 @@ public class ConfirmTransac extends AppCompatActivity {
                 t_date.setText("DATE: "+date);
                 t_arriv.setText("ARRIVE AT: "+arriv);
 
+                MainActivity.date_notif = date;
+                MainActivity.time_notif = arriv;
+
                 t_confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
@@ -165,6 +168,7 @@ public class ConfirmTransac extends AppCompatActivity {
                     Toast.makeText(getApplicationContext(), "Transaction Added Successfully", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(ConfirmTransac.this, ProfileActivity.class);
                     startActivity(intent);
+                    finish();
                 }
                 else{
                     Toast.makeText(getApplicationContext(), "Transaction Failed", Toast.LENGTH_SHORT).show();
