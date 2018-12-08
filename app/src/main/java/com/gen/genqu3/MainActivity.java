@@ -15,10 +15,11 @@ import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private static int SPLASH_TIME_OUT = 4000;
+    private static int SPLASH_TIME_OUT = 3000;
     public static String userid;
     public static String date_notif;
     public static String time_notif;
+    public static int notifnum =0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

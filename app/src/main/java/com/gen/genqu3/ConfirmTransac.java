@@ -1,10 +1,14 @@
 package com.gen.genqu3;
 
 import android.app.AlarmManager;
+import android.app.Notification;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.Menu;
@@ -33,6 +37,7 @@ public class ConfirmTransac extends AppCompatActivity {
 
     JSONParser2 jsonParser=new JSONParser2();
 
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,7 +49,6 @@ public class ConfirmTransac extends AppCompatActivity {
         String starttime = intent.getStringExtra("STARTTIME");
         String endtime = intent.getStringExtra("ENDTIME");
         String estimatedtime = intent.getStringExtra("ESTIMATEDTIME");
-
 
         t_name = (TextView) findViewById(R.id.t_name);
 
@@ -165,8 +169,30 @@ public class ConfirmTransac extends AppCompatActivity {
         protected void onPostExecute(JSONArray jArray) {
             try {
                 if(!jArray.getJSONObject(0).getString("result").equals("error")){
+
+                    int day = Integer.parseInt(MainActivity.date_notif.substring(8,10));
+                    int month = Integer.parseInt(MainActivity.date_notif.substring(5,7));
+                    int year =Integer.parseInt(MainActivity.date_notif.substring(0,4));
+                    int hour = Integer.parseInt(MainActivity.time_notif.substring(0,2));
+                    int min = Integer.parseInt(MainActivity.time_notif.substring(3,5));
+
+                    MainActivity.notifnum++;
+
+                    Calendar c = Calendar.getInstance();
+                    c.setTimeInMillis(System.currentTimeMillis());
+                    c.clear();
+                    c.set(year, (month-1), day, hour, min);
+
+                    AlarmManager [] alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                    Intent intents[] = new Intent[MainActivity.notifnum+1];
+
+                    intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver.class);
+                    PendingIntent pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                    alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                    alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
                     Toast.makeText(getApplicationContext(), "Transaction Added Successfully", Toast.LENGTH_SHORT).show();
-                    Intent intent = new Intent(ConfirmTransac.this, ProfileActivity.class);
+                    Intent intent= new Intent(ConfirmTransac.this, ProfileActivity.class);
                     startActivity(intent);
                     finish();
                 }
@@ -205,5 +231,7 @@ public class ConfirmTransac extends AppCompatActivity {
 
         }
     }
+
+
 
 }
