@@ -1,5 +1,6 @@
 package com.gen.genqu3;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -22,10 +23,20 @@ public class QRTransac extends AppCompatActivity {
     private ImageView iv;
     TextView tran_name, com_name, tran_date, tran_stat, tran_start;
 
+    ProgressDialog progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_qrtransac);
+
+        progress = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
+        progress.setTitle("Loading");
+        progress.setMessage("Please wait..");
+        progress.setCancelable(false);
+
+        progress.show();
 
         Intent intent = getIntent();
 
@@ -53,7 +64,9 @@ public class QRTransac extends AppCompatActivity {
         try {
             bitmap = TextToImageEncode(id);
             iv.setImageBitmap(bitmap);
+            progress.dismiss();
         } catch (WriterException e) {
+            progress.dismiss();
             e.printStackTrace();
         }
 
@@ -107,7 +120,9 @@ public class QRTransac extends AppCompatActivity {
                 editor.clear();
                 editor.commit();
                 Intent intent = new Intent(QRTransac.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.profile:
                 Intent intent1 = new Intent(QRTransac.this, ProfileActivity.class);

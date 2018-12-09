@@ -1,5 +1,6 @@
 package com.gen.genqu3;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
@@ -30,6 +31,8 @@ public class RegisterActivity extends AppCompatActivity {
 
     int i=0;
 
+    ProgressDialog progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -49,10 +52,15 @@ public class RegisterActivity extends AppCompatActivity {
         btnLog=(Button)findViewById(R.id.btnLog);
         btnReg=(Button)findViewById(R.id.btnReg);
 
+        progress = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
+        progress.setTitle("Loading");
+        progress.setMessage("Please wait..");
+        progress.setCancelable(false);
+
         btnReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                progress.show();
                 String enteredUser = regName.getText().toString();
                 String enteredEmail = regEmail.getText().toString();
                 String enteredPassword = regPassword.getText().toString();
@@ -116,14 +124,18 @@ public class RegisterActivity extends AppCompatActivity {
             try {
                 if (result != null) {
                     if (result.getString("success").equals("1")) {
+                        progress.dismiss();
                         Toast.makeText(getApplicationContext(), result.getString("message"), Toast.LENGTH_LONG).show();
                         Intent intent = new Intent(RegisterActivity.this, LoginActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
                         finish();
                     } else {
+                        progress.dismiss();
                         Toast.makeText(getApplicationContext(), result.getString("message"), Toast.LENGTH_LONG).show();
                     }
                 } else {
+                    progress.dismiss();
                     Toast.makeText(getApplicationContext(), "Unable to Retrieve Data from Server", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {

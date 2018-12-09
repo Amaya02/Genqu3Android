@@ -1,5 +1,6 @@
 package com.gen.genqu3;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -32,6 +33,8 @@ public class ViewMakeTransac extends AppCompatActivity {
 
     JSONParser2 jsonParser=new JSONParser2();
 
+    ProgressDialog progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,13 @@ public class ViewMakeTransac extends AppCompatActivity {
         com_num.setText(c);
         com_address.setText(ca);
         com_country.setText(" - "+cc);
+
+        progress = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
+        progress.setTitle("Loading");
+        progress.setMessage("Please wait..");
+        progress.setCancelable(false);
+
+        progress.show();
 
         ViewMakeTransac.GetCompanyTran getCompany= new ViewMakeTransac.GetCompanyTran();
         getCompany.execute(ci);
@@ -138,11 +148,14 @@ public class ViewMakeTransac extends AppCompatActivity {
                             }
                         });
                     }
+                    progress.dismiss();
                 }
                 else{
+                    progress.dismiss();
                     Toast.makeText(getApplicationContext(), "No Available Transaction", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
+                progress.dismiss();
                 Log.e("log_tag", "Error parsing data" + e.toString()+jArray);
                 Toast.makeText(getApplicationContext(), "JsonArray fail", Toast.LENGTH_SHORT).show();
             }
@@ -165,7 +178,9 @@ public class ViewMakeTransac extends AppCompatActivity {
                 editor.clear();
                 editor.commit();
                 Intent intent = new Intent(ViewMakeTransac.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.profile:
                 Intent intent1 = new Intent(ViewMakeTransac.this, ProfileActivity.class);

@@ -3,6 +3,7 @@ package com.gen.genqu3;
 import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.PendingIntent;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -37,7 +38,7 @@ public class ConfirmTransac extends AppCompatActivity {
 
     JSONParser2 jsonParser=new JSONParser2();
 
-
+    ProgressDialog progress;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,6 +69,13 @@ public class ConfirmTransac extends AppCompatActivity {
                 onBackPressed();
             }
         });
+
+        progress = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
+        progress.setTitle("Loading");
+        progress.setMessage("Please wait..");
+        progress.setCancelable(false);
+
+        progress.show();
 
         ConfirmTransac.GetTran getCompany= new ConfirmTransac.GetTran();
         getCompany.execute(starttime,endtime,estimatedtime);
@@ -117,15 +125,19 @@ public class ConfirmTransac extends AppCompatActivity {
                 MainActivity.date_notif = date;
                 MainActivity.time_notif = arriv;
 
+                progress.dismiss();
+
                 t_confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        progress.show();
                         ConfirmTransac.AddUserTran getCompany= new ConfirmTransac.AddUserTran();
                         getCompany.execute(MainActivity.userid,transacid,"Pending",date,arriv,end);
                     }
                 });
 
             } catch (JSONException e) {
+                progress.dismiss();
                 e.printStackTrace();
             }
 
@@ -191,15 +203,19 @@ public class ConfirmTransac extends AppCompatActivity {
                     alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                     alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
 
+                    progress.dismiss();
                     Toast.makeText(getApplicationContext(), "Transaction Added Successfully", Toast.LENGTH_SHORT).show();
                     Intent intent= new Intent(ConfirmTransac.this, ProfileActivity.class);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
                 }
                 else{
+                    progress.dismiss();
                     Toast.makeText(getApplicationContext(), "Transaction Failed", Toast.LENGTH_SHORT).show();
                 }
             } catch (JSONException e) {
+                progress.dismiss();
                 e.printStackTrace();
             }
 
@@ -220,7 +236,9 @@ public class ConfirmTransac extends AppCompatActivity {
                 editor.clear();
                 editor.commit();
                 Intent intent = new Intent(ConfirmTransac.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.profile:
                 Intent intent1 = new Intent(ConfirmTransac.this, ProfileActivity.class);

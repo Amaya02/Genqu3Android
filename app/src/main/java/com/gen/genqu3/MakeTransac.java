@@ -9,6 +9,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -35,10 +36,19 @@ public class MakeTransac extends AppCompatActivity {
 
     JSONParser2 jsonParser=new JSONParser2();
 
+    ProgressDialog progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_make_transac);
+
+        progress = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
+        progress.setTitle("Loading");
+        progress.setMessage("Please wait..");
+        progress.setCancelable(false);
+
+        progress.show();
 
         MakeTransac.GetCompany getCompany= new MakeTransac.GetCompany();
         getCompany.execute("");
@@ -122,12 +132,15 @@ public class MakeTransac extends AppCompatActivity {
                             }
                         });
                     }
+                    progress.dismiss();
                 }
                 else{
+                    progress.dismiss();
                     Toast.makeText(getApplicationContext(), "No Available Company", Toast.LENGTH_SHORT).show();
                 }
 
             } catch (JSONException e) {
+                progress.dismiss();
                 Log.e("log_tag", "Error parsing data" + e.toString());
                 Toast.makeText(getApplicationContext(), "JsonArray fail", Toast.LENGTH_SHORT).show();
             }
@@ -150,7 +163,9 @@ public class MakeTransac extends AppCompatActivity {
                 editor.clear();
                 editor.commit();
                 Intent intent = new Intent(MakeTransac.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.profile:
                 Intent intent1 = new Intent(MakeTransac.this, ProfileActivity.class);

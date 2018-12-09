@@ -28,17 +28,18 @@
         <activity android:name=".PendingTransac" />
         <activity android:name=".PastTransac" />
         <activity android:name=".QRTransac" />
-        <activity android:name=".ConfirmTransac"></activity>
+        <activity android:name=".ConfirmTransac" />
 
         <receiver
             android:name=".AlarmReceiver"
             android:enabled="true"
-            android:exported="false" >
-        </receiver>
+            android:exported="false"></receiver>
+
         <service
             android:name=".MyNewIntentService"
-            android:exported="false" >
-        </service>
+            android:exported="false"></service>
+
+        <activity android:name=".SettingActivity"></activity>
     </application>
 
 </manifest>

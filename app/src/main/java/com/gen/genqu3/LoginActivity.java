@@ -1,5 +1,6 @@
 package com.gen.genqu3;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -13,6 +14,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 import org.apache.http.NameValuePair;
@@ -34,6 +36,8 @@ public class LoginActivity extends AppCompatActivity {
 
     int i=0;
 
+    ProgressDialog progress;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,9 +56,16 @@ public class LoginActivity extends AppCompatActivity {
         btnSignIn=(Button)findViewById(R.id.btnSignIn);
         btnRegister=(Button)findViewById(R.id.btnRegister);
 
+        progress = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
+        progress.setTitle("Loading");
+        progress.setMessage("Please wait..");
+        progress.setCancelable(false);
+
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+                progress.show();
                 String enteredUser = editName.getText().toString();
                 String enteredPassword = editPassword.getText().toString();
 
@@ -115,6 +126,7 @@ public class LoginActivity extends AppCompatActivity {
             try {
                 if (result != null) {
                     if (result.getString("success").equals("1")) {
+                        progress.dismiss();
                         SaveSharedPreference.setUserName(LoginActivity.this,result.getString("username"));
                         SaveSharedPreference.setUserEmail(LoginActivity.this,result.getString("email"));
                         SaveSharedPreference.setUserPass(LoginActivity.this,result.getString("password"));
@@ -122,12 +134,15 @@ public class LoginActivity extends AppCompatActivity {
 
                         MainActivity.userid = result.getString("id");
                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                         startActivity(intent);
-
+                        finish();
                     } else {
+                        progress.dismiss();
                         Toast.makeText(getApplicationContext(), result.getString("message"), Toast.LENGTH_LONG).show();
                     }
                 } else {
+                    progress.dismiss();
                     Toast.makeText(getApplicationContext(), "Unable to retrieve data from server", Toast.LENGTH_LONG).show();
                 }
             } catch (JSONException e) {

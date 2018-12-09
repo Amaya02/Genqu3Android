@@ -68,7 +68,9 @@ public class ViewTransac extends AppCompatActivity {
                 editor.clear();
                 editor.commit();
                 Intent intent = new Intent(ViewTransac.this, LoginActivity.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
+                finish();
                 return true;
             case R.id.profile:
                 Intent intent1 = new Intent(ViewTransac.this, ProfileActivity.class);
