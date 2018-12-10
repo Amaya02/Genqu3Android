@@ -84,6 +84,10 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
                 finish();
                 return true;
+            case R.id.settings:
+                Intent intent1 = new Intent(this, SettingActivity.class);
+                startActivity(intent1);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 

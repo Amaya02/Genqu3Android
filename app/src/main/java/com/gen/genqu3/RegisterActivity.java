@@ -25,7 +25,9 @@ public class RegisterActivity extends AppCompatActivity {
     EditText regPassword, regName, regEmail;
     Button btnLog, btnReg;
 
-    String URL= "http://192.168.43.43/Android_Login/index.php";
+    //String URL= "http://192.168.43.43/Android_Login/index.php";
+
+    String URL= "http://192.168.22.9/Android_Login/index.php";
 
     JSONParser jsonParser=new JSONParser();
 
@@ -67,6 +69,7 @@ public class RegisterActivity extends AppCompatActivity {
 
                 if(TextUtils.isEmpty(enteredEmail) || TextUtils.isEmpty(enteredPassword) || TextUtils.isEmpty(enteredEmail)){
                     Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
+                    progress.dismiss();
                     return;
                 }
 

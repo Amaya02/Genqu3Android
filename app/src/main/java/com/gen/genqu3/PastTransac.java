@@ -26,7 +26,9 @@ import java.util.ArrayList;
 
 public class PastTransac extends AppCompatActivity {
 
-    String URL= "http://192.168.43.43/Android_Login/getusertransaction.php";
+    //String URL= "http://192.168.43.43/Android_Login/getusertransaction.php";
+
+    String URL= "http://192.168.22.9/Android_Login/getusertransaction.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -188,6 +190,10 @@ public class PastTransac extends AppCompatActivity {
             case R.id.profile:
                 Intent intent1 = new Intent(PastTransac.this, ProfileActivity.class);
                 startActivity(intent1);
+                return true;
+            case R.id.settings:
+                Intent intent2 = new Intent(this, SettingActivity.class);
+                startActivity(intent2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

@@ -29,7 +29,9 @@ public class LoginActivity extends AppCompatActivity {
     EditText editPassword, editName;
     Button btnSignIn, btnRegister;
 
-    String URL= "http://192.168.43.43/Android_Login/index.php";
+    //String URL= "http://192.168.43.43/Android_Login/index.php";
+
+    String URL= "http://192.168.22.9/Android_Login/index.php";
 
     JSONParser jsonParser=new JSONParser();
 
@@ -71,6 +73,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 if(TextUtils.isEmpty(enteredUser) || TextUtils.isEmpty(enteredPassword)){
                     Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
+                    progress.dismiss();
                     return;
                 }
 

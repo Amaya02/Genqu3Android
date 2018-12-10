@@ -76,6 +76,10 @@ public class ViewTransac extends AppCompatActivity {
                 Intent intent1 = new Intent(ViewTransac.this, ProfileActivity.class);
                 startActivity(intent1);
                 return true;
+            case R.id.settings:
+                Intent intent2 = new Intent(this, SettingActivity.class);
+                startActivity(intent2);
+                return true;
             default:
                 return super.onOptionsItemSelected(item);
 

@@ -4,6 +4,183 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".SettingActivity">
+    tools:context=".SettingActivity"
+    android:background="@color/white">
+
+    <LinearLayout
+        android:background="@drawable/gradientbackground"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:orientation="vertical">
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_marginTop="110dp"
+        android:layout_centerHorizontal="true"
+        android:orientation="vertical">
+
+        <TextView
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Settings"
+            android:textColor="#ffffff"
+            android:textStyle="bold"
+            android:textSize="21sp"
+            android:background="#000000"
+            android:paddingLeft="40dp"
+            android:paddingRight="40dp"
+            android:paddingTop="15dp"
+            android:paddingBottom="15dp"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:padding="16dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <LinearLayout android:id="@+id/up_lay2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Username"
+                        android:textStyle="bold"
+                        android:textSize="15dp"/>
+
+                    <EditText android:id="@+id/up_user"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="hey"
+                        android:textSize="20dp"
+                        android:textColor="@color/colorTxt"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Email Address"
+                        android:textStyle="bold"
+                        android:textSize="15dp"
+                        android:layout_marginTop="15dp"/>
+
+                    <EditText android:id="@+id/up_email"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:inputType="textEmailAddress"
+                        android:text="hey"
+                        android:textSize="20dp"
+                        android:textColor="@color/colorTxt"/>
+                </LinearLayout>
+
+                <LinearLayout android:id="@+id/up_lay"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Current Password"
+                        android:textStyle="bold"
+                        android:textSize="15dp"
+                        android:layout_marginTop="15dp"/>
+
+                    <EditText android:id="@+id/up_curpass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:inputType="textPassword"
+                        android:textColor="@color/colorTxt"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="New Password"
+                        android:textStyle="bold"
+                        android:textSize="15dp"
+                        android:layout_marginTop="15dp"/>
+
+                    <EditText android:id="@+id/up_newpass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:inputType="textPassword"
+                        android:textColor="@color/colorTxt"/>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:orientation="vertical"
+                    android:layout_gravity="center">
+
+                    <Button android:id="@+id/up_edit"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Edit Info"
+                        android:background="#a4f18912"/>
+
+                    <Button android:id="@+id/up_save1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Save"
+                        android:background="#a4f18912"
+                        android:visibility="gone"/>
+
+                    <Button android:id="@+id/up_editpass"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Edit Password"
+                        android:layout_marginTop="5dp"
+                        android:background="#a4f18912"/>
+
+                    <Button android:id="@+id/up_save2"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Save"
+                        android:background="#a4f18912"
+                        android:visibility="gone"/>
+
+                    <Button android:id="@+id/up_cancel"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Cancel"
+                        android:layout_marginTop="5dp"
+                        android:background="#a4f18912"
+                        android:layout_marginBottom="5dp"
+                        android:visibility="gone"/>
+
+                    <Button android:id="@+id/up_back"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Back"
+                        android:layout_marginTop="5dp"
+                        android:background="#a4f18912"
+                        android:layout_marginBottom="5dp"/>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
 
 </RelativeLayout>

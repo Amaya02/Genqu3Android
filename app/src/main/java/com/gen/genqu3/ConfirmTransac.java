@@ -33,8 +33,11 @@ public class ConfirmTransac extends AppCompatActivity {
     Button t_back, t_confirm;
     TextView t_name,t_time,t_esti,t_arriv,t_date;
 
-    String URL= "http://192.168.43.43/Android_Login/confirmtransaction.php";
-    String URL2= "http://192.168.43.43/Android_Login/addtransaction.php";
+    //String URL= "http://192.168.43.43/Android_Login/confirmtransaction.php";
+    //String URL2= "http://192.168.43.43/Android_Login/addtransaction.php";
+
+    String URL= "http://192.168.22.9/Android_Login/confirmtransaction.php";
+    String URL2= "http://192.168.22.9/Android_Login/addtransaction.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -243,6 +246,10 @@ public class ConfirmTransac extends AppCompatActivity {
             case R.id.profile:
                 Intent intent1 = new Intent(ConfirmTransac.this, ProfileActivity.class);
                 startActivity(intent1);
+                return true;
+            case R.id.settings:
+                Intent intent2 = new Intent(this, SettingActivity.class);
+                startActivity(intent2);
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
