@@ -29,7 +29,9 @@ public class ViewMakeTransac extends AppCompatActivity {
 
     //String URL= "http://192.168.43.43/Android_Login/getcompany.php";
 
-    String URL= "http://192.168.22.9/Android_Login/getcompany.php";
+    //String URL= "http://192.168.22.9/Android_Login/getcompany.php";
+
+    String URL= "http://192.168.1.102/Android_Login/getcompany.php";
 
     TextView com_name, com_email, com_num, com_address, com_country;
 
