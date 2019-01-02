@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextView user_Name, user_Email;
+    TextView user_Name, user_Name2, user_Email;
     Button makeTran, viewTran;
 
     @Override
@@ -36,14 +36,19 @@ public class ProfileActivity extends AppCompatActivity {
         String id = SaveSharedPreference.getUserId(ProfileActivity.this);
         String password = SaveSharedPreference.getUserPass(ProfileActivity.this);
         String email = SaveSharedPreference.getUserEmail(ProfileActivity.this);
+        String fname = SaveSharedPreference.getUserfName(ProfileActivity.this);
+        String lname = SaveSharedPreference.getUserlName(ProfileActivity.this);
+        String num = SaveSharedPreference.getUserNum(ProfileActivity.this);
 
         MainActivity.userid = id;
 
         user_Name=(TextView)findViewById(R.id.user_Name);
+        user_Name2=(TextView)findViewById(R.id.user_Name2);
         user_Email=(TextView)findViewById(R.id.user_Email);
 
         user_Name.setText(username);
-        user_Email.setText(email);
+        user_Name2.setText(fname+" "+lname);
+        user_Email.setText(email+" | "+num);
 
         makeTran=(Button)findViewById(R.id.makeTran);
         viewTran=(Button)findViewById(R.id.viewTran);

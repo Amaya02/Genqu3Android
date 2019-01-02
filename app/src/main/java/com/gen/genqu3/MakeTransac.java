@@ -22,6 +22,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -34,8 +35,6 @@ public class MakeTransac extends AppCompatActivity {
     String URL= "http://192.168.22.9/Android_Login/getcompany.php";
 
     //String URL= "http://192.168.1.102/Android_Login/getcompany.php";
-
-    TextView Example;
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -85,7 +84,7 @@ public class MakeTransac extends AppCompatActivity {
 
         protected void onPostExecute(JSONArray jArray) {
 
-            Button b[] = new Button[100];
+            LinearLayout b[] = new LinearLayout[100];
             final String cn[] = new String[100];
             final String ci[] = new String[100];
             final String ce[] = new String[100];
@@ -95,31 +94,40 @@ public class MakeTransac extends AppCompatActivity {
 
             try{
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")) {
-                    TableLayout tv = (TableLayout) findViewById(R.id.table);
-                    int flag = 0;
+                    LinearLayout tv = (LinearLayout) findViewById(R.id.makelayout);
+
                     for (int i = 0; i < jArray.length(); i++) {
-                        TableRow tr = new TableRow(MakeTransac.this);
-                        TableLayout.LayoutParams lp = new TableLayout.LayoutParams(
-                                TableLayout.LayoutParams.MATCH_PARENT,
-                                TableLayout.LayoutParams.MATCH_PARENT);
+                        b[i] = new LinearLayout(MakeTransac.this);
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
                         lp.setMargins(0, 0, 0, 15);
-                        tr.setLayoutParams(lp);
+                        b[i].setLayoutParams(lp);
+                        b[i].setPadding(10,10,10,10);
+                        b[i].setBackgroundColor(Color.parseColor("#a4f18912"));
+                        b[i].setOrientation(LinearLayout.VERTICAL);
+                        tv.addView(b[i]);
                         JSONObject json_data = jArray.getJSONObject(i);
-                        Log.i("log_tag", "Name: " + json_data.getString("companyname"));
-                        b[i] = new Button(MakeTransac.this);
-                        String stime = String.valueOf(json_data.getString("companyname"));
+
+                        TextView tn = new TextView(MakeTransac.this);
+                        tn.setText(json_data.getString("companyname"));
+                        tn.setTextSize(23);
+                        tn.setTextColor(Color.BLACK);
+                        LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                        lp2.setMargins(10, 10, 10, 10);
+                        tn.setLayoutParams(lp2);
+
+                        b[i].addView(tn);
+
                         cn[i] = String.valueOf(json_data.getString("companyname"));
                         ci[i] = String.valueOf(json_data.getString("companyid"));
                         ce[i] = String.valueOf(json_data.getString("email"));
                         ca[i] = String.valueOf(json_data.getString("address"));
                         cc[i] = String.valueOf(json_data.getString("country"));
                         c[i] = String.valueOf(json_data.getString("cnumber"));
-                        b[i].setText(stime);
-                        b[i].setTextColor(Color.BLACK);
-                        b[i].setTextSize(15);
-                        b[i].setBackgroundColor(Color.parseColor("#a4f18912"));
-                        tr.addView(b[i]);
-                        tv.addView(tr);
+
                         final int count = i;
                         b[i].setOnClickListener(new View.OnClickListener() {
                             @Override

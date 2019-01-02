@@ -34,7 +34,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@mipmap/icon_round"
+                android:src="@drawable/email"
                 android:layout_marginRight="5dp"/>
 
             <TextView android:id="@+id/com_email"
@@ -44,10 +44,18 @@
                 android:textSize="13dp"
                 android:layout_marginRight="10dp"/>
 
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginTop="10dp">
+
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@mipmap/icon_round"
+                android:src="@drawable/phone"
                 android:layout_marginRight="5dp"/>
 
             <TextView android:id="@+id/com_num"
@@ -67,7 +75,7 @@
             <ImageView
                 android:layout_width="20dp"
                 android:layout_height="20dp"
-                android:src="@mipmap/icon_round"
+                android:src="@drawable/address"
                 android:layout_marginRight="5dp"/>
 
             <TextView android:id="@+id/com_address"
@@ -84,43 +92,27 @@
 
         </LinearLayout>
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Available Transactions"
+            android:textSize="23sp"
+            android:layout_marginBottom="10dp"
+            android:textColor="@color/colorTxt"
+            android:layout_marginTop="20dp"/>
+
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="30dp">
+            android:layout_height="wrap_content">
 
-            <HorizontalScrollView
+            <LinearLayout android:id="@+id/makeviewlayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
-
-                <TableLayout android:id="@+id/table2"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:stretchColumns="0">
-
-                    <TableRow>
-
-                        <TextView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:text="Available Transactions"
-                            android:textSize="20dp"
-                            android:layout_marginBottom="25dp"/>
-
-                    </TableRow>
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
 
-
-                </TableLayout>
-
-
-
-            </HorizontalScrollView>
-
-
-
+            </LinearLayout>
         </ScrollView>
-
 
     </LinearLayout>
 

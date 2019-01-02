@@ -1,51 +1,44 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="24dp"
     tools:context=".MakeTransac">
 
-    <HorizontalScrollView
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:focusableInTouchMode="true"
-        android:focusable="true">
+        android:orientation="vertical">
 
-        <TableLayout
-            android:id="@+id/table"
+        <TextView
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:focusableInTouchMode="true"
-            android:focusable="true"
+            android:layout_height="wrap_content"
+            android:text="List of Company"
+            android:textSize="25sp"
+            android:layout_marginBottom="10dp"
             android:layout_gravity="center"
-            android:stretchColumns="0">
+            android:textColor="@color/colorTxt"/>
 
-            <TableRow>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:background="@color/colorBg"
+            android:layout_marginBottom="40dp"/>
 
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="List of Company"
-                    android:textSize="25sp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_gravity="center"
-                    android:textColor="@color/colorTxt"/>
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-            </TableRow>
+            <LinearLayout android:id="@+id/makelayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
 
-            <TableRow>
 
-                <ImageView
-                    android:layout_width="match_parent"
-                    android:layout_height="3dp"
-                    android:background="@color/colorBg"
-                    android:layout_marginBottom="40dp"/>
+            </LinearLayout>
+        </ScrollView>
 
-            </TableRow>
+    </LinearLayout>
 
-        </TableLayout>
-
-    </HorizontalScrollView>
-
-</ScrollView>
+</RelativeLayout>

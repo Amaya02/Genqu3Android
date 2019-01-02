@@ -81,7 +81,7 @@ public class ConfirmTransac extends AppCompatActivity {
 
         t_name.setText(transacname);
         t_time.setText("TIME: "+starttime+" - "+endtime);
-        t_esti.setText("ESTIMATED TIME: "+estimatedtime+" Minutes");
+        t_esti.setText("ESTIMATED TIME: "+estimatedtime+" Minute/s");
 
         t_back.setOnClickListener(new View.OnClickListener() {
             @Override

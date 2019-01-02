@@ -10,7 +10,7 @@
     <LinearLayout
         android:background="@drawable/gradientbackground"
         android:layout_width="match_parent"
-        android:layout_height="150dp"
+        android:layout_height="100dp"
         android:orientation="vertical">
 
     </LinearLayout>
@@ -18,7 +18,7 @@
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginTop="110dp"
+        android:layout_marginTop="60dp"
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
 
@@ -65,6 +65,52 @@
                         android:layout_height="wrap_content"
                         android:enabled="false"
                         android:text="hey"
+                        android:textSize="20dp"
+                        android:textColor="@color/colorTxt"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="First Name"
+                        android:textStyle="bold"
+                        android:textSize="15dp"/>
+
+                    <EditText android:id="@+id/up_fname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="hey"
+                        android:textSize="20dp"
+                        android:textColor="@color/colorTxt"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Last Name"
+                        android:textStyle="bold"
+                        android:textSize="15dp"/>
+
+                    <EditText android:id="@+id/up_lname"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="hey"
+                        android:textSize="20dp"
+                        android:textColor="@color/colorTxt"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:text="Contact number"
+                        android:textStyle="bold"
+                        android:textSize="15dp"/>
+
+                    <EditText android:id="@+id/up_num"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:enabled="false"
+                        android:text="01"
+                        android:inputType="phone"
                         android:textSize="20dp"
                         android:textColor="@color/colorTxt"/>
 

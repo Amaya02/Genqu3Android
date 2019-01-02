@@ -10,6 +10,9 @@ public class SaveSharedPreference {
     static final String Email = "emailKey";
     static final String Id = "idKey";
     static final String Pass = "passKey";
+    static final String fName = "fnameKey";
+    static final String lName = "lnameKey";
+    static final String Num = "numKey";
 
     static SharedPreferences getSharedPreferences(Context ctx){
         return PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -18,6 +21,24 @@ public class SaveSharedPreference {
     public static void setUserName(Context ctx, String userName){
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(Name, userName);
+        editor.commit();
+    }
+
+    public static void setfName(Context ctx, String firstName){
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString(fName, firstName);
+        editor.commit();
+    }
+
+    public static void setlName(Context ctx, String lastName){
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString(lName, lastName);
+        editor.commit();
+    }
+
+    public static void setNum(Context ctx, String number){
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString(Num, number);
         editor.commit();
     }
 
@@ -51,6 +72,15 @@ public class SaveSharedPreference {
     }
     public static String getUserId(Context ctx){
         return getSharedPreferences(ctx).getString(Id,"");
+    }
+    public static String getUserfName(Context ctx){
+        return getSharedPreferences(ctx).getString(fName,"");
+    }
+    public static String getUserlName(Context ctx){
+        return getSharedPreferences(ctx).getString(lName,"");
+    }
+    public static String getUserNum(Context ctx){
+        return getSharedPreferences(ctx).getString(Num,"");
     }
 
 }

@@ -28,7 +28,7 @@ import java.util.Calendar;
 
 public class SettingActivity extends AppCompatActivity {
 
-    EditText up_user, up_email, up_curpass, up_newpass;
+    EditText up_user, up_email, up_curpass, up_newpass, up_fname, up_lname, up_num;
     Button up_edit, up_editpass, up_cancel, up_save1, up_back, up_save2;
     LinearLayout up_lay, up_lay2;
 
@@ -54,14 +54,23 @@ public class SettingActivity extends AppCompatActivity {
         String id = SaveSharedPreference.getUserId(this);
         String password = SaveSharedPreference.getUserPass(this);
         String email = SaveSharedPreference.getUserEmail(this);
+        String fname = SaveSharedPreference.getUserfName(this);
+        String lname = SaveSharedPreference.getUserlName(this);
+        String num = SaveSharedPreference.getUserNum(this);
 
         up_user=(EditText)findViewById(R.id.up_user);
         up_email=(EditText)findViewById(R.id.up_email);
         up_curpass=(EditText)findViewById(R.id.up_curpass);
         up_newpass=(EditText)findViewById(R.id.up_newpass);
+        up_fname=(EditText)findViewById(R.id.up_fname);
+        up_lname=(EditText)findViewById(R.id.up_lname);
+        up_num=(EditText)findViewById(R.id.up_num);
 
         up_user.setText(username);
         up_email.setText(email);
+        up_fname.setText(fname);
+        up_lname.setText(lname);
+        up_num.setText(num);
 
         up_edit=(Button)findViewById(R.id.up_edit);
         up_editpass=(Button)findViewById(R.id.up_editpass);
@@ -77,6 +86,9 @@ public class SettingActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 up_user.setEnabled(true);
+                up_fname.setEnabled(true);
+                up_lname.setEnabled(true);
+                up_num.setEnabled(true);
                 up_email.setEnabled(true);
 
                 up_back.setVisibility(View.GONE);
@@ -123,8 +135,12 @@ public class SettingActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String enteredUser = up_user.getText().toString();
                 String enteredEmail = up_email.getText().toString();
+                String enteredfname = up_fname.getText().toString();
+                String enteredlname = up_lname.getText().toString();
+                String enterednum = up_num.getText().toString();
 
-                if(TextUtils.isEmpty(enteredUser) || TextUtils.isEmpty(enteredEmail)){
+                if(TextUtils.isEmpty(enteredUser) || TextUtils.isEmpty(enteredEmail) || TextUtils.isEmpty(enteredfname)
+                        || TextUtils.isEmpty(enteredlname) || TextUtils.isEmpty(enterednum)){
                     Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
                     return;
                 }
@@ -132,7 +148,7 @@ public class SettingActivity extends AppCompatActivity {
                 progress.show();
 
                 SettingActivity.EditUser getCompany= new SettingActivity.EditUser();
-                getCompany.execute(MainActivity.userid,enteredUser,enteredEmail);
+                getCompany.execute(MainActivity.userid,enteredUser,enteredEmail,enteredfname,enteredlname,enterednum);
             }
         });
 
@@ -173,10 +189,16 @@ public class SettingActivity extends AppCompatActivity {
             String userid = args[0];
             String username = args[1];
             String email = args[2];
+            String fname = args[3];
+            String lname = args[4];
+            String num = args[5];
             ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("userid", userid));
             params.add(new BasicNameValuePair("username", username));
             params.add(new BasicNameValuePair("email", email));
+            params.add(new BasicNameValuePair("fname", fname));
+            params.add(new BasicNameValuePair("lname", lname));
+            params.add(new BasicNameValuePair("num", num));
 
             JSONArray json = jsonParser.makeHttpRequest(URL,params);
 
@@ -191,9 +213,15 @@ public class SettingActivity extends AppCompatActivity {
 
                     String enteredUser = up_user.getText().toString();
                     String enteredEmail = up_email.getText().toString();
+                    String enteredfname = up_fname.getText().toString();
+                    String enteredlname = up_lname.getText().toString();
+                    String enterednum = up_num.getText().toString();
 
                     SaveSharedPreference.setUserName(SettingActivity.this,enteredUser);
                     SaveSharedPreference.setUserEmail(SettingActivity.this,enteredEmail);
+                    SaveSharedPreference.setfName(SettingActivity.this,enteredfname);
+                    SaveSharedPreference.setlName(SettingActivity.this,enteredlname);
+                    SaveSharedPreference.setNum(SettingActivity.this,enterednum);
 
                     Toast.makeText(getApplicationContext(), "Updated Successfully!", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(SettingActivity.this, ProfileActivity.class);

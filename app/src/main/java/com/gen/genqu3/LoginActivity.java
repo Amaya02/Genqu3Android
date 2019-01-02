@@ -136,6 +136,9 @@ public class LoginActivity extends AppCompatActivity {
                         SaveSharedPreference.setUserEmail(LoginActivity.this,result.getString("email"));
                         SaveSharedPreference.setUserPass(LoginActivity.this,result.getString("password"));
                         SaveSharedPreference.setUserId(LoginActivity.this,result.getString("id"));
+                        SaveSharedPreference.setfName(LoginActivity.this,result.getString("fname"));
+                        SaveSharedPreference.setlName(LoginActivity.this,result.getString("lname"));
+                        SaveSharedPreference.setNum(LoginActivity.this,result.getString("num"));
 
                         MainActivity.userid = result.getString("id");
                         Intent intent = new Intent(LoginActivity.this, ProfileActivity.class);

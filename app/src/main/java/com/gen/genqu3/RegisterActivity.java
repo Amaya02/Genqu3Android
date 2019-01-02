@@ -22,7 +22,7 @@ import java.util.ArrayList;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    EditText regPassword, regName, regEmail;
+    EditText regPassword, regName, regEmail, fName, lName, conNum;
     Button btnLog, btnReg;
 
     //String URL= "http://192.168.43.43/Android_Login/index.php";
@@ -52,6 +52,9 @@ public class RegisterActivity extends AppCompatActivity {
         regName=(EditText)findViewById(R.id.regName);
         regEmail=(EditText)findViewById(R.id.regEmail);
         regPassword=(EditText)findViewById(R.id.regPassword);
+        fName=(EditText)findViewById(R.id.firstName);
+        lName=(EditText)findViewById(R.id.lastName);
+        conNum=(EditText)findViewById(R.id.conNum);
 
         btnLog=(Button)findViewById(R.id.btnLog);
         btnReg=(Button)findViewById(R.id.btnReg);
@@ -68,15 +71,21 @@ public class RegisterActivity extends AppCompatActivity {
                 String enteredUser = regName.getText().toString();
                 String enteredEmail = regEmail.getText().toString();
                 String enteredPassword = regPassword.getText().toString();
+                String enteredfname = fName.getText().toString();
+                String enteredlname = lName.getText().toString();
+                String enterednum = conNum.getText().toString();
 
-                if(TextUtils.isEmpty(enteredEmail) || TextUtils.isEmpty(enteredPassword) || TextUtils.isEmpty(enteredEmail)){
+
+                if(TextUtils.isEmpty(enteredEmail) || TextUtils.isEmpty(enteredPassword) || TextUtils.isEmpty(enteredUser)
+                        || TextUtils.isEmpty(enteredfname) || TextUtils.isEmpty(enteredlname) || TextUtils.isEmpty(enterednum)){
                     Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
                     progress.dismiss();
                     return;
                 }
 
                 RegisterActivity.AttemptLogin attemptLogin= new RegisterActivity.AttemptLogin();
-                attemptLogin.execute(regName.getText().toString(),regPassword.getText().toString(),regEmail.getText().toString());
+                attemptLogin.execute(regName.getText().toString(),regPassword.getText().toString(),regEmail.getText().toString(),
+                        fName.getText().toString(),lName.getText().toString(),conNum.getText().toString());
             }
         });
 
@@ -105,6 +114,9 @@ public class RegisterActivity extends AppCompatActivity {
 
         protected JSONObject doInBackground(String... args) {
 
+            String num = args[5];
+            String lname = args[4];
+            String fname = args[3];
             String email = args[2];
             String password = args[1];
             String name = args[0];
@@ -113,6 +125,9 @@ public class RegisterActivity extends AppCompatActivity {
             params.add(new BasicNameValuePair("username", name));
             params.add(new BasicNameValuePair("password", password));
             params.add(new BasicNameValuePair("email", email));
+            params.add(new BasicNameValuePair("fname", fname));
+            params.add(new BasicNameValuePair("lname", lname));
+            params.add(new BasicNameValuePair("num", num));
 
             JSONObject json = jsonParser.makeHttpRequest(URL, "POST", params);
 

@@ -31,69 +31,115 @@
             android:fontFamily="cursive"
             android:textColor="#000000"/>
 
-        <EditText android:id="@+id/regName"
+          <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Username"
-            android:textColor="#FF192133"
-            android:textColorHint="#A0192133"
-            android:fontFamily="sans-serif-light"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_marginBottom="10dp" />
+            android:layout_height="wrap_content">
 
-        <EditText android:id="@+id/regEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:inputType="textEmailAddress"
-            android:textColor="#FF192133"
-            android:textColorHint="#A0192133"
-            android:fontFamily="sans-serif-light"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_marginBottom="10dp" />
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="vertical">
 
-        <EditText android:id="@+id/regPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:inputType="textPassword"
-            android:textColor="#FF192133"
-            android:textColorHint="#A0192133"
-            android:fontFamily="sans-serif-light"
-            android:hint="Password"
-            android:focusable="true"
-            android:focusableInTouchMode="true"
-            android:layout_marginBottom="10dp"/>
+                <EditText android:id="@+id/regName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Username"
+                    android:textColor="#FF192133"
+                    android:textColorHint="#A0192133"
+                    android:fontFamily="sans-serif-light"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_marginBottom="10dp" />
 
-        <Button android:id="@+id/btnReg"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Register"
-            android:textStyle="bold"
-            android:background="#a4f18912"
-            android:textAllCaps="false" />
+                <EditText android:id="@+id/firstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="First Name"
+                    android:textColor="#FF192133"
+                    android:textColorHint="#A0192133"
+                    android:fontFamily="sans-serif-light"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_marginBottom="10dp" />
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Already have an account?"
-            android:textAlignment="center"
-            android:layout_marginTop="50dp"
-            android:textSize="15dp"
-            android:fontFamily="sans-serif"
-            android:textColor="#000000"/>
+                <EditText android:id="@+id/lastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Last Name"
+                    android:textColor="#FF192133"
+                    android:textColorHint="#A0192133"
+                    android:fontFamily="sans-serif-light"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_marginBottom="10dp" />
 
-        <Button
-            android:id="@+id/btnLog"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:background="@null"
-            android:text="Login"
-            android:textAllCaps="false"
-            android:textStyle="bold"
-            android:layout_gravity="center"/>
+                  <EditText android:id="@+id/conNum"
+                      android:layout_width="match_parent"
+                      android:layout_height="wrap_content"
+                      android:hint="Contact Number"
+                      android:inputType="phone"
+                      android:textColor="#FF192133"
+                      android:textColorHint="#A0192133"
+                      android:fontFamily="sans-serif-light"
+                      android:focusable="true"
+                      android:focusableInTouchMode="true"
+                      android:layout_marginBottom="10dp" />
 
+                <EditText android:id="@+id/regEmail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Email"
+                    android:inputType="textEmailAddress"
+                    android:textColor="#FF192133"
+                    android:textColorHint="#A0192133"
+                    android:fontFamily="sans-serif-light"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_marginBottom="10dp" />
+
+                <EditText android:id="@+id/regPassword"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="textPassword"
+                    android:textColor="#FF192133"
+                    android:textColorHint="#A0192133"
+                    android:fontFamily="sans-serif-light"
+                    android:hint="Password"
+                    android:focusable="true"
+                    android:focusableInTouchMode="true"
+                    android:layout_marginBottom="10dp"/>
+
+                <Button android:id="@+id/btnReg"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Register"
+                    android:textStyle="bold"
+                    android:background="#a4f18912"
+                    android:textAllCaps="false" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Already have an account?"
+                    android:textAlignment="center"
+                    android:layout_marginTop="50dp"
+                    android:textSize="15dp"
+                    android:fontFamily="sans-serif"
+                    android:textColor="#000000"/>
+
+                <Button
+                    android:id="@+id/btnLog"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@null"
+                    android:text="Login"
+                    android:textAllCaps="false"
+                    android:textStyle="bold"
+                    android:layout_gravity="center"/>
+
+              </LinearLayout>
+
+        </ScrollView>
 
     </LinearLayout>
 

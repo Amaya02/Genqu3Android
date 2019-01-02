@@ -22,10 +22,11 @@
 
         <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_marginTop="100dp"
             android:layout_centerHorizontal="true"
-            android:orientation="vertical">
+            android:orientation="vertical"
+            android:padding="16dp">
 
             <ImageView
                 android:layout_width="100dp"
@@ -33,29 +34,41 @@
                 android:layout_gravity="center_horizontal"
                 android:src="@mipmap/icon_round" />
 
-            <TextView android:id="@+id/user_Name"
+            <TextView android:id="@+id/user_Name2"
                 android:layout_marginTop="10dp"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Your Name"
+                android:text="Name"
                 android:textColor="#000000"
                 android:textStyle="bold"
-                android:textSize="21sp"/>
+                android:textSize="23sp"
+                android:textAlignment="center"/>
+
+            <TextView android:id="@+id/user_Name"
+                android:layout_gravity="center_horizontal"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="username"
+                android:textColor="#464545"
+                android:textSize="17sp"
+                android:textAlignment="center"/>
 
             <TextView android:id="@+id/user_Email"
                 android:layout_gravity="center_horizontal"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="email@yahoo.com"
+                android:text="email@yahoo.com | number"
                 android:textColor="#464545"
-                android:textSize="15sp"/>
+                android:textSize="15sp"
+                android:textAlignment="center"/>
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:layout_marginTop="70dp">
+                android:layout_marginTop="70dp"
+                android:layout_gravity="center">
 
                 <Button android:id="@+id/viewTran"
                     android:textColor="#fff"
