@@ -29,15 +29,17 @@ public class ViewMakeTransac extends AppCompatActivity {
 
     //String URL= "http://192.168.43.43/Android_Login/getcompany.php";
 
-    //String URL= "http://192.168.22.9/Android_Login/getcompany.php";
+    String URL= "http://192.168.22.9/Android_Login/getcompany.php";
 
-    String URL= "http://192.168.1.102/Android_Login/getcompany.php";
+    //String URL= "http://192.168.1.102/Android_Login/getcompany.php";
 
     TextView com_name, com_email, com_num, com_address, com_country;
 
     JSONParser2 jsonParser=new JSONParser2();
 
     ProgressDialog progress;
+
+    String cn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +48,7 @@ public class ViewMakeTransac extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String cn = intent.getStringExtra("COMPANYNAME");
+        cn = intent.getStringExtra("COMPANYNAME");
         String ci = intent.getStringExtra("COMPANYID");
         String cc = intent.getStringExtra("COMPANYCOUNTRY");
         String ca = intent.getStringExtra("COMPANYADDRESS");
@@ -148,6 +150,7 @@ public class ViewMakeTransac extends AppCompatActivity {
                                 intent.putExtra("STARTTIME",st[count]);
                                 intent.putExtra("ENDTIME",et[count]);
                                 intent.putExtra("ESTIMATEDTIME",eet[count]);
+                                intent.putExtra("COMPANYNAME",cn);
                                 startActivity(intent);
                             }
                         });

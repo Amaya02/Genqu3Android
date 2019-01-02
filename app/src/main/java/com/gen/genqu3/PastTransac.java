@@ -28,9 +28,9 @@ public class PastTransac extends AppCompatActivity {
 
     //String URL= "http://192.168.43.43/Android_Login/getusertransaction.php";
 
-    //String URL= "http://192.168.22.9/Android_Login/getusertransaction.php";
+    String URL= "http://192.168.22.9/Android_Login/getusertransaction.php";
 
-    String URL= "http://192.168.1.102/Android_Login/getusertransaction.php";
+    //String URL= "http://192.168.1.102/Android_Login/getusertransaction.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 

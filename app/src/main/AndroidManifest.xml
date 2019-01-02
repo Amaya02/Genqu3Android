@@ -39,6 +39,24 @@
             android:name=".MyNewIntentService"
             android:exported="false"></service>
 
+        <receiver
+            android:name=".AlarmReceiver2"
+            android:enabled="true"
+            android:exported="false"></receiver>
+
+        <service
+            android:name=".MyNewIntentService2"
+            android:exported="false"></service>
+
+        <receiver
+            android:name=".AlarmReceiver3"
+            android:enabled="true"
+            android:exported="false"></receiver>
+
+        <service
+            android:name=".MyNewIntentService3"
+            android:exported="false"></service>
+
         <activity android:name=".SettingActivity"></activity>
     </application>
 

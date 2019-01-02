@@ -10,11 +10,11 @@ import android.preference.RingtonePreference;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
 
-public class MyNewIntentService extends IntentService {
+public class MyNewIntentService2 extends IntentService {
     private static int NOTIFICATION_ID =  MainActivity.notifnum2;
 
-    public MyNewIntentService() {
-        super("MyNewIntentService");
+    public MyNewIntentService2() {
+        super("MyNewIntentService2");
     }
 
     @Override
@@ -22,10 +22,9 @@ public class MyNewIntentService extends IntentService {
         MainActivity.notifnum2++;
         NOTIFICATION_ID =  MainActivity.notifnum2;
 
-
         Notification.Builder builder = new Notification.Builder(this);
         builder.setContentTitle("Queue Notification");
-        builder.setContentText("1 hour before your turn!");
+        builder.setContentText("2 minutes before your turn!");
         builder.setSmallIcon(R.drawable.icon3);
         builder.setPriority(Notification.PRIORITY_HIGH);
         builder.setDefaults(Notification.DEFAULT_ALL);

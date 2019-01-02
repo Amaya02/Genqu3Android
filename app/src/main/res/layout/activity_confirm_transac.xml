@@ -65,6 +65,13 @@
                 android:text="Arrive at: "
                 android:textSize="17dp"/>
 
+            <Spinner android:id="@+id/spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+
+            </Spinner>
+
             <TextView android:id="@+id/t_date"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

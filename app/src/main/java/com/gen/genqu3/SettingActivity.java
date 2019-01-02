@@ -33,8 +33,8 @@ public class SettingActivity extends AppCompatActivity {
     LinearLayout up_lay, up_lay2;
 
     //String URL= "http://192.168.43.43/Android_Login/updateuser.php";
-    //String URL= "http://192.168.22.9/Android_Login/updateuser.php";
-    String URL= "http://192.168.1.102/Android_Login/updateuser.php";
+    String URL= "http://192.168.22.9/Android_Login/updateuser.php";
+    //String URL= "http://192.168.1.102/Android_Login/updateuser.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 

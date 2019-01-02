@@ -15,8 +15,10 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,26 +26,35 @@ import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
 import org.json.JSONArray;
 import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 public class ConfirmTransac extends AppCompatActivity {
 
     Button t_back, t_confirm;
     TextView t_name,t_time,t_esti,t_arriv,t_date;
+    Spinner spinner;
+    String dateNow, timeNow;
 
     //String URL= "http://192.168.43.43/Android_Login/confirmtransaction.php";
     //String URL2= "http://192.168.43.43/Android_Login/addtransaction.php";
 
-    //String URL= "http://192.168.22.9/Android_Login/confirmtransaction.php";
-    //String URL2= "http://192.168.22.9/Android_Login/addtransaction.php";
+    String URL= "http://192.168.22.9/Android_Login/confirmtransaction.php";
+    String URL2= "http://192.168.22.9/Android_Login/addtransaction.php";
 
-    String URL= "http://192.168.1.102/Android_Login/confirmtransaction.php";
-    String URL2= "http://192.168.1.102/Android_Login/addtransaction.php";
+    //String URL= "http://192.168.1.102/Android_Login/confirmtransaction.php";
+    //String URL2= "http://192.168.1.102/Android_Login/addtransaction.php";
 
 
     JSONParser2 jsonParser=new JSONParser2();
+
+    String cn;
 
     ProgressDialog progress;
     @Override
@@ -57,6 +68,8 @@ public class ConfirmTransac extends AppCompatActivity {
         String starttime = intent.getStringExtra("STARTTIME");
         String endtime = intent.getStringExtra("ENDTIME");
         String estimatedtime = intent.getStringExtra("ESTIMATEDTIME");
+        String transacid = intent.getStringExtra("TRANSACID");
+        cn = intent.getStringExtra("COMPANYNAME");
 
         t_name = (TextView) findViewById(R.id.t_name);
 
@@ -85,7 +98,7 @@ public class ConfirmTransac extends AppCompatActivity {
         progress.show();
 
         ConfirmTransac.GetTran getCompany= new ConfirmTransac.GetTran();
-        getCompany.execute(starttime,endtime,estimatedtime);
+        getCompany.execute(starttime,endtime,estimatedtime,transacid);
     }
 
     private class GetTran extends AsyncTask<String, String, JSONArray> {
@@ -105,10 +118,12 @@ public class ConfirmTransac extends AppCompatActivity {
             String starttime = args[0];
             String endtime = args[1];
             String estitime = args[2];
+            String transacid = args[3];
             ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("starttime", starttime));
             params.add(new BasicNameValuePair("endtime", endtime));
             params.add(new BasicNameValuePair("estitime", estitime));
+            params.add(new BasicNameValuePair("transacid", transacid));
 
             JSONArray json = jsonParser.makeHttpRequest(URL,params);
 
@@ -121,25 +136,38 @@ public class ConfirmTransac extends AppCompatActivity {
                 Intent intent = getIntent();
                 final String transacid = intent.getStringExtra("TRANSACID");
                 t_date = (TextView) findViewById(R.id.t_date);
-                t_arriv = (TextView) findViewById(R.id.t_arriv);
 
                 final String date = jArray.getJSONObject(0).getString("esti_date");
-                final String arriv = jArray.getJSONObject(0).getString("estistart");
-                final String end = jArray.getJSONObject(0).getString("estiend");
+                dateNow = jArray.getJSONObject(0).getString("date_now");
+                timeNow = jArray.getJSONObject(0).getString("time_now");
                 t_date.setText("DATE: "+date);
-                t_arriv.setText("ARRIVE AT: "+arriv);
+
+                spinner = (Spinner) findViewById(R.id.spinner);
+                List<String> list = new ArrayList<String>();
+
+                for(int i = 0; i < jArray.length(); i++){
+                    JSONObject json_data = jArray.getJSONObject(i);
+                    list.add(json_data.getString("estistart"));
+                }
+
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(ConfirmTransac.this, android.R.layout.simple_spinner_item, list);
+                dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                spinner.setAdapter(dataAdapter);
 
                 MainActivity.date_notif = date;
-                MainActivity.time_notif = arriv;
+
 
                 progress.dismiss();
 
                 t_confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
+                        final String arriv = String.valueOf(spinner.getSelectedItem());
+                        MainActivity.time_notif = arriv;
+
                         progress.show();
                         ConfirmTransac.AddUserTran getCompany= new ConfirmTransac.AddUserTran();
-                        getCompany.execute(MainActivity.userid,transacid,"Pending",date,arriv,end);
+                        getCompany.execute(MainActivity.userid,transacid,"Pending",date,arriv);
                     }
                 });
 
@@ -170,14 +198,12 @@ public class ConfirmTransac extends AppCompatActivity {
             String status = args[2];
             String date = args[3];
             String arriv = args[4];
-            String end = args[5];
             ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
             params.add(new BasicNameValuePair("userid", userid));
             params.add(new BasicNameValuePair("transacid", transacid));
             params.add(new BasicNameValuePair("status", status));
             params.add(new BasicNameValuePair("date", date));
             params.add(new BasicNameValuePair("start", arriv));
-            params.add(new BasicNameValuePair("end", end));
 
             JSONArray json = jsonParser.makeHttpRequest(URL2,params);
 
@@ -195,20 +221,163 @@ public class ConfirmTransac extends AppCompatActivity {
                     int hour = Integer.parseInt(MainActivity.time_notif.substring(0,2));
                     int min = Integer.parseInt(MainActivity.time_notif.substring(3,5));
 
-                    MainActivity.notifnum++;
+                    long difference = 0;
 
-                    Calendar c = Calendar.getInstance();
-                    c.setTimeInMillis(System.currentTimeMillis());
-                    c.clear();
-                    c.set(year, (month-1), day, hour, min);
+                    if(dateNow.equals(MainActivity.date_notif)){
+                        SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
+                        Date date1 = format.parse(timeNow);
+                        Date date2 = format.parse(MainActivity.time_notif);
+                        difference = date2.getTime() - date1.getTime();
+                        difference = difference/1000;
+                        if(difference>3600){
+                            MainActivity.notifnum++;
 
-                    AlarmManager [] alarmManagers = new AlarmManager[MainActivity.notifnum+1];
-                    Intent intents[] = new Intent[MainActivity.notifnum+1];
+                            Calendar c = Calendar.getInstance();
+                            c.setTimeInMillis(System.currentTimeMillis());
+                            c.clear();
+                            c.set(year, (month-1), day, hour, min - 60,0);
 
-                    intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver.class);
-                    PendingIntent pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
-                    alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
-                    alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+                            AlarmManager [] alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                            Intent intents[] = new Intent[MainActivity.notifnum+1];
+
+                            intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver.class);
+                            intents[MainActivity.notifnum].putExtra("ID",0);
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                            alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                            alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                            MainActivity.notifnum++;
+
+                            c = Calendar.getInstance();
+                            c.setTimeInMillis(System.currentTimeMillis());
+                            c.clear();
+                            c.set(year, (month-1), day, hour, min - 2,0);
+
+                            alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                            intents= new Intent[MainActivity.notifnum+1];
+
+                            intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver2.class);
+                            intents[MainActivity.notifnum].putExtra("ID",3);
+                            pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                            alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                            alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                            MainActivity.notifnum++;
+
+                            c = Calendar.getInstance();
+                            c.setTimeInMillis(System.currentTimeMillis());
+                            c.clear();
+                            c.set(year, (month-1), day, hour, min ,0);
+
+                            alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                            intents= new Intent[MainActivity.notifnum+1];
+
+                            intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver3.class);
+                            intents[MainActivity.notifnum].putExtra("ID",4);
+                            pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                            alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                            alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+                        }
+                        else if(difference>120){
+                            MainActivity.notifnum++;
+
+                            Calendar c = Calendar.getInstance();
+                            c.setTimeInMillis(System.currentTimeMillis());
+                            c.clear();
+                            c.set(year, (month-1), day, hour, min - 2,0);
+
+                            AlarmManager [] alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                            Intent intents[] = new Intent[MainActivity.notifnum+1];
+
+                            intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver2.class);
+                            intents[MainActivity.notifnum].putExtra("ID",3);
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                            alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                            alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                            MainActivity.notifnum++;
+
+                            c = Calendar.getInstance();
+                            c.setTimeInMillis(System.currentTimeMillis());
+                            c.clear();
+                            c.set(year, (month-1), day, hour, min ,0);
+
+                            alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                            intents= new Intent[MainActivity.notifnum+1];
+
+                            intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver3.class);
+                            intents[MainActivity.notifnum].putExtra("ID",4);
+                            pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                            alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                            alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+                        }
+                        else{
+                            MainActivity.notifnum++;
+
+                            Calendar c = Calendar.getInstance();
+                            c.setTimeInMillis(System.currentTimeMillis());
+                            c.clear();
+                            c.set(year, (month-1), day, hour, min ,0);
+
+                            AlarmManager [] alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                            Intent intents[]= new Intent[MainActivity.notifnum+1];
+
+                            intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver3.class);
+                            intents[MainActivity.notifnum].putExtra("ID",4);
+                            PendingIntent pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                            alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                            alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+                        }
+                    }
+                    else{
+                        MainActivity.notifnum++;
+
+                        Calendar c = Calendar.getInstance();
+                        c.setTimeInMillis(System.currentTimeMillis());
+                        c.clear();
+                        c.set(year, (month-1), day, hour, min - 60,0);
+
+                        AlarmManager [] alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                        Intent intents[] = new Intent[MainActivity.notifnum+1];
+
+                        intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver.class);
+                        intents[MainActivity.notifnum].putExtra("ID",0);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                        MainActivity.notifnum++;
+
+                        c = Calendar.getInstance();
+                        c.setTimeInMillis(System.currentTimeMillis());
+                        c.clear();
+                        c.set(year, (month-1), day, hour, min - 2,0);
+
+                        alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                        intents= new Intent[MainActivity.notifnum+1];
+
+                        intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver2.class);
+                        intents[MainActivity.notifnum].putExtra("ID",3);
+                        pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                        MainActivity.notifnum++;
+
+                        c = Calendar.getInstance();
+                        c.setTimeInMillis(System.currentTimeMillis());
+                        c.clear();
+                        c.set(year, (month-1), day, hour, min ,0);
+
+                        alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                        intents= new Intent[MainActivity.notifnum+1];
+
+                        intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver3.class);
+                        intents[MainActivity.notifnum].putExtra("ID",4);
+                        pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+                    }
 
                     progress.dismiss();
                     Toast.makeText(getApplicationContext(), "Transaction Added Successfully", Toast.LENGTH_SHORT).show();
@@ -223,6 +392,8 @@ public class ConfirmTransac extends AppCompatActivity {
                 }
             } catch (JSONException e) {
                 progress.dismiss();
+                e.printStackTrace();
+            } catch (ParseException e) {
                 e.printStackTrace();
             }
 

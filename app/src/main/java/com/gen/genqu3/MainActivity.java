@@ -20,6 +20,8 @@ public class MainActivity extends AppCompatActivity {
     public static String date_notif;
     public static String time_notif;
     public static int notifnum =0;
+    public static int notifnum2 =0;
+    public static String[] mes_notif;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
