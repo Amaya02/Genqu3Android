@@ -42,19 +42,16 @@ public class ConfirmTransac extends AppCompatActivity {
     Spinner spinner;
     String dateNow, timeNow;
 
-    //String URL= "http://192.168.43.43/Android_Login/confirmtransaction.php";
-    //String URL2= "http://192.168.43.43/Android_Login/addtransaction.php";
+    //String URL= "http://192.168.254.2/Android_Login/confirmtransaction.php";
+    //String URL2= "http://192.168.254.2/Android_Login/addtransaction.php";
 
-    String URL= "http://192.168.22.9/Android_Login/confirmtransaction.php";
-    String URL2= "http://192.168.22.9/Android_Login/addtransaction.php";
-
-    //String URL= "http://192.168.1.102/Android_Login/confirmtransaction.php";
-    //String URL2= "http://192.168.1.102/Android_Login/addtransaction.php";
-
+    String URL= "http://192.168.22.7/Android_Login/confirmtransaction.php";
+    String URL2= "http://192.168.22.7/Android_Login/addtransaction.php";
+    String URL3= "http://192.168.22.7/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
-    String cn;
+    String cn, transacname, starttime, endtime, estimatedtime, transacid;
 
     ProgressDialog progress;
     @Override
@@ -64,11 +61,11 @@ public class ConfirmTransac extends AppCompatActivity {
 
         Intent intent = getIntent();
 
-        String transacname = intent.getStringExtra("TRANSACNAME");
-        String starttime = intent.getStringExtra("STARTTIME");
-        String endtime = intent.getStringExtra("ENDTIME");
-        String estimatedtime = intent.getStringExtra("ESTIMATEDTIME");
-        String transacid = intent.getStringExtra("TRANSACID");
+        transacname = intent.getStringExtra("TRANSACNAME");
+        starttime = intent.getStringExtra("STARTTIME");
+        endtime = intent.getStringExtra("ENDTIME");
+        estimatedtime = intent.getStringExtra("ESTIMATEDTIME");
+        transacid = intent.getStringExtra("TRANSACID");
         cn = intent.getStringExtra("COMPANYNAME");
 
         t_name = (TextView) findViewById(R.id.t_name);
@@ -213,7 +210,7 @@ public class ConfirmTransac extends AppCompatActivity {
 
         protected void onPostExecute(JSONArray jArray) {
             try {
-                if(!jArray.getJSONObject(0).getString("result").equals("error")){
+                if(jArray.getJSONObject(0).getString("result").equals("success")){
 
                     int day = Integer.parseInt(MainActivity.date_notif.substring(8,10));
                     int month = Integer.parseInt(MainActivity.date_notif.substring(5,7));
@@ -379,6 +376,8 @@ public class ConfirmTransac extends AppCompatActivity {
                         alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
                     }
 
+                    storeNotifNumInPref(MainActivity.notifnum);
+
                     progress.dismiss();
                     Toast.makeText(getApplicationContext(), "Transaction Added Successfully", Toast.LENGTH_SHORT).show();
                     Intent intent= new Intent(ConfirmTransac.this, ProfileActivity.class);
@@ -386,7 +385,21 @@ public class ConfirmTransac extends AppCompatActivity {
                     startActivity(intent);
                     finish();
                 }
-                else{
+                else if(jArray.getJSONObject(0).getString("result").equals("error2")){
+                    progress.dismiss();
+                    Toast.makeText(getApplicationContext(), "OOOPS! Someone beat you to it :(", Toast.LENGTH_SHORT).show();
+                    Intent intent= new Intent(ConfirmTransac.this, ConfirmTransac.class);
+                    intent.putExtra("TRANSACID",transacid);
+                    intent.putExtra("TRANSACNAME",transacname);
+                    intent.putExtra("STARTTIME",starttime);
+                    intent.putExtra("ENDTIME",endtime);
+                    intent.putExtra("ESTIMATEDTIME",estimatedtime);
+                    intent.putExtra("COMPANYNAME",cn);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intent);
+                    finish();
+                }
+                else {
                     progress.dismiss();
                     Toast.makeText(getApplicationContext(), "Transaction Failed", Toast.LENGTH_SHORT).show();
                 }
@@ -398,6 +411,13 @@ public class ConfirmTransac extends AppCompatActivity {
             }
 
         }
+    }
+
+    private void storeNotifNumInPref(int num) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences("NotifNum", 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putInt("notifnum", num);
+        editor.commit();
     }
 
     @Override
@@ -413,6 +433,29 @@ public class ConfirmTransac extends AppCompatActivity {
                 SharedPreferences.Editor editor = SaveSharedPreference.getSharedPreferences(ConfirmTransac.this).edit();
                 editor.clear();
                 editor.commit();
+                ConfirmTransac.EditToken getCompany= new ConfirmTransac.EditToken();
+                getCompany.execute(MainActivity.userid,"");
+                if(MainActivity.notifnum!=0){
+                    for(int i=1;i<=MainActivity.notifnum;i++){
+                        AlarmManager [] alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                        Intent intents[] = new Intent[MainActivity.notifnum+1];
+
+                        intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+
+                        intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver2.class);
+                        pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+
+                        intents[MainActivity.notifnum] = new Intent(ConfirmTransac.this, AlarmReceiver3.class);
+                        pendingIntent = PendingIntent.getBroadcast(ConfirmTransac.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+                    }
+                }
                 Intent intent = new Intent(ConfirmTransac.this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -430,6 +473,38 @@ public class ConfirmTransac extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private class EditToken extends AsyncTask<String, String, JSONArray> {
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+
+        protected JSONArray doInBackground(String... args) {
+
+            String id = args[0];
+            String token = args[1];
+            ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("token", token));
+            params.add(new BasicNameValuePair("id", id));
+
+            JSONArray json = jsonParser.makeHttpRequest(URL3, params);
+
+            return json;
+
+        }
+
+        protected void onPostExecute(JSONArray jArray) {
+
+        }
+
     }
 
 

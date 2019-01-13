@@ -32,9 +32,9 @@ public class SettingActivity extends AppCompatActivity {
     Button up_edit, up_editpass, up_cancel, up_save1, up_back, up_save2;
     LinearLayout up_lay, up_lay2;
 
-    //String URL= "http://192.168.43.43/Android_Login/updateuser.php";
-    String URL= "http://192.168.22.9/Android_Login/updateuser.php";
-    //String URL= "http://192.168.1.102/Android_Login/updateuser.php";
+    //String URL= "http://192.168.254.2/Android_Login/updateuser.php";
+    String URL= "http://192.168.22.7/Android_Login/updateuser.php";
+    String URL2= "http://192.168.22.7/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -306,6 +306,29 @@ public class SettingActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = SaveSharedPreference.getSharedPreferences(this).edit();
                 editor.clear();
                 editor.commit();
+                SettingActivity.EditToken getCompany= new SettingActivity.EditToken();
+                getCompany.execute(MainActivity.userid,"");
+                if(MainActivity.notifnum!=0){
+                    for(int i=1;i<=MainActivity.notifnum;i++){
+                        AlarmManager[] alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                        Intent intents[] = new Intent[MainActivity.notifnum+1];
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver2.class);
+                        pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver3.class);
+                        pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+                    }
+                }
                 Intent intent = new Intent(this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -319,5 +342,37 @@ public class SettingActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private class EditToken extends AsyncTask<String, String, JSONArray> {
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+
+        protected JSONArray doInBackground(String... args) {
+
+            String id = args[0];
+            String token = args[1];
+            ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("token", token));
+            params.add(new BasicNameValuePair("id", id));
+
+            JSONArray json = jsonParser.makeHttpRequest(URL2, params);
+
+            return json;
+
+        }
+
+        protected void onPostExecute(JSONArray jArray) {
+
+        }
+
     }
 }

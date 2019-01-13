@@ -13,6 +13,7 @@ public class SaveSharedPreference {
     static final String fName = "fnameKey";
     static final String lName = "lnameKey";
     static final String Num = "numKey";
+    static final String Mes = "mesKey";
 
     static SharedPreferences getSharedPreferences(Context ctx){
         return PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -33,6 +34,12 @@ public class SaveSharedPreference {
     public static void setlName(Context ctx, String lastName){
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(lName, lastName);
+        editor.commit();
+    }
+
+    public static void setMes(Context ctx, String mes){
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString(Mes, mes);
         editor.commit();
     }
 
@@ -81,6 +88,9 @@ public class SaveSharedPreference {
     }
     public static String getUserNum(Context ctx){
         return getSharedPreferences(ctx).getString(Num,"");
+    }
+    public static String getMes(Context ctx){
+        return getSharedPreferences(ctx).getString(Mes,"");
     }
 
 }

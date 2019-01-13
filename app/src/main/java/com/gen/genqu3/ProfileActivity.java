@@ -1,11 +1,18 @@
 package com.gen.genqu3;
 
+import android.app.AlarmManager;
+import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,10 +20,15 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
+
+import com.gen.genqu3.R;
+import com.gen.genqu3.Config;
+import com.gen.genqu3.NotificationUtils;
+
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
-import org.json.JSONException;
-import org.json.JSONObject;
+import org.json.JSONArray;
 
 import java.util.ArrayList;
 
@@ -24,6 +36,11 @@ public class ProfileActivity extends AppCompatActivity {
 
     TextView user_Name, user_Name2, user_Email;
     Button makeTran, viewTran;
+    private static final String TAG = ProfileActivity.class.getSimpleName();
+    private BroadcastReceiver mRegistrationBroadcastReceiver;
+
+    String URL2= "http://192.168.22.7/Android_Login/updatetoken.php";
+    JSONParser2 jsonParser=new JSONParser2();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +85,6 @@ public class ProfileActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-
     }
 
     @Override
@@ -84,6 +100,29 @@ public class ProfileActivity extends AppCompatActivity {
                 SharedPreferences.Editor editor = SaveSharedPreference.getSharedPreferences(ProfileActivity.this).edit();
                 editor.clear();
                 editor.commit();
+                ProfileActivity.EditToken getCompany= new ProfileActivity.EditToken();
+                getCompany.execute(MainActivity.userid,"");
+                if(MainActivity.notifnum!=0){
+                    for(int i=1;i<=MainActivity.notifnum;i++){
+                        AlarmManager[] alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                        Intent intents[] = new Intent[MainActivity.notifnum+1];
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver2.class);
+                        pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver3.class);
+                        pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+                    }
+                }
                 Intent intent = new Intent(ProfileActivity.this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -97,5 +136,37 @@ public class ProfileActivity extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private class EditToken extends AsyncTask<String, String, JSONArray> {
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+
+        protected JSONArray doInBackground(String... args) {
+
+            String id = args[0];
+            String token = args[1];
+            ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("token", token));
+            params.add(new BasicNameValuePair("id", id));
+
+            JSONArray json = jsonParser.makeHttpRequest(URL2, params);
+
+            return json;
+
+        }
+
+        protected void onPostExecute(JSONArray jArray) {
+
+        }
+
     }
 }

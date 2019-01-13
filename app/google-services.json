@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "414128497203",
+    "firebase_url": "https://genqu3-6acf1.firebaseio.com",
+    "project_id": "genqu3-6acf1",
+    "storage_bucket": "genqu3-6acf1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:414128497203:android:50220e9642166899",
+        "android_client_info": {
+          "package_name": "com.gen.genqu3"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "414128497203-thd6bi1qe4hpn14pab0vjmn4devpbpjf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBUVpAmYVl483cnGA8rINdcqb-gLmzvakA"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

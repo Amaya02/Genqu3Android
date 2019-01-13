@@ -9,7 +9,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
+import android.app.AlarmManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -31,10 +34,9 @@ import android.widget.TableRow.LayoutParams;
 
 public class MakeTransac extends AppCompatActivity {
 
-    //String URL= "http://192.168.43.43/Android_Login/getcompany.php";
-    String URL= "http://192.168.22.9/Android_Login/getcompany.php";
-
-    //String URL= "http://192.168.1.102/Android_Login/getcompany.php";
+    //String URL= "http://192.168.254.2/Android_Login/getcompany.php";
+    String URL= "http://192.168.22.7/Android_Login/getcompany.php";
+    String URL3= "http://192.168.22.7/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -173,6 +175,29 @@ public class MakeTransac extends AppCompatActivity {
                 SharedPreferences.Editor editor = SaveSharedPreference.getSharedPreferences(MakeTransac.this).edit();
                 editor.clear();
                 editor.commit();
+                MakeTransac.EditToken getCompany= new MakeTransac.EditToken();
+                getCompany.execute(MainActivity.userid,"");
+                if(MainActivity.notifnum!=0){
+                    for(int i=1;i<=MainActivity.notifnum;i++){
+                        AlarmManager[] alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                        Intent intents[] = new Intent[MainActivity.notifnum+1];
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver.class);
+                        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver2.class);
+                        pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver3.class);
+                        pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+                    }
+                }
                 Intent intent = new Intent(MakeTransac.this, LoginActivity.class);
                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_NEW_TASK);
                 startActivity(intent);
@@ -190,6 +215,38 @@ public class MakeTransac extends AppCompatActivity {
                 return super.onOptionsItemSelected(item);
 
         }
+    }
+
+    private class EditToken extends AsyncTask<String, String, JSONArray> {
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+
+        protected JSONArray doInBackground(String... args) {
+
+            String id = args[0];
+            String token = args[1];
+            ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("token", token));
+            params.add(new BasicNameValuePair("id", id));
+
+            JSONArray json = jsonParser.makeHttpRequest(URL3, params);
+
+            return json;
+
+        }
+
+        protected void onPostExecute(JSONArray jArray) {
+
+        }
+
     }
 
 }
