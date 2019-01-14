@@ -1,97 +1,151 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ProfileActivity"
-    android:background="#ffffff"
+    android:background="@color/colorBg"
     android:orientation="vertical">
 
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
         <LinearLayout
-            android:background="@drawable/gradientbackground"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
-            android:orientation="vertical">
-
-        </LinearLayout>
-
-        <LinearLayout
             android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:layout_marginTop="100dp"
-            android:layout_centerHorizontal="true"
             android:orientation="vertical"
-            android:padding="16dp">
+            android:background="@color/black"
+            android:layout_marginBottom="20dp">
 
             <ImageView
-                android:layout_width="100dp"
-                android:layout_height="100dp"
-                android:layout_gravity="center_horizontal"
-                android:src="@mipmap/icon_round" />
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:src="@drawable/logo2"/>
 
             <TextView android:id="@+id/user_Name2"
-                android:layout_marginTop="10dp"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Name"
-                android:textColor="#000000"
+                android:textSize="30dp"
+                android:textColor="@color/white"
                 android:textStyle="bold"
-                android:textSize="23sp"
-                android:textAlignment="center"/>
-
-            <TextView android:id="@+id/user_Name"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="username"
-                android:textColor="#464545"
-                android:textSize="17sp"
-                android:textAlignment="center"/>
-
-            <TextView android:id="@+id/user_Email"
-                android:layout_gravity="center_horizontal"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="email@yahoo.com | number"
-                android:textColor="#464545"
-                android:textSize="15sp"
-                android:textAlignment="center"/>
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_marginTop="70dp"
-                android:layout_gravity="center">
-
-                <Button android:id="@+id/viewTran"
-                    android:textColor="#fff"
-                    android:background="@drawable/buttonstyle"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="View Transactions"
-                    android:layout_marginBottom="20dp"/>
-
-                <Button android:id="@+id/makeTran"
-                    android:textColor="#fff"
-                    android:background="@drawable/buttonstyle"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Make Transactions"
-                    android:layout_marginBottom="20dp"/>
-            </LinearLayout>
+                android:textAlignment="center"
+                android:padding="10dp"/>
 
         </LinearLayout>
 
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
 
-    </RelativeLayout>
 
-</LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/customborder"
+                    android:orientation="vertical"
+                    android:padding="20dp">
+
+                    <TextView android:id="@+id/user_Name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="20dp"
+                        android:text="username"
+                        android:textColor="@color/black"/>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/email"
+                            android:layout_marginRight="5dp"/>
+
+                        <TextView android:id="@+id/user_Email"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:text="email@yahoo.com"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_marginTop="10dp">
+
+                        <ImageView
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:src="@drawable/phone"
+                            android:layout_marginRight="5dp"/>
+
+                        <TextView android:id="@+id/user_Num"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="15dp"
+                            android:text="091234567890"
+                            android:textColor="@color/black"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_marginTop="25dp"
+                    android:weightSum="1.0">
+">
+
+                    <ImageButton android:id="@+id/viewTran"
+                        android:layout_width="0dip"
+                        android:layout_weight=".5"
+                        android:layout_height="165dp"
+                        android:background="@drawable/buttonstyle"
+                        android:layout_marginRight="2dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src = "@drawable/manage1">
+                    </ImageButton>
+
+                    <ImageButton android:id="@+id/makeTran"
+                        android:layout_width="0dip"
+                        android:layout_weight=".5"
+                        android:layout_height="165dp"
+                        android:background="@drawable/buttonstyle"
+                        android:layout_marginLeft="2dp"
+                        android:layout_gravity="center_horizontal"
+                        android:src = "@drawable/make1">
+
+
+                    </ImageButton>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+
+
+    </LinearLayout>
+
+</RelativeLayout>

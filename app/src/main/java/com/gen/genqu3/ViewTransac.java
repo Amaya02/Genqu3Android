@@ -14,6 +14,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
@@ -29,7 +30,7 @@ import java.util.ArrayList;
 
 public class ViewTransac extends AppCompatActivity {
 
-    Button pastTran, pendingTran;
+    ImageButton pastTran, pendingTran;
     String URL2= "http://192.168.22.7/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
@@ -39,8 +40,8 @@ public class ViewTransac extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_view_transac);
 
-        pendingTran=(Button)findViewById(R.id.pendingTran);
-        pastTran=(Button)findViewById(R.id.pastTran);
+        pendingTran=(ImageButton)findViewById(R.id.pendingTran);
+        pastTran=(ImageButton)findViewById(R.id.pastTran);
 
         pendingTran.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -5,37 +5,37 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".SettingActivity"
-    android:background="@color/white">
-
-    <LinearLayout
-        android:background="@drawable/gradientbackground"
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="vertical">
-
-    </LinearLayout>
+    android:background="@color/colorBg">
 
     <LinearLayout
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_marginTop="60dp"
         android:layout_centerHorizontal="true"
         android:orientation="vertical">
 
-        <TextView
-            android:layout_marginTop="10dp"
-            android:layout_gravity="center_horizontal"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Settings"
-            android:textColor="#ffffff"
-            android:textStyle="bold"
-            android:textSize="21sp"
-            android:background="#000000"
-            android:paddingLeft="40dp"
-            android:paddingRight="40dp"
-            android:paddingTop="15dp"
-            android:paddingBottom="15dp"/>
+            android:orientation="vertical"
+            android:background="@color/black"
+            android:layout_marginBottom="20dp">
+
+            <ImageView
+                android:layout_width="match_parent"
+                android:layout_height="75dp"
+                android:src="@drawable/logo2"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Settings"
+                android:textSize="30dp"
+                android:textColor="@color/white"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:padding="10dp"/>
+
+        </LinearLayout>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -64,7 +64,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
-                        android:text="hey"
+                        android:text=""
                         android:textSize="20dp"
                         android:textColor="@color/colorTxt"/>
 
@@ -79,7 +79,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
-                        android:text="hey"
+                        android:text=""
                         android:textSize="20dp"
                         android:textColor="@color/colorTxt"/>
 
@@ -94,7 +94,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
-                        android:text="hey"
+                        android:text=""
                         android:textSize="20dp"
                         android:textColor="@color/colorTxt"/>
 
@@ -109,7 +109,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:enabled="false"
-                        android:text="01"
+                        android:text=""
                         android:inputType="phone"
                         android:textSize="20dp"
                         android:textColor="@color/colorTxt"/>
@@ -127,7 +127,7 @@
                         android:layout_height="wrap_content"
                         android:enabled="false"
                         android:inputType="textEmailAddress"
-                        android:text="hey"
+                        android:text=""
                         android:textSize="20dp"
                         android:textColor="@color/colorTxt"/>
                 </LinearLayout>

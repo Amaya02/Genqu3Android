@@ -17,6 +17,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -34,10 +35,9 @@ import java.util.ArrayList;
 
 public class ProfileActivity extends AppCompatActivity {
 
-    TextView user_Name, user_Name2, user_Email;
-    Button makeTran, viewTran;
+    TextView user_Name, user_Name2, user_Email, user_Num;
+    ImageButton makeTran, viewTran;
     private static final String TAG = ProfileActivity.class.getSimpleName();
-    private BroadcastReceiver mRegistrationBroadcastReceiver;
 
     String URL2= "http://192.168.22.7/Android_Login/updatetoken.php";
     JSONParser2 jsonParser=new JSONParser2();
@@ -62,13 +62,15 @@ public class ProfileActivity extends AppCompatActivity {
         user_Name=(TextView)findViewById(R.id.user_Name);
         user_Name2=(TextView)findViewById(R.id.user_Name2);
         user_Email=(TextView)findViewById(R.id.user_Email);
+        user_Num=(TextView)findViewById(R.id.user_Num);
 
         user_Name.setText(username);
         user_Name2.setText(fname+" "+lname);
-        user_Email.setText(email+" | "+num);
+        user_Email.setText(email);
+        user_Num.setText(num);
 
-        makeTran=(Button)findViewById(R.id.makeTran);
-        viewTran=(Button)findViewById(R.id.viewTran);
+        makeTran=(ImageButton)findViewById(R.id.makeTran);
+        viewTran=(ImageButton)findViewById(R.id.viewTran);
 
         makeTran.setOnClickListener(new View.OnClickListener() {
             @Override
