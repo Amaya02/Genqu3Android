@@ -5,6 +5,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -20,6 +21,10 @@ import android.view.WindowManager;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import org.apache.http.NameValuePair;
 import org.apache.http.message.BasicNameValuePair;
@@ -44,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
     public static String mes_notif;
 
     String URL= "http://192.168.22.7/Android_Login/restartalarm.php";
+    String URL2= "http://192.168.22.7/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -73,6 +79,16 @@ public class MainActivity extends AppCompatActivity {
                     notifnum =0;
                     notifnum2 =0;
                     String id = SaveSharedPreference.getUserId(MainActivity.this);
+                    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( MainActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+                        @Override
+                        public void onSuccess(InstanceIdResult instanceIdResult) {
+                            String token = instanceIdResult.getToken();
+                            Log.d("FCM_TOKEN",token);
+                            storeRegIdInPref(token);
+                            MainActivity.EditToken getCompany= new MainActivity.EditToken();
+                            getCompany.execute(SaveSharedPreference.getUserId(MainActivity.this),token);
+                        }
+                    });
                     MainActivity.RestartAlarm getCompany= new MainActivity.RestartAlarm();
                     getCompany.execute(id);
                     Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
@@ -82,6 +98,45 @@ public class MainActivity extends AppCompatActivity {
             }
 
         },SPLASH_TIME_OUT);
+    }
+
+    private void storeRegIdInPref(String token) {
+        SharedPreferences pref = getApplicationContext().getSharedPreferences(Config.SHARED_PREF, 0);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString("regId", token);
+        editor.commit();
+    }
+
+    private class EditToken extends AsyncTask<String, String, JSONArray> {
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+
+        protected JSONArray doInBackground(String... args) {
+
+            String id = args[0];
+            String token = args[1];
+            ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("token", token));
+            params.add(new BasicNameValuePair("id", id));
+
+            JSONArray json = jsonParser.makeHttpRequest(URL2, params);
+
+            return json;
+
+        }
+
+        protected void onPostExecute(JSONArray jArray) {
+
+        }
+
     }
 
     private class RestartAlarm extends AsyncTask<String, String, JSONArray> {

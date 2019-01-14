@@ -10,4 +10,12 @@ public class Config {
     public static final int NOTIFICATION_ID_BIG_IMAGE = 101;
 
     public static final String SHARED_PREF = "ah_firebase";
+
+
+    public static final String KEY_INTENT_MORE = "keyintentmore";
+    public static final String KEY_INTENT_HELP = "keyintenthelp";
+
+    public static final int REQUEST_CODE_MORE = 100;
+    public static final int REQUEST_CODE_HELP = 101;
+    public static final String CHANNNEL_ID = "SimplifiedCodingChannel";
 }

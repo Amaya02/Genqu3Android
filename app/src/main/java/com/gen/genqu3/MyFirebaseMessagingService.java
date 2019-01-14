@@ -3,6 +3,7 @@ package com.gen.genqu3;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.AsyncTask;
 import android.support.v4.content.LocalBroadcastManager;
 import android.text.TextUtils;
 import android.util.Log;
@@ -10,6 +11,9 @@ import android.util.Log;
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
 
+import org.apache.http.NameValuePair;
+import org.apache.http.message.BasicNameValuePair;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -17,7 +21,13 @@ import com.gen.genqu3.MainActivity;
 import com.gen.genqu3.Config;
 import com.gen.genqu3.NotificationUtils;
 
+import java.util.ArrayList;
+
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
+
+    String URL2= "http://192.168.22.7/Android_Login/updatetoken.php";
+
+    JSONParser2 jsonParser=new JSONParser2();
 
     private static final String TAG = MyFirebaseMessagingService.class.getSimpleName();
 
@@ -86,6 +96,8 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e(TAG, "imageUrl: " + imageUrl);
             Log.e(TAG, "timestamp: " + timestamp);
 
+            SaveSharedPreference.setTranId(this,payload.getString("u_tranid"));
+
 
 
                 // app is in background, show the notification in notification tray
@@ -130,5 +142,39 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
         SharedPreferences.Editor editor = pref.edit();
         editor.putString("regId", token);
         editor.commit();
+        MyFirebaseMessagingService.EditToken getCompany= new MyFirebaseMessagingService.EditToken();
+        getCompany.execute(SaveSharedPreference.getUserId(this),token);
+    }
+
+    private class EditToken extends AsyncTask<String, String, JSONArray> {
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+
+        protected JSONArray doInBackground(String... args) {
+
+            String id = args[0];
+            String token = args[1];
+            ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("token", token));
+            params.add(new BasicNameValuePair("id", id));
+
+            JSONArray json = jsonParser.makeHttpRequest(URL2, params);
+
+            return json;
+
+        }
+
+        protected void onPostExecute(JSONArray jArray) {
+
+        }
+
     }
 }

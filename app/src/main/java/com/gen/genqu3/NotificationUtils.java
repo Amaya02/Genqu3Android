@@ -15,6 +15,7 @@ import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
 import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.RemoteInput;
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Patterns;
@@ -64,7 +65,7 @@ public class NotificationUtils {
                 );
 
         final NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(
-                mContext);
+                mContext, Config.CHANNNEL_ID);
 
         final Uri alarmSound = Uri.parse(ContentResolver.SCHEME_ANDROID_RESOURCE
                 + "://" + mContext.getPackageName() + "/raw/notification");
@@ -90,21 +91,40 @@ public class NotificationUtils {
 
     private void showSmallNotification(NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {
 
+        PendingIntent morePendingIntent = PendingIntent.getBroadcast(
+                mContext,
+                Config.REQUEST_CODE_MORE,
+                new Intent(mContext, NotificationReceiver.class)
+                        .putExtra(Config.KEY_INTENT_MORE, Config.REQUEST_CODE_MORE),
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        //Pending intent for a notification button help
+        PendingIntent helpPendingIntent = PendingIntent.getBroadcast(
+                mContext,
+                Config.REQUEST_CODE_HELP,
+                new Intent(mContext, NotificationReceiver.class)
+                        .putExtra(Config.KEY_INTENT_HELP, Config.REQUEST_CODE_HELP),
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
         NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
 
         inboxStyle.addLine(message);
 
         Notification notification;
         notification = mBuilder.setSmallIcon(icon).setTicker(title).setWhen(0)
-                .setAutoCancel(true)
+                .setAutoCancel(false)
                 .setContentTitle(title)
                 .setContentIntent(resultPendingIntent)
-                .setSound(alarmSound)
-                .setStyle(inboxStyle)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setPriority(Notification.PRIORITY_MAX)
                 .setWhen(getTimeMilliSec(timeStamp))
                 .setSmallIcon(R.drawable.icon3)
-                .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
+                .addAction(0, "Can Go", morePendingIntent)
+                .addAction(0, "Cannot Go Yet", helpPendingIntent)
                 .setContentText(message)
+                .setStyle(inboxStyle)
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
@@ -112,6 +132,24 @@ public class NotificationUtils {
     }
 
     private void showBigNotification(Bitmap bitmap, NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {
+
+        PendingIntent morePendingIntent = PendingIntent.getBroadcast(
+                mContext,
+                Config.REQUEST_CODE_MORE,
+                new Intent(mContext, NotificationReceiver.class)
+                        .putExtra(Config.KEY_INTENT_MORE, Config.REQUEST_CODE_MORE),
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
+        //Pending intent for a notification button help
+        PendingIntent helpPendingIntent = PendingIntent.getBroadcast(
+                mContext,
+                Config.REQUEST_CODE_HELP,
+                new Intent(mContext, NotificationReceiver.class)
+                        .putExtra(Config.KEY_INTENT_HELP, Config.REQUEST_CODE_HELP),
+                PendingIntent.FLAG_UPDATE_CURRENT
+        );
+
         NotificationCompat.BigPictureStyle bigPictureStyle = new NotificationCompat.BigPictureStyle();
         bigPictureStyle.setBigContentTitle(title);
         bigPictureStyle.setSummaryText(Html.fromHtml(message).toString());
@@ -126,7 +164,10 @@ public class NotificationUtils {
                 .setWhen(getTimeMilliSec(timeStamp))
                 .setSmallIcon(R.drawable.icon3)
                 .setLargeIcon(BitmapFactory.decodeResource(mContext.getResources(), icon))
+                .addAction(0, "Can Go", morePendingIntent)
+                .addAction(0, "Cannot Go Yet", helpPendingIntent)
                 .setContentText(message)
+                .setPriority(Notification.PRIORITY_MAX)
                 .build();
 
         NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
