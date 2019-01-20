@@ -24,7 +24,7 @@ import java.util.Date;
 
 public class MyNewIntentService2 extends IntentService {
     private static int NOTIFICATION_ID =  MainActivity.notifnum2;
-    String URL= "http://192.168.22.7/Android_Login/getalarm.php";
+    String URL= "http://192.168.1.100/Android_Login/getalarm.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
