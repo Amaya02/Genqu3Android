@@ -60,82 +60,94 @@
                 android:padding="16dp">
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
-                    android:paddingLeft="15dp">
+                    android:paddingLeft="15dp"
+                    android:weightSum="1.0">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dip"
+                        android:layout_weight=".5"
                         android:layout_height="wrap_content"
                         android:text="Transaction:"
-                        android:layout_marginRight="69dp"/>
+                        android:paddingRight="5dp"/>
 
                     <TextView android:id="@+id/tran_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dip"
+                        android:layout_weight=".5"
                         android:layout_height="wrap_content"
                         android:text="Cashier"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="10dp"
-                    android:paddingLeft="15dp">
+                    android:paddingLeft="15dp"
+                    android:weightSum="1.0">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dip"
+                        android:layout_weight=".5"
                         android:layout_height="wrap_content"
                         android:text="Company:"
-                        android:layout_marginRight="85dp"
+                        android:paddingRight="5dp"
                         android:textAlignment="textStart"/>
 
                     <TextView android:id="@+id/com_name"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dip"
+                        android:layout_weight=".5"
                         android:layout_height="wrap_content"
                         android:text="Cashier"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="10dp"
-                    android:paddingLeft="15dp">
+                    android:paddingLeft="15dp"
+                    android:weightSum="1.0">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dip"
+                        android:layout_weight=".5"
                         android:layout_height="wrap_content"
                         android:text="Date of Transaction:"
-                        android:layout_marginRight="21dp"
+                        android:paddingRight="5dp"
                         android:textAlignment="textStart"/>
 
                     <TextView android:id="@+id/tran_date"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dip"
+                        android:layout_weight=".5"
                         android:layout_height="wrap_content"
                         android:text="Cashier"/>
 
                 </LinearLayout>
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     android:layout_marginTop="10dp"
-                    android:paddingLeft="15dp">
+                    android:paddingLeft="15dp"
+                    android:weightSum="1.0">
 
                     <TextView
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dip"
+                        android:layout_weight=".5"
                         android:layout_height="wrap_content"
                         android:text="Arrive At:"
-                        android:layout_marginRight="91dp"
+                        android:paddingRight="5dp"
                         android:textAlignment="textStart"/>
 
                     <TextView android:id="@+id/tran_start"
-                        android:layout_width="wrap_content"
+                        android:layout_width="0dip"
+                        android:layout_weight=".5"
                         android:layout_height="wrap_content"
                         android:text="Cashier"/>
 

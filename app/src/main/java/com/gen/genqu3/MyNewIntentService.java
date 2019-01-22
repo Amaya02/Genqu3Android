@@ -24,7 +24,7 @@ import java.util.Date;
 
 public class MyNewIntentService extends IntentService {
     private static int NOTIFICATION_ID =  MainActivity.notifnum2;
-    String URL= "http://192.168.1.100/Android_Login/getalarm.php";
+    String URL= "http://192.168.1.45/Android_Login/getalarm.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -77,11 +77,11 @@ public class MyNewIntentService extends IntentService {
         protected void onPostExecute(JSONArray jArray) {
             try {
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")){
-                    notif3 = jArray.getJSONObject(0).getString("companyname") + " - " + jArray.getJSONObject(0).getString("transacname");
+                    notif3 = jArray.getJSONObject(0).getString("companyname") + " - Window " + jArray.getJSONObject(0).getString("transacid") + " - " + jArray.getJSONObject(0).getString("transacname");
 
                     Notification.Builder builder = new Notification.Builder(MyNewIntentService.this);
                     builder.setContentTitle(notif3);
-                    builder.setContentText("1 hour before your turn!");
+                    builder.setContentText(notif3+" - 1 hour before your turn!");
                     builder.setSmallIcon(R.drawable.icon3);
                     builder.setPriority(Notification.PRIORITY_HIGH);
                     builder.setDefaults(Notification.DEFAULT_ALL);

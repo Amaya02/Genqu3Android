@@ -40,9 +40,9 @@ public class LoginActivity extends AppCompatActivity {
     EditText editPassword, editName;
     Button btnSignIn, btnRegister;
 
-    String URL= "http://192.168.1.100/Android_Login/index.php";
-    String URL2= "http://192.168.1.100/Android_Login/updatetoken.php";
-    String URL3= "http://192.168.1.100/Android_Login/restartalarm.php";
+    String URL= "http://192.168.1.45/Android_Login/index.php";
+    String URL2= "http://192.168.1.45/Android_Login/updatetoken.php";
+    String URL3= "http://192.168.1.45/Android_Login/restartalarm.php";
 
     JSONParser jsonParser=new JSONParser();
     JSONParser2 jsonParser2=new JSONParser2();

@@ -35,7 +35,7 @@ public class QRTransac extends AppCompatActivity {
 
     ProgressDialog progress;
 
-    String URL2= "http://192.168.1.100/Android_Login/updatetoken.php";
+    String URL2= "http://192.168.1.45/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -55,6 +55,7 @@ public class QRTransac extends AppCompatActivity {
         Intent intent = getIntent();
 
         String transacname = intent.getStringExtra("TRANSACNAME");
+        String transacid = intent.getStringExtra("TRANSACID");
         String companyname = intent.getStringExtra("COMPANYNAME");
         String date = intent.getStringExtra("DATE");
         String date2 = intent.getStringExtra("DATE2");
@@ -69,7 +70,7 @@ public class QRTransac extends AppCompatActivity {
         tran_stat = (TextView) findViewById(R.id.tran_stat);
         tran_start = (TextView) findViewById(R.id.tran_start);
 
-        tran_name.setText(transacname);
+        tran_name.setText("Window "+transacid+" - "+transacname);
         com_name.setText(companyname);
         tran_date.setText(date);
         tran_stat.setText(status);

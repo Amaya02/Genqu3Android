@@ -42,9 +42,9 @@ public class ConfirmTransac extends AppCompatActivity {
     Spinner spinner;
     String dateNow, timeNow;
 
-    String URL= "http://192.168.1.100/Android_Login/confirmtransaction.php";
-    String URL2= "http://192.168.1.100/Android_Login/addtransaction.php";
-    String URL3= "http://192.168.1.100/Android_Login/updatetoken.php";
+    String URL= "http://192.168.1.45/Android_Login/confirmtransaction.php";
+    String URL2= "http://192.168.1.45/Android_Login/addtransaction.php";
+    String URL3= "http://192.168.1.45/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -73,7 +73,7 @@ public class ConfirmTransac extends AppCompatActivity {
         t_back = (Button) findViewById(R.id.t_back);
         t_confirm = (Button) findViewById(R.id.t_confirm);
 
-        t_name.setText(transacname);
+        t_name.setText("Window "+transacid+" - "+transacname);
         t_time.setText("TIME: "+starttime+" - "+endtime);
         t_esti.setText("ESTIMATED TIME: "+estimatedtime+" Minute/s");
 

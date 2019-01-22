@@ -49,7 +49,9 @@
                     android:fontFamily="sans-serif-light"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:layout_marginBottom="10dp" />
+                    android:layout_marginBottom="10dp"
+                    android:maxLength="50"
+                    android:tooltipText="Max. 50 Characters"/>
 
                 <EditText android:id="@+id/firstName"
                     android:layout_width="match_parent"
@@ -107,7 +109,9 @@
                     android:hint="Password"
                     android:focusable="true"
                     android:focusableInTouchMode="true"
-                    android:layout_marginBottom="10dp"/>
+                    android:layout_marginBottom="10dp"
+                    android:maxLength="50"
+                    android:tooltipText="Max. 50 Characters"/>
 
                 <Button android:id="@+id/btnReg"
                     android:layout_width="match_parent"

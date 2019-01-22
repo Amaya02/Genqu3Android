@@ -33,8 +33,8 @@ public class ViewMakeTransac extends AppCompatActivity {
 
     //String URL= "http://192.168.254.2/Android_Login/getcompany.php";
 
-    String URL= "http://192.168.1.100/Android_Login/getcompany.php";
-    String URL2= "http://192.168.1.100/Android_Login/updatetoken.php";
+    String URL= "http://192.168.1.45/Android_Login/getcompany.php";
+    String URL2= "http://192.168.1.45/Android_Login/updatetoken.php";
 
     TextView com_name, com_email, com_num, com_address, com_country;
 
@@ -134,7 +134,7 @@ public class ViewMakeTransac extends AppCompatActivity {
                         JSONObject json_data = jArray.getJSONObject(i);
 
                         TextView tn1 = new TextView(ViewMakeTransac.this);
-                        tn1.setText(json_data.getString("transacname"));
+                        tn1.setText("Window "+json_data.getString("transacid")+" - "+json_data.getString("transacname"));
                         tn1.setTextSize(20);
                         tn1.setTextColor(Color.BLACK);
                         LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(

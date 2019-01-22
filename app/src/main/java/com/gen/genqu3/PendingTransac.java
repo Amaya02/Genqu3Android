@@ -33,8 +33,8 @@ public class PendingTransac extends AppCompatActivity {
 
     //String URL= "http://192.168.254.2/Android_Login/getusertransaction.php";
 
-    String URL= "http://192.168.1.100/Android_Login/getusertransaction.php";
-    String URL2= "http://192.168.1.100/Android_Login/updatetoken.php";
+    String URL= "http://192.168.1.45/Android_Login/getusertransaction.php";
+    String URL2= "http://192.168.1.45/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -86,6 +86,7 @@ public class PendingTransac extends AppCompatActivity {
 
             LinearLayout b[] = new LinearLayout[100];
             final String n[] = new String[100];
+            final String n1[] = new String[100];
             final String c[] = new String[100];
             final String d[] = new String[100];
             final String d2[] = new String[100];
@@ -111,9 +112,14 @@ public class PendingTransac extends AppCompatActivity {
                         JSONObject json_data = jArray.getJSONObject(i);
 
                         TextView tn = new TextView(PendingTransac.this);
-                        tn.setText(json_data.getString("companyname")+" - "+json_data.getString("transacname"));
+                        tn.setText(json_data.getString("companyname"));
                         tn.setTextSize(20);
                         tn.setTextColor(Color.BLACK);
+
+                        TextView tn1 = new TextView(PendingTransac.this);
+                        tn1.setText("Window "+json_data.getString("transacid")+" - "+json_data.getString("transacname"));
+                        tn1.setTextSize(20);
+                        tn1.setTextColor(Color.BLACK);
 
                         TextView td = new TextView(PendingTransac.this);
                         td.setText("Generated: "+String.valueOf(json_data.getString("date_tran")));
@@ -133,11 +139,13 @@ public class PendingTransac extends AppCompatActivity {
                         ts.setAllCaps(true);
 
                         b[i].addView(tn);
+                        b[i].addView(tn1);
                         b[i].addView(td);
                         b[i].addView(ts);
                         b[i].addView(tst);
 
                         n[i]=json_data.getString("transacname");
+                        n1[i]=json_data.getString("transacid");
                         id[i]=json_data.getString("u_tranid");
                         c[i]=json_data.getString("companyname");
                         d[i]=String.valueOf(json_data.getString("date_tran"));
@@ -151,6 +159,7 @@ public class PendingTransac extends AppCompatActivity {
                             public void onClick(View view) {
                                 Intent intent = new Intent(PendingTransac.this, QRTransac.class);
                                 intent.putExtra("TRANSACNAME", n[count]);
+                                intent.putExtra("TRANSACID", n1[count]);
                                 intent.putExtra("COMPANYNAME", c[count]);
                                 intent.putExtra("DATE", d[count]);
                                 intent.putExtra("DATE2", d2[count]);
