@@ -48,8 +48,8 @@ public class MainActivity extends AppCompatActivity {
     public static int notifnum2 =0;
     public static String mes_notif;
 
-    String URL= "http://192.168.1.45/Android_Login/restartalarm.php";
-    String URL2= "http://192.168.1.45/Android_Login/updatetoken.php";
+    String URL= "http://192.168.1.103/Android_Login/restartalarm.php";
+    String URL2= "http://192.168.1.103/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
