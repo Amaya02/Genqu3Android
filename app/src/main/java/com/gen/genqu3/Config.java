@@ -18,4 +18,5 @@ public class Config {
     public static final int REQUEST_CODE_MORE = 100;
     public static final int REQUEST_CODE_HELP = 101;
     public static final String CHANNNEL_ID = "SimplifiedCodingChannel";
+    public static final String CHANNNEL_NAME = "ChanelName";
 }

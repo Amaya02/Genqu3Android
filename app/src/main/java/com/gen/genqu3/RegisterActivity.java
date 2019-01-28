@@ -27,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     //String URL= "http://192.168.254.2/Android_Login/index.php";
 
-    String URL= "http://192.168.1.103/Android_Login/index.php";
+    String URL= "http://192.168.22.7/Android_Login/index.php";
 
     JSONParser jsonParser=new JSONParser();
 
@@ -77,6 +77,11 @@ public class RegisterActivity extends AppCompatActivity {
                 if(TextUtils.isEmpty(enteredEmail) || TextUtils.isEmpty(enteredPassword) || TextUtils.isEmpty(enteredUser)
                         || TextUtils.isEmpty(enteredfname) || TextUtils.isEmpty(enteredlname) || TextUtils.isEmpty(enterednum)){
                     Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
+                    progress.dismiss();
+                    return;
+                }
+                else if(enteredUser.length()<6 || enteredPassword.length()<6){
+                    Toast.makeText(getApplicationContext(), "Username and Password must be atleast 6 characters!", Toast.LENGTH_LONG).show();
                     progress.dismiss();
                     return;
                 }

@@ -19,11 +19,13 @@ import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -34,8 +36,12 @@ import android.widget.TableRow.LayoutParams;
 
 public class MakeTransac extends AppCompatActivity {
 
-    String URL= "http://192.168.1.103/Android_Login/getcompany.php";
-    String URL3= "http://192.168.1.103/Android_Login/updatetoken.php";
+    String URL= "http://192.168.22.7/Android_Login/getcompany.php";
+    String URL2= "http://192.168.22.7/Android_Login/searchcompany.php";
+    String URL3= "http://192.168.22.7/Android_Login/updatetoken.php";
+
+    Button search_but, search_cancel;
+    EditText search;
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -52,6 +58,38 @@ public class MakeTransac extends AppCompatActivity {
         progress.setCancelable(false);
 
         progress.show();
+
+        search=(EditText)findViewById(R.id.search);
+        search_but=(Button)findViewById(R.id.search_but);
+        search_cancel=(Button)findViewById(R.id.search_cancel);
+
+        search_but.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                progress.show();
+                String enteredSearch = search.getText().toString();
+
+                if(TextUtils.isEmpty(enteredSearch)){
+                    Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
+                    progress.dismiss();
+                    return;
+                }
+                search_cancel.setVisibility(View.VISIBLE);
+                MakeTransac.SearchComp searchComp= new MakeTransac.SearchComp();
+                searchComp.execute(search.getText().toString());
+            }
+        });
+
+        search_cancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(MakeTransac.this, MakeTransac.class);
+                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP| Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(intent);
+                finish();
+            }
+        });
 
         MakeTransac.GetCompany getCompany= new MakeTransac.GetCompany();
         getCompany.execute("");
@@ -96,6 +134,7 @@ public class MakeTransac extends AppCompatActivity {
             try{
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")) {
                     LinearLayout tv = (LinearLayout) findViewById(R.id.makelayout);
+                    tv.removeAllViews();
 
                     for (int i = 0; i < jArray.length(); i++) {
                         b[i] = new LinearLayout(MakeTransac.this);
@@ -149,6 +188,111 @@ public class MakeTransac extends AppCompatActivity {
                 else{
                     progress.dismiss();
                     Toast.makeText(getApplicationContext(), "No Available Company", Toast.LENGTH_SHORT).show();
+                }
+
+            } catch (JSONException e) {
+                progress.dismiss();
+                Log.e("log_tag", "Error parsing data" + e.toString());
+                Toast.makeText(getApplicationContext(), "JsonArray fail", Toast.LENGTH_SHORT).show();
+            }
+
+
+        }
+    }
+
+    private class SearchComp extends AsyncTask<String, String, JSONArray> {
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+
+        protected JSONArray doInBackground(String... args) {
+
+            String search = args[0];
+            ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("search", search));
+
+            JSONArray json = jsonParser.makeHttpRequest(URL2,params);
+
+            return json;
+
+        }
+
+        protected void onPostExecute(JSONArray jArray) {
+
+            LinearLayout b[] = new LinearLayout[100];
+            final String cn[] = new String[100];
+            final String ci[] = new String[100];
+            final String ce[] = new String[100];
+            final String ca[] = new String[100];
+            final String cc[] = new String[100];
+            final String c[] = new String[100];
+
+            try{
+                if(!jArray.getJSONObject(0).getString("result").equals("empty")) {
+                    LinearLayout tv = (LinearLayout) findViewById(R.id.makelayout);
+                    tv.removeAllViews();
+
+                    for (int i = 0; i < jArray.length(); i++) {
+                        b[i] = new LinearLayout(MakeTransac.this);
+                        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                        lp.setMargins(0, 0, 0, 15);
+                        b[i].setLayoutParams(lp);
+                        b[i].setPadding(10,10,10,10);
+                        b[i].setBackgroundColor(Color.parseColor("#a4f18912"));
+                        b[i].setOrientation(LinearLayout.VERTICAL);
+                        tv.addView(b[i]);
+                        JSONObject json_data = jArray.getJSONObject(i);
+
+                        TextView tn = new TextView(MakeTransac.this);
+                        tn.setText(json_data.getString("companyname"));
+                        tn.setTextSize(23);
+                        tn.setTextColor(Color.BLACK);
+                        LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.MATCH_PARENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT);
+                        lp2.setMargins(10, 10, 10, 10);
+                        tn.setLayoutParams(lp2);
+
+                        b[i].addView(tn);
+
+                        cn[i] = String.valueOf(json_data.getString("companyname"));
+                        ci[i] = String.valueOf(json_data.getString("companyid"));
+                        ce[i] = String.valueOf(json_data.getString("email"));
+                        ca[i] = String.valueOf(json_data.getString("address"));
+                        cc[i] = String.valueOf(json_data.getString("country"));
+                        c[i] = String.valueOf(json_data.getString("cnumber"));
+
+                        final int count = i;
+                        b[i].setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent intent = new Intent(MakeTransac.this, ViewMakeTransac.class);
+                                intent.putExtra("COMPANYNAME", cn[count]);
+                                intent.putExtra("COMPANYEMAIL", ce[count]);
+                                intent.putExtra("COMPANYADDRESS", ca[count]);
+                                intent.putExtra("COMPANYCOUNTRY", cc[count]);
+                                intent.putExtra("COMPANYID", ci[count]);
+                                intent.putExtra("COMPANYNUM", c[count]);
+                                startActivity(intent);
+                            }
+                        });
+                    }
+                    progress.dismiss();
+                }
+                else{
+                    LinearLayout tv = (LinearLayout) findViewById(R.id.makelayout);
+                    tv.removeAllViews();
+                    progress.dismiss();
+                    Toast.makeText(getApplicationContext(), "Company Not Found!", Toast.LENGTH_SHORT).show();
                 }
 
             } catch (JSONException e) {

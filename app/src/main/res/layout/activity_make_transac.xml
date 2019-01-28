@@ -24,7 +24,38 @@
             android:layout_width="match_parent"
             android:layout_height="3dp"
             android:background="@color/colorBg"
-            android:layout_marginBottom="40dp"/>
+            android:layout_marginBottom="10dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1.0">
+
+            <EditText android:id="@+id/search"
+                android:layout_width="0dip"
+                android:layout_weight=".8"
+                android:layout_height="wrap_content"
+                android:hint="Enter Company Name.."/>
+
+            <Button android:id="@+id/search_but"
+                android:layout_width="0dip"
+                android:layout_weight=".2"
+                android:layout_height="wrap_content"
+                android:text="Search"
+                android:background="#a4f18912"/>
+
+
+        </LinearLayout>
+
+        <Button android:id="@+id/search_cancel"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Back"
+            android:layout_marginTop="10dp"
+            android:background="#a4f18912"
+            android:layout_marginBottom="5dp"
+            android:visibility="gone"/>
 
         <ScrollView
             android:layout_width="match_parent"
@@ -33,7 +64,8 @@
             <LinearLayout android:id="@+id/makelayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:layout_marginTop="20dp">
 
 
             </LinearLayout>

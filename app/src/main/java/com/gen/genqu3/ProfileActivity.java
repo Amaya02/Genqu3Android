@@ -39,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity {
     ImageButton makeTran, viewTran;
     private static final String TAG = ProfileActivity.class.getSimpleName();
 
-    String URL2= "http://192.168.1.103/Android_Login/updatetoken.php";
+    String URL2= "http://192.168.22.7/Android_Login/updatetoken.php";
     JSONParser2 jsonParser=new JSONParser2();
 
     @Override

@@ -33,8 +33,8 @@ public class SettingActivity extends AppCompatActivity {
     LinearLayout up_lay, up_lay2;
 
     //String URL= "http://192.168.254.2/Android_Login/updateuser.php";
-    String URL= "http://192.168.1.103/Android_Login/updateuser.php";
-    String URL2= "http://192.168.1.103/Android_Login/updatetoken.php";
+    String URL= "http://192.168.22.7/Android_Login/updateuser.php";
+    String URL2= "http://192.168.22.7/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -145,6 +145,11 @@ public class SettingActivity extends AppCompatActivity {
                     return;
                 }
 
+                else if(enteredUser.length()<6 ){
+                    Toast.makeText(getApplicationContext(), "Username must be atleast 6 characters!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
                 progress.show();
 
                 SettingActivity.EditUser getCompany= new SettingActivity.EditUser();
@@ -160,6 +165,11 @@ public class SettingActivity extends AppCompatActivity {
 
                 if(TextUtils.isEmpty(enteredCurPass) || TextUtils.isEmpty(enteredNewPass)){
                     Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
+                    return;
+                }
+
+                else if(enteredNewPass.length()<6){
+                    Toast.makeText(getApplicationContext(), "Password must be atleast 6 characters!", Toast.LENGTH_LONG).show();
                     return;
                 }
 

@@ -11,6 +11,7 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -31,8 +32,8 @@ public class PastTransac extends AppCompatActivity {
 
     //String URL= "http://192.168.254.2/Android_Login/getusertransaction.php";
 
-    String URL= "http://192.168.1.103/Android_Login/getusertransaction.php";
-    String URL2= "http://192.168.1.103/Android_Login/updatetoken.php";
+    String URL= "http://192.168.22.7/Android_Login/getusertransaction.php";
+    String URL2= "http://192.168.22.7/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -136,11 +137,20 @@ public class PastTransac extends AppCompatActivity {
                         ts.setTextColor(Color.WHITE);
                         ts.setAllCaps(true);
 
+                        TextView ts1 = new TextView(PastTransac.this);
+                        ts1.setText("Click to view QR code");
+                        ts1.setTextSize(10);
+                        ts1.setTextColor(Color.BLACK);
+                        ts1.setAllCaps(true);
+                        ts1.setAllCaps(true);
+                        ts1.setGravity(Gravity.RIGHT);
+
                         b[i].addView(tn);
                         b[i].addView(tn1);
                         b[i].addView(td);
                         b[i].addView(ts);
                         b[i].addView(tst);
+                        b[i].addView(ts1);
 
                         n[i]=json_data.getString("transacname");
                         n1[i]=json_data.getString("transacid");
