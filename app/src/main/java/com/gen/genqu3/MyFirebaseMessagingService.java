@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    String URL2= "http://192.168.1.101/Android_Login/updatetoken.php";
+    String URL2= "http://192.168.43.43/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -97,6 +97,7 @@ public class MyFirebaseMessagingService extends FirebaseMessagingService {
             Log.e(TAG, "timestamp: " + timestamp);
 
             SaveSharedPreference.setTranId(this,payload.getString("u_tranid"));
+            SaveSharedPreference.setMes2(this,payload.getString("mes"));
 
 
 

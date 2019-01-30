@@ -27,17 +27,16 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class MyNewIntentService extends IntentService {
+public class MyNewIntentService5 extends IntentService {
     private static int NOTIFICATION_ID =  MainActivity.notifnum2;
     String URL= "http://192.168.43.43/Android_Login/getalarm.php";
+    String notif3;
 
     JSONParser2 jsonParser=new JSONParser2();
-
-    String notif3;
     Intent inte;
 
-    public MyNewIntentService() {
-        super("MyNewIntentService");
+    public MyNewIntentService5() {
+        super("MyNewIntentService5");
     }
 
     @Override
@@ -49,8 +48,9 @@ public class MyNewIntentService extends IntentService {
         DateFormat df = new SimpleDateFormat("HH:mm");
         Date dateN = new Date();
         String tN = df.format(dateN);
-        MyNewIntentService.getAlarm getCompany= new MyNewIntentService.getAlarm();
-        getCompany.execute(SaveSharedPreference.getUserId(this), "1",tN);
+        MyNewIntentService5.getAlarm getCompany= new MyNewIntentService5.getAlarm();
+        getCompany.execute(SaveSharedPreference.getUserId(this),"4",tN);
+
     }
 
     private class getAlarm extends AsyncTask<String, String, JSONArray> {
@@ -85,25 +85,25 @@ public class MyNewIntentService extends IntentService {
             try {
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")){
                     notif3 = jArray.getJSONObject(0).getString("companyname") + " - Window " + jArray.getJSONObject(0).getString("transacid") + " - " + jArray.getJSONObject(0).getString("transacname");
-                    SaveSharedPreference.setTranId(MyNewIntentService.this,jArray.getJSONObject(0).getString("u_tranid"));
+                    SaveSharedPreference.setTranId(MyNewIntentService5.this,jArray.getJSONObject(0).getString("u_tranid"));
 
                     PendingIntent morePendingIntent = PendingIntent.getBroadcast(
-                            MyNewIntentService.this,
-                            Config.REQUEST_CODE_MORE2,
-                            new Intent(MyNewIntentService.this, NotificationReceiver2.class)
+                            MyNewIntentService5.this,
+                            Config.REQUEST_CODE_MORE4,
+                            new Intent(MyNewIntentService5.this, NotificationReceiver2.class)
                                     .putExtra(Config.KEY_INTENT_MORE, Config.REQUEST_CODE_MORE0)
-                                    .putExtra("NOTIFICATION",Config.NOTIFICATION_ID3)
+                                    .putExtra("NOTIFICATION",Config.NOTIFICATION_ID5)
                                     .putExtra("UID",jArray.getJSONObject(0).getString("u_tranid")),
                             PendingIntent.FLAG_UPDATE_CURRENT
                     );
 
                     //Pending intent for a notification button help
                     PendingIntent helpPendingIntent = PendingIntent.getBroadcast(
-                            MyNewIntentService.this,
-                            Config.REQUEST_CODE_HELP2,
-                            new Intent(MyNewIntentService.this, NotificationReceiver2.class)
+                            MyNewIntentService5.this,
+                            Config.REQUEST_CODE_HELP4,
+                            new Intent(MyNewIntentService5.this, NotificationReceiver2.class)
                                     .putExtra(Config.KEY_INTENT_HELP, Config.REQUEST_CODE_HELP0)
-                                    .putExtra("NOTIFICATION",Config.NOTIFICATION_ID3)
+                                    .putExtra("NOTIFICATION",Config.NOTIFICATION_ID5)
                                     .putExtra("UID",jArray.getJSONObject(0).getString("u_tranid")),
                             PendingIntent.FLAG_UPDATE_CURRENT
                     );
@@ -116,22 +116,21 @@ public class MyNewIntentService extends IntentService {
                         notificationManager.createNotificationChannel(mChannel);
                     }
 
-                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyNewIntentService.this, Config.CHANNNEL_ID)
+                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyNewIntentService5.this, Config.CHANNNEL_ID)
                             .setSmallIcon(R.drawable.icon3)
                             .setContentTitle(notif3)
-                            .setContentText(notif3+"\n1 HOUR BEFORE YOUR TURN!")
+                            .setContentText(notif3+"\n30 MINUTES BEFORE YOUR TURN!")
                             .setDefaults(Notification.DEFAULT_ALL)
                             .setAutoCancel(true)
                             .setPriority(Notification.PRIORITY_HIGH)
                             .addAction(0, "Can Go", morePendingIntent)
                             .addAction(0, "Cannot Go", helpPendingIntent);
 
-                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(MyNewIntentService.this);
+                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(MyNewIntentService5.this);
                     stackBuilder.addNextIntent(inte);
-                    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(3, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(5, PendingIntent.FLAG_CANCEL_CURRENT);
                     mBuilder.setContentIntent(resultPendingIntent);
-                    notificationManager.notify(Config.NOTIFICATION_ID3, mBuilder.build());
-
+                    notificationManager.notify(Config.NOTIFICATION_ID5, mBuilder.build());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

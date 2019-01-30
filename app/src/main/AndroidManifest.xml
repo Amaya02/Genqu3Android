@@ -72,6 +72,34 @@
             android:name=".MyNewIntentService3"
             android:exported="false"></service>
 
+        <receiver
+            android:name=".AlarmReceiver4"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".MyNewIntentService4"
+            android:exported="false"></service>
+
+        <receiver
+            android:name=".AlarmReceiver5"
+            android:enabled="true"
+            android:permission="android.permission.RECEIVE_BOOT_COMPLETED">
+            <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+            </intent-filter>
+        </receiver>
+
+        <service
+            android:name=".MyNewIntentService5"
+            android:exported="false"></service>
+
         <activity android:name=".SettingActivity"></activity>
 
         <service android:name=".MyFirebaseMessagingService">
@@ -82,6 +110,13 @@
 
         <receiver
             android:name=".NotificationReceiver"
+            android:enabled="true"
+            android:exported="false">
+
+        </receiver>
+
+        <receiver
+            android:name=".NotificationReceiver2"
             android:enabled="true"
             android:exported="false">
 

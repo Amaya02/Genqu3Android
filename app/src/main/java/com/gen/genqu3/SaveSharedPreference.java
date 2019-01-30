@@ -15,6 +15,7 @@ public class SaveSharedPreference {
     static final String Num = "numKey";
     static final String Mes = "mesKey";
     static final String Tranid = "tranidKey";
+    static final String Mes2 = "mes2Key";
 
     static SharedPreferences getSharedPreferences(Context ctx){
         return PreferenceManager.getDefaultSharedPreferences(ctx);
@@ -47,6 +48,12 @@ public class SaveSharedPreference {
     public static void setTranId(Context ctx, String tranid){
         SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
         editor.putString(Tranid, tranid);
+        editor.commit();
+    }
+
+    public static void setMes2(Context ctx, String mes2){
+        SharedPreferences.Editor editor = getSharedPreferences(ctx).edit();
+        editor.putString(Mes2, mes2);
         editor.commit();
     }
 
@@ -101,6 +108,9 @@ public class SaveSharedPreference {
     }
     public static String getTranId(Context ctx){
         return getSharedPreferences(ctx).getString(Tranid,"");
+    }
+    public static String getMes2(Context ctx){
+        return getSharedPreferences(ctx).getString(Mes2,"");
     }
 
 }

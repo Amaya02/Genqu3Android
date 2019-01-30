@@ -23,14 +23,16 @@ import org.json.JSONException;
 
 import java.util.ArrayList;
 
-public class NotificationReceiver extends BroadcastReceiver {
+public class NotificationReceiver2 extends BroadcastReceiver {
 
     String URL= "http://192.168.43.43/Android_Login/updatemessage.php";
+    String URL2= "http://192.168.43.43/Android_Login/expired.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
     Context con;
     Intent inte;
+    int notif_id;
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -38,18 +40,27 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         con = context;
         inte = intent;
+        notif_id = intent.getIntExtra("NOTIFICATION",-1);
+        String uid = intent.getStringExtra("UID");
 
-        if (intent.getIntExtra(Config.KEY_INTENT_HELP, -1) == Config.REQUEST_CODE_HELP) {
-            Toast.makeText(context, "Message sent.. Thank you!", Toast.LENGTH_LONG).show();
+        if (intent.getIntExtra(Config.KEY_INTENT_HELP, -1) == Config.REQUEST_CODE_HELP0) {
+            Toast.makeText(context, "Your transaction has been CANCELED!", Toast.LENGTH_LONG).show();
             Log.e("API1234","Can't Go Yet");
-            NotificationReceiver.updateMes getCompany= new NotificationReceiver.updateMes();
-            getCompany.execute(SaveSharedPreference.getTranId(context),"Cannot Go");
+            Log.e("API1235",""+notif_id);
+            Log.e("API1235",""+uid);
+            NotificationReceiver2.updateMes getCompany= new NotificationReceiver2.updateMes();
+            getCompany.execute(uid,"Cannot Go");
+
+            NotificationReceiver2.updateStat getCompany1= new NotificationReceiver2.updateStat();
+            getCompany1.execute(uid,"Expired");
         }
         else{
             Toast.makeText(context, "Message Sent.. Thank you!", Toast.LENGTH_LONG).show();
             Log.e("API1234","Can Go");
-            NotificationReceiver.updateMes getCompany= new NotificationReceiver.updateMes();
-            getCompany.execute(SaveSharedPreference.getTranId(context),"Can Go");
+            Log.e("API1235",""+notif_id);
+            Log.e("API1235",""+uid);
+            NotificationReceiver2.updateMes getCompany= new NotificationReceiver2.updateMes();
+            getCompany.execute(uid,"Can Go");
         }
     }
 
@@ -81,7 +92,39 @@ public class NotificationReceiver extends BroadcastReceiver {
 
         protected void onPostExecute(JSONArray jArray) {
             NotificationManager notif = (NotificationManager) con.getSystemService(Context.NOTIFICATION_SERVICE);
-            notif.cancel(Config.NOTIFICATION_ID);
+            notif.cancel(notif_id);
+        }
+
+    }
+
+    private class updateStat extends AsyncTask<String, String, JSONArray> {
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+
+        protected JSONArray doInBackground(String... args) {
+
+            String id = args[0];
+            String status = args[1];
+            ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("id", id));
+            params.add(new BasicNameValuePair("status",status));
+
+            JSONArray json = jsonParser.makeHttpRequest(URL2, params);
+
+            return json;
+
+        }
+
+        protected void onPostExecute(JSONArray jArray) {
+
         }
 
     }

@@ -2,11 +2,16 @@ package com.gen.genqu3;
 
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
+import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.preference.RingtonePreference;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationManagerCompat;
@@ -24,9 +29,10 @@ import java.util.Date;
 
 public class MyNewIntentService2 extends IntentService {
     private static int NOTIFICATION_ID =  MainActivity.notifnum2;
-    String URL= "http://192.168.1.101/Android_Login/getalarm.php";
+    String URL= "http://192.168.43.43/Android_Login/getalarm.php";
 
     JSONParser2 jsonParser=new JSONParser2();
+    Intent inte;
 
     String notif3;
 
@@ -38,6 +44,7 @@ public class MyNewIntentService2 extends IntentService {
     protected void onHandleIntent(Intent intent) {
         MainActivity.notifnum2++;
         NOTIFICATION_ID =  MainActivity.notifnum2;
+        inte = intent;
 
         DateFormat df = new SimpleDateFormat("HH:mm");
         Date dateN = new Date();
@@ -78,47 +85,52 @@ public class MyNewIntentService2 extends IntentService {
             try {
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")){
                     notif3 = jArray.getJSONObject(0).getString("companyname") + " - Window " + jArray.getJSONObject(0).getString("transacid") + " - " + jArray.getJSONObject(0).getString("transacname");
+                    SaveSharedPreference.setTranId(MyNewIntentService2.this,jArray.getJSONObject(0).getString("u_tranid"));
 
-                    Notification.Builder builder = new Notification.Builder(MyNewIntentService2.this);
-                    builder.setContentTitle(notif3);
-                    builder.setContentText(notif3+" - 2 minutes before your turn!");
-                    builder.setSmallIcon(R.drawable.icon3);
-                    builder.setPriority(Notification.PRIORITY_HIGH);
-                    builder.setDefaults(Notification.DEFAULT_ALL);
-                    builder.setAutoCancel(true);
-                    long[] pattern = {500,500,500,500,500,500,500,500,500,500};
-                    builder.setVibrate(pattern);
-                    Uri alarmsound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                    builder.setSound(alarmsound);
+                    PendingIntent morePendingIntent = PendingIntent.getBroadcast(
+                            MyNewIntentService2.this,
+                            Config.REQUEST_CODE_MORE1,
+                            new Intent(MyNewIntentService2.this, NotificationReceiver2.class)
+                                    .putExtra(Config.KEY_INTENT_MORE, Config.REQUEST_CODE_MORE0)
+                                    .putExtra("NOTIFICATION",Config.NOTIFICATION_ID2)
+                                    .putExtra("UID",jArray.getJSONObject(0).getString("u_tranid")),
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
 
-                    Intent notifyIntent = new Intent(MyNewIntentService2.this, MainActivity.class);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(MyNewIntentService2.this, 2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    //Pending intent for a notification button help
+                    PendingIntent helpPendingIntent = PendingIntent.getBroadcast(
+                            MyNewIntentService2.this,
+                            Config.REQUEST_CODE_HELP1,
+                            new Intent(MyNewIntentService2.this, NotificationReceiver2.class)
+                                    .putExtra(Config.KEY_INTENT_HELP, Config.REQUEST_CODE_HELP0)
+                                    .putExtra("NOTIFICATION",Config.NOTIFICATION_ID2)
+                                    .putExtra("UID",jArray.getJSONObject(0).getString("u_tranid")),
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
 
-                    builder.setContentIntent(pendingIntent);
-                    Notification notificationCompat = builder.build();
-                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MyNewIntentService2.this);
-                    managerCompat.notify(NOTIFICATION_ID, notificationCompat);
-                }
-                else{
-                    Notification.Builder builder = new Notification.Builder(MyNewIntentService2.this);
-                    builder.setContentTitle("Genqu3 Notification");
-                    builder.setContentText("2 minutes before your turn!");
-                    builder.setSmallIcon(R.drawable.icon3);
-                    builder.setPriority(Notification.PRIORITY_HIGH);
-                    builder.setDefaults(Notification.DEFAULT_ALL);
-                    builder.setAutoCancel(true);
-                    long[] pattern = {500,500,500,500,500,500,500,500,500,500};
-                    builder.setVibrate(pattern);
-                    Uri alarmsound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                    builder.setSound(alarmsound);
+                    NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                    int importance = NotificationManager.IMPORTANCE_HIGH;
 
-                    Intent notifyIntent = new Intent(MyNewIntentService2.this, MainActivity.class);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(MyNewIntentService2.this, 2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+                    if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                        NotificationChannel mChannel = new NotificationChannel(Config.CHANNNEL_ID, Config.CHANNNEL_NAME, importance);
+                        notificationManager.createNotificationChannel(mChannel);
+                    }
 
-                    builder.setContentIntent(pendingIntent);
-                    Notification notificationCompat = builder.build();
-                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MyNewIntentService2.this);
-                    managerCompat.notify(NOTIFICATION_ID, notificationCompat);
+                    NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyNewIntentService2.this, Config.CHANNNEL_ID)
+                            .setSmallIcon(R.drawable.icon3)
+                            .setContentTitle(notif3)
+                            .setContentText(notif3+"\n2 MINUTES BEFORE YOUR TURN!")
+                            .setDefaults(Notification.DEFAULT_ALL)
+                            .setAutoCancel(true)
+                            .setPriority(Notification.PRIORITY_HIGH)
+                            .addAction(0, "Can Go", morePendingIntent)
+                            .addAction(0, "Cannot Go", helpPendingIntent);
+
+                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(MyNewIntentService2.this);
+                    stackBuilder.addNextIntent(inte);
+                    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(2, PendingIntent.FLAG_UPDATE_CURRENT);
+                    mBuilder.setContentIntent(resultPendingIntent);
+                    notificationManager.notify(Config.NOTIFICATION_ID2, mBuilder.build());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

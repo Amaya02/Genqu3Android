@@ -29,7 +29,7 @@ import java.util.Date;
 
 public class MyNewIntentService3 extends IntentService {
     private static int NOTIFICATION_ID =  MainActivity.notifnum2;
-    String URL= "http://192.168.1.101/Android_Login/getalarm.php";
+    String URL= "http://192.168.43.43/Android_Login/getalarm.php";
     String notif3;
 
     JSONParser2 jsonParser=new JSONParser2();
@@ -85,12 +85,15 @@ public class MyNewIntentService3 extends IntentService {
             try {
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")){
                     notif3 = jArray.getJSONObject(0).getString("companyname") + " - Window " + jArray.getJSONObject(0).getString("transacid") + " - " + jArray.getJSONObject(0).getString("transacname");
+                    SaveSharedPreference.setTranId(MyNewIntentService3.this,jArray.getJSONObject(0).getString("u_tranid"));
 
                     PendingIntent morePendingIntent = PendingIntent.getBroadcast(
                             MyNewIntentService3.this,
                             Config.REQUEST_CODE_MORE,
-                            new Intent(MyNewIntentService3.this, NotificationReceiver.class)
-                                    .putExtra(Config.KEY_INTENT_MORE, Config.REQUEST_CODE_MORE),
+                            new Intent(MyNewIntentService3.this, NotificationReceiver2.class)
+                                    .putExtra(Config.KEY_INTENT_MORE, Config.REQUEST_CODE_MORE0)
+                                    .putExtra("NOTIFICATION",Config.NOTIFICATION_ID1)
+                                    .putExtra("UID",jArray.getJSONObject(0).getString("u_tranid")),
                             PendingIntent.FLAG_UPDATE_CURRENT
                     );
 
@@ -98,8 +101,10 @@ public class MyNewIntentService3 extends IntentService {
                     PendingIntent helpPendingIntent = PendingIntent.getBroadcast(
                             MyNewIntentService3.this,
                             Config.REQUEST_CODE_HELP,
-                            new Intent(MyNewIntentService3.this, NotificationReceiver.class)
-                                    .putExtra(Config.KEY_INTENT_HELP, Config.REQUEST_CODE_HELP),
+                            new Intent(MyNewIntentService3.this, NotificationReceiver2.class)
+                                    .putExtra(Config.KEY_INTENT_HELP, Config.REQUEST_CODE_HELP0)
+                                    .putExtra("NOTIFICATION",Config.NOTIFICATION_ID1)
+                                    .putExtra("UID",jArray.getJSONObject(0).getString("u_tranid")),
                             PendingIntent.FLAG_UPDATE_CURRENT
                     );
 
@@ -114,40 +119,18 @@ public class MyNewIntentService3 extends IntentService {
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyNewIntentService3.this, Config.CHANNNEL_ID)
                             .setSmallIcon(R.drawable.icon3)
                             .setContentTitle(notif3)
-                            .setContentText(notif3+"\nIt is now your turn!- ")
+                            .setContentText(notif3+"\nIT IS NOW YOUR TURN!")
                             .setDefaults(Notification.DEFAULT_ALL)
                             .setAutoCancel(true)
                             .setPriority(Notification.PRIORITY_HIGH)
                             .addAction(0, "Can Go", morePendingIntent)
-                            .addAction(0, "Cannot Go Yet", helpPendingIntent);
+                            .addAction(0, "Cannot Go", helpPendingIntent);
 
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(MyNewIntentService3.this);
                     stackBuilder.addNextIntent(inte);
-                    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(2, PendingIntent.FLAG_UPDATE_CURRENT);
+                    PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(1, PendingIntent.FLAG_CANCEL_CURRENT);
                     mBuilder.setContentIntent(resultPendingIntent);
-                    notificationManager.notify(NOTIFICATION_ID, mBuilder.build());
-                }
-                else{
-                    Notification.Builder builder = new Notification.Builder(MyNewIntentService3.this);
-                    builder.setContentTitle("Genqu3 Notification");
-                    builder.setContentText("It is now your turn!");
-                    builder.setSmallIcon(R.drawable.icon3);
-                    builder.setPriority(Notification.PRIORITY_HIGH);
-                    builder.setDefaults(Notification.DEFAULT_ALL);
-                    builder.setAutoCancel(true);
-                    long[] pattern = {500,500,500,500,500,500,500,500,500,500};
-                    builder.setVibrate(pattern);
-                    Uri alarmsound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-                    builder.setSound(alarmsound);
-
-                    Intent notifyIntent = new Intent(MyNewIntentService3.this, MainActivity.class);
-                    PendingIntent pendingIntent = PendingIntent.getActivity(MyNewIntentService3.this, 2, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-                    builder.setContentIntent(pendingIntent);
-                    Notification notificationCompat = builder.build();
-                    NotificationManagerCompat managerCompat = NotificationManagerCompat.from(MyNewIntentService3.this);
-                    managerCompat.notify(NOTIFICATION_ID, notificationCompat);
-
+                    notificationManager.notify(Config.NOTIFICATION_ID1, mBuilder.build());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();

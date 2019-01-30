@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class ViewTransac extends AppCompatActivity {
 
     ImageButton pastTran, pendingTran;
-    String URL2= "http://192.168.1.101/Android_Login/updatetoken.php";
+    String URL2= "http://192.168.43.43/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -92,6 +92,16 @@ public class ViewTransac extends AppCompatActivity {
                         alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
 
                         intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver3.class);
+                        pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver4.class);
+                        pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver5.class);
                         pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
                         alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                         alarmManagers[MainActivity.notifnum].cancel(pendingIntent);

@@ -40,9 +40,9 @@ public class LoginActivity extends AppCompatActivity {
     EditText editPassword, editName;
     Button btnSignIn, btnRegister;
 
-    String URL= "http://192.168.1.101/Android_Login/index.php";
-    String URL2= "http://192.168.1.101/Android_Login/updatetoken.php";
-    String URL3= "http://192.168.1.101/Android_Login/restartalarm.php";
+    String URL= "http://192.168.43.43/Android_Login/index.php";
+    String URL2= "http://192.168.43.43/Android_Login/updatetoken.php";
+    String URL3= "http://192.168.43.43/Android_Login/restartalarm.php";
 
     JSONParser jsonParser=new JSONParser();
     JSONParser2 jsonParser2=new JSONParser2();
@@ -291,8 +291,37 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intents[] = new Intent[MainActivity.notifnum+1];
 
                                 intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver.class);
-                                intents[MainActivity.notifnum].putExtra("ID",0);
                                 PendingIntent pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                                alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                                alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                                MainActivity.notifnum++;
+
+                                c = Calendar.getInstance();
+                                c.setTimeInMillis(System.currentTimeMillis());
+                                c.clear();
+                                c.set(year, (month-1), day, hour, min - 30,0);
+
+                                alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                                intents= new Intent[MainActivity.notifnum+1];
+
+                                intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver5.class);
+                                pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                                alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                                alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                                MainActivity.notifnum++;
+
+                                c = Calendar.getInstance();
+                                c.setTimeInMillis(System.currentTimeMillis());
+                                c.clear();
+                                c.set(year, (month-1), day, hour, min - 10,0);
+
+                                alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                                intents= new Intent[MainActivity.notifnum+1];
+
+                                intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver4.class);
+                                pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
                                 alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                                 alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
 
@@ -307,7 +336,6 @@ public class LoginActivity extends AppCompatActivity {
                                 intents= new Intent[MainActivity.notifnum+1];
 
                                 intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver2.class);
-                                intents[MainActivity.notifnum].putExtra("ID",3);
                                 pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
                                 alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                                 alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
@@ -323,7 +351,113 @@ public class LoginActivity extends AppCompatActivity {
                                 intents= new Intent[MainActivity.notifnum+1];
 
                                 intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver3.class);
-                                intents[MainActivity.notifnum].putExtra("ID",4);
+                                pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                                alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                                alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+                            }
+                            else if(difference>1800){
+                                MainActivity.notifnum++;
+
+                                Calendar c = Calendar.getInstance();
+                                c.setTimeInMillis(System.currentTimeMillis());
+                                c.clear();
+                                c.set(year, (month-1), day, hour, min - 30,0);
+
+                                AlarmManager[] alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                                Intent intents[]= new Intent[MainActivity.notifnum+1];
+
+                                intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver5.class);
+                                PendingIntent pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                                alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                                alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                                MainActivity.notifnum++;
+
+                                c = Calendar.getInstance();
+                                c.setTimeInMillis(System.currentTimeMillis());
+                                c.clear();
+                                c.set(year, (month-1), day, hour, min - 10,0);
+
+                                alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                                intents= new Intent[MainActivity.notifnum+1];
+
+                                intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver4.class);
+                                pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                                alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                                alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                                MainActivity.notifnum++;
+
+                                c = Calendar.getInstance();
+                                c.setTimeInMillis(System.currentTimeMillis());
+                                c.clear();
+                                c.set(year, (month-1), day, hour, min - 2,0);
+
+                                alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                                intents= new Intent[MainActivity.notifnum+1];
+
+                                intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver2.class);
+                                pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                                alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                                alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                                MainActivity.notifnum++;
+
+                                c = Calendar.getInstance();
+                                c.setTimeInMillis(System.currentTimeMillis());
+                                c.clear();
+                                c.set(year, (month-1), day, hour, min ,0);
+
+                                alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                                intents= new Intent[MainActivity.notifnum+1];
+
+                                intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver3.class);
+                                pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                                alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                                alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+                            }
+                            else if(difference>600){
+                                MainActivity.notifnum++;
+
+                                Calendar c = Calendar.getInstance();
+                                c.setTimeInMillis(System.currentTimeMillis());
+                                c.clear();
+                                c.set(year, (month-1), day, hour, min - 10,0);
+
+                                AlarmManager[] alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                                Intent intents[]= new Intent[MainActivity.notifnum+1];
+
+                                intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver4.class);
+                                PendingIntent pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                                alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                                alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                                MainActivity.notifnum++;
+
+                                c = Calendar.getInstance();
+                                c.setTimeInMillis(System.currentTimeMillis());
+                                c.clear();
+                                c.set(year, (month-1), day, hour, min - 2,0);
+
+                                alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                                intents= new Intent[MainActivity.notifnum+1];
+
+                                intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver2.class);
+                                pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                                alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                                alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                                MainActivity.notifnum++;
+
+                                c = Calendar.getInstance();
+                                c.setTimeInMillis(System.currentTimeMillis());
+                                c.clear();
+                                c.set(year, (month-1), day, hour, min ,0);
+
+                                alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                                intents= new Intent[MainActivity.notifnum+1];
+
+                                intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver3.class);
                                 pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
                                 alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                                 alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
@@ -340,7 +474,6 @@ public class LoginActivity extends AppCompatActivity {
                                 Intent intents[] = new Intent[MainActivity.notifnum+1];
 
                                 intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver2.class);
-                                intents[MainActivity.notifnum].putExtra("ID",3);
                                 PendingIntent pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
                                 alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                                 alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
@@ -356,7 +489,6 @@ public class LoginActivity extends AppCompatActivity {
                                 intents= new Intent[MainActivity.notifnum+1];
 
                                 intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver3.class);
-                                intents[MainActivity.notifnum].putExtra("ID",4);
                                 pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
                                 alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                                 alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
@@ -395,6 +527,38 @@ public class LoginActivity extends AppCompatActivity {
                             intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver.class);
                             intents[MainActivity.notifnum].putExtra("ID",0);
                             PendingIntent pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                            alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                            alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                            MainActivity.notifnum++;
+
+                            c = Calendar.getInstance();
+                            c.setTimeInMillis(System.currentTimeMillis());
+                            c.clear();
+                            c.set(year, (month-1), day, hour, min - 30,0);
+
+                            alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                            intents= new Intent[MainActivity.notifnum+1];
+
+                            intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver5.class);
+                            intents[MainActivity.notifnum].putExtra("ID",3);
+                            pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                            alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                            alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
+
+                            MainActivity.notifnum++;
+
+                            c = Calendar.getInstance();
+                            c.setTimeInMillis(System.currentTimeMillis());
+                            c.clear();
+                            c.set(year, (month-1), day, hour, min - 10,0);
+
+                            alarmManagers = new AlarmManager[MainActivity.notifnum+1];
+                            intents= new Intent[MainActivity.notifnum+1];
+
+                            intents[MainActivity.notifnum] = new Intent(LoginActivity.this, AlarmReceiver4.class);
+                            intents[MainActivity.notifnum].putExtra("ID",3);
+                            pendingIntent = PendingIntent.getBroadcast(LoginActivity.this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
                             alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                             alarmManagers[MainActivity.notifnum].set(AlarmManager.RTC_WAKEUP, c.getTimeInMillis(), pendingIntent);
 

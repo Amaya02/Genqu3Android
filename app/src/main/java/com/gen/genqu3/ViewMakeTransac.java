@@ -33,8 +33,8 @@ public class ViewMakeTransac extends AppCompatActivity {
 
     //String URL= "http://192.168.254.2/Android_Login/getcompany.php";
 
-    String URL= "http://192.168.1.101/Android_Login/getcompany.php";
-    String URL2= "http://192.168.1.101/Android_Login/updatetoken.php";
+    String URL= "http://192.168.43.43/Android_Login/getcompany.php";
+    String URL2= "http://192.168.43.43/Android_Login/updatetoken.php";
 
     TextView com_name, com_email, com_num, com_address, com_country;
 
@@ -214,6 +214,16 @@ public class ViewMakeTransac extends AppCompatActivity {
                         alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
 
                         intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver3.class);
+                        pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver4.class);
+                        pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
+                        alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
+                        alarmManagers[MainActivity.notifnum].cancel(pendingIntent);
+
+                        intents[MainActivity.notifnum] = new Intent(this, AlarmReceiver5.class);
                         pendingIntent = PendingIntent.getBroadcast(this, MainActivity.notifnum, intents[MainActivity.notifnum], 0);
                         alarmManagers[MainActivity.notifnum] = (AlarmManager)getSystemService(Context.ALARM_SERVICE);
                         alarmManagers[MainActivity.notifnum].cancel(pendingIntent);

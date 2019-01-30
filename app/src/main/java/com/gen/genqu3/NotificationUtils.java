@@ -91,44 +91,70 @@ public class NotificationUtils {
 
     private void showSmallNotification(NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {
 
-        PendingIntent morePendingIntent = PendingIntent.getBroadcast(
-                mContext,
-                Config.REQUEST_CODE_MORE,
-                new Intent(mContext, NotificationReceiver.class)
-                        .putExtra(Config.KEY_INTENT_MORE, Config.REQUEST_CODE_MORE),
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
+        String mes = SaveSharedPreference.getMes2(mContext);
+        if(mes.equals("notify")){
+            PendingIntent morePendingIntent = PendingIntent.getBroadcast(
+                    mContext,
+                    Config.REQUEST_CODE_MORE,
+                    new Intent(mContext, NotificationReceiver.class)
+                            .putExtra(Config.KEY_INTENT_MORE, Config.REQUEST_CODE_MORE),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
 
-        //Pending intent for a notification button help
-        PendingIntent helpPendingIntent = PendingIntent.getBroadcast(
-                mContext,
-                Config.REQUEST_CODE_HELP,
-                new Intent(mContext, NotificationReceiver.class)
-                        .putExtra(Config.KEY_INTENT_HELP, Config.REQUEST_CODE_HELP),
-                PendingIntent.FLAG_UPDATE_CURRENT
-        );
+            //Pending intent for a notification button help
+            PendingIntent helpPendingIntent = PendingIntent.getBroadcast(
+                    mContext,
+                    Config.REQUEST_CODE_HELP,
+                    new Intent(mContext, NotificationReceiver.class)
+                            .putExtra(Config.KEY_INTENT_HELP, Config.REQUEST_CODE_HELP),
+                    PendingIntent.FLAG_UPDATE_CURRENT
+            );
 
-        NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
 
-        inboxStyle.addLine(message);
+            inboxStyle.addLine(message);
 
-        Notification notification;
-        notification = mBuilder.setSmallIcon(icon).setTicker(title).setWhen(0)
-                .setAutoCancel(false)
-                .setContentTitle(title)
-                .setContentIntent(resultPendingIntent)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setPriority(Notification.PRIORITY_MAX)
-                .setWhen(getTimeMilliSec(timeStamp))
-                .setSmallIcon(R.drawable.icon3)
-                .addAction(0, "Can Go", morePendingIntent)
-                .addAction(0, "Cannot Go Yet", helpPendingIntent)
-                .setContentText(message)
-                .setStyle(inboxStyle)
-                .build();
+            Notification notification;
+            notification = mBuilder.setSmallIcon(icon).setTicker(title).setWhen(0)
+                    .setAutoCancel(false)
+                    .setContentTitle(title)
+                    .setContentIntent(resultPendingIntent)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setPriority(Notification.PRIORITY_MAX)
+                    .setWhen(getTimeMilliSec(timeStamp))
+                    .setSmallIcon(R.drawable.icon3)
+                    .addAction(0, "Can Go", morePendingIntent)
+                    .addAction(0, "Cannot Go", helpPendingIntent)
+                    .setContentText(message)
+                    .setStyle(inboxStyle)
+                    .build();
 
-        NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(Config.NOTIFICATION_ID, notification);
+            NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(Config.NOTIFICATION_ID, notification);
+
+        }
+        else{
+            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+
+            inboxStyle.addLine(message);
+
+            Notification notification;
+            notification = mBuilder.setSmallIcon(icon).setTicker(title).setWhen(0)
+                    .setAutoCancel(false)
+                    .setContentTitle(title)
+                    .setContentIntent(resultPendingIntent)
+                    .setDefaults(Notification.DEFAULT_ALL)
+                    .setPriority(Notification.PRIORITY_MAX)
+                    .setWhen(getTimeMilliSec(timeStamp))
+                    .setSmallIcon(R.drawable.icon3)
+                    .setContentText(message)
+                    .setStyle(inboxStyle)
+                    .build();
+
+            NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+            notificationManager.notify(Config.NOTIFICATION_ID, notification);
+        }
+
     }
 
     private void showBigNotification(Bitmap bitmap, NotificationCompat.Builder mBuilder, int icon, String title, String message, String timeStamp, PendingIntent resultPendingIntent, Uri alarmSound) {
