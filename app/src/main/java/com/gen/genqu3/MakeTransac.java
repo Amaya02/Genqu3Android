@@ -36,9 +36,9 @@ import android.widget.TableRow.LayoutParams;
 
 public class MakeTransac extends AppCompatActivity {
 
-    String URL= "http://192.168.22.7/Android_Login/getcompany.php";
-    String URL2= "http://192.168.22.7/Android_Login/searchcompany.php";
-    String URL3= "http://192.168.22.7/Android_Login/updatetoken.php";
+    String URL= "http://192.168.1.101/Android_Login/getcompany.php";
+    String URL2= "http://192.168.1.101/Android_Login/searchcompany.php";
+    String URL3= "http://192.168.1.101/Android_Login/updatetoken.php";
 
     Button search_but, search_cancel;
     EditText search;

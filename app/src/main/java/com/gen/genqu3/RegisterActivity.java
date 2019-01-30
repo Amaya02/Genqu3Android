@@ -27,7 +27,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     //String URL= "http://192.168.254.2/Android_Login/index.php";
 
-    String URL= "http://192.168.22.7/Android_Login/index.php";
+    String URL= "http://192.168.1.101/Android_Login/index.php";
 
     JSONParser jsonParser=new JSONParser();
 

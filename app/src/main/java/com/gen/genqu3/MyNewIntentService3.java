@@ -29,7 +29,7 @@ import java.util.Date;
 
 public class MyNewIntentService3 extends IntentService {
     private static int NOTIFICATION_ID =  MainActivity.notifnum2;
-    String URL= "http://192.168.22.7/Android_Login/getalarm.php";
+    String URL= "http://192.168.1.101/Android_Login/getalarm.php";
     String notif3;
 
     JSONParser2 jsonParser=new JSONParser2();
@@ -86,6 +86,23 @@ public class MyNewIntentService3 extends IntentService {
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")){
                     notif3 = jArray.getJSONObject(0).getString("companyname") + " - Window " + jArray.getJSONObject(0).getString("transacid") + " - " + jArray.getJSONObject(0).getString("transacname");
 
+                    PendingIntent morePendingIntent = PendingIntent.getBroadcast(
+                            MyNewIntentService3.this,
+                            Config.REQUEST_CODE_MORE,
+                            new Intent(MyNewIntentService3.this, NotificationReceiver.class)
+                                    .putExtra(Config.KEY_INTENT_MORE, Config.REQUEST_CODE_MORE),
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+
+                    //Pending intent for a notification button help
+                    PendingIntent helpPendingIntent = PendingIntent.getBroadcast(
+                            MyNewIntentService3.this,
+                            Config.REQUEST_CODE_HELP,
+                            new Intent(MyNewIntentService3.this, NotificationReceiver.class)
+                                    .putExtra(Config.KEY_INTENT_HELP, Config.REQUEST_CODE_HELP),
+                            PendingIntent.FLAG_UPDATE_CURRENT
+                    );
+
                     NotificationManager notificationManager = (NotificationManager) getApplicationContext().getSystemService(Context.NOTIFICATION_SERVICE);
                     int importance = NotificationManager.IMPORTANCE_HIGH;
 
@@ -97,10 +114,12 @@ public class MyNewIntentService3 extends IntentService {
                     NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(MyNewIntentService3.this, Config.CHANNNEL_ID)
                             .setSmallIcon(R.drawable.icon3)
                             .setContentTitle(notif3)
-                            .setContentText("It is now your turn!- "+notif3)
+                            .setContentText(notif3+"\nIt is now your turn!- ")
                             .setDefaults(Notification.DEFAULT_ALL)
                             .setAutoCancel(true)
-                            .setPriority(Notification.PRIORITY_HIGH);
+                            .setPriority(Notification.PRIORITY_HIGH)
+                            .addAction(0, "Can Go", morePendingIntent)
+                            .addAction(0, "Cannot Go Yet", helpPendingIntent);
 
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(MyNewIntentService3.this);
                     stackBuilder.addNextIntent(inte);

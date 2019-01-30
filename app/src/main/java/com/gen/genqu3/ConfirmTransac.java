@@ -42,9 +42,9 @@ public class ConfirmTransac extends AppCompatActivity {
     Spinner spinner;
     String dateNow, timeNow;
 
-    String URL= "http://192.168.22.7/Android_Login/confirmtransaction.php";
-    String URL2= "http://192.168.22.7/Android_Login/addtransaction.php";
-    String URL3= "http://192.168.22.7/Android_Login/updatetoken.php";
+    String URL= "http://192.168.1.101/Android_Login/confirmtransaction.php";
+    String URL2= "http://192.168.1.101/Android_Login/addtransaction.php";
+    String URL3= "http://192.168.1.101/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -395,6 +395,10 @@ public class ConfirmTransac extends AppCompatActivity {
                     intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intent);
                     finish();
+                }
+                else if(jArray.getJSONObject(0).getString("result").equals("error3")){
+                    progress.dismiss();
+                    Toast.makeText(getApplicationContext(), "OOOPS! You already have a Pending Transaction for this Window!", Toast.LENGTH_SHORT).show();
                 }
                 else {
                     progress.dismiss();
