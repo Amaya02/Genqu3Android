@@ -1,12 +1,15 @@
 package com.gen.genqu3;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -32,9 +35,8 @@ public class SettingActivity extends AppCompatActivity {
     Button up_edit, up_editpass, up_cancel, up_save1, up_back, up_save2;
     LinearLayout up_lay, up_lay2;
 
-    //String URL= "http://192.168.254.2/Android_Login/updateuser.php";
-    String URL= "http://192.168.43.43/Android_Login/updateuser.php";
-    String URL2= "http://192.168.43.43/Android_Login/updatetoken.php";
+    String URL= "http://genqu3.000webhostapp.com/Android_Login/updateuser.php";
+    String URL2= "http://genqu3.000webhostapp.com/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -133,50 +135,91 @@ public class SettingActivity extends AppCompatActivity {
         up_save1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String enteredUser = up_user.getText().toString();
-                String enteredEmail = up_email.getText().toString();
-                String enteredfname = up_fname.getText().toString();
-                String enteredlname = up_lname.getText().toString();
-                String enterednum = up_num.getText().toString();
+                if(CheckNetwork.isAvail(SettingActivity.this)){
+                    String enteredUser = up_user.getText().toString();
+                    String enteredEmail = up_email.getText().toString();
+                    String enteredfname = up_fname.getText().toString();
+                    String enteredlname = up_lname.getText().toString();
+                    String enterednum = up_num.getText().toString();
 
-                if(TextUtils.isEmpty(enteredUser) || TextUtils.isEmpty(enteredEmail) || TextUtils.isEmpty(enteredfname)
-                        || TextUtils.isEmpty(enteredlname) || TextUtils.isEmpty(enterednum)){
-                    Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
-                    return;
+                    if(TextUtils.isEmpty(enteredUser) || TextUtils.isEmpty(enteredEmail) || TextUtils.isEmpty(enteredfname)
+                            || TextUtils.isEmpty(enteredlname) || TextUtils.isEmpty(enterednum)){
+                        Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    else if(enteredUser.length()<6 ){
+                        Toast.makeText(getApplicationContext(), "Username must be atleast 6 characters!", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    progress.show();
+
+                    SettingActivity.EditUser getCompany= new SettingActivity.EditUser();
+                    getCompany.execute(MainActivity.userid,enteredUser,enteredEmail,enteredfname,enteredlname,enterednum);
+                }
+                else{
+                    AlertDialog.Builder builder;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder = new AlertDialog.Builder(SettingActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                    } else {
+                        builder = new AlertDialog.Builder(SettingActivity.this);
+                    }
+                    builder.setTitle("Genqu3")
+                            .setCancelable(false)
+                            .setMessage("No Internet Connection!")
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(R.drawable.icon3)
+                            .show();
                 }
 
-                else if(enteredUser.length()<6 ){
-                    Toast.makeText(getApplicationContext(), "Username must be atleast 6 characters!", Toast.LENGTH_LONG).show();
-                    return;
-                }
-
-                progress.show();
-
-                SettingActivity.EditUser getCompany= new SettingActivity.EditUser();
-                getCompany.execute(MainActivity.userid,enteredUser,enteredEmail,enteredfname,enteredlname,enterednum);
             }
         });
 
         up_save2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String enteredCurPass = up_curpass.getText().toString();
-                String enteredNewPass = up_newpass.getText().toString();
+                if(CheckNetwork.isAvail(SettingActivity.this)){
+                    String enteredCurPass = up_curpass.getText().toString();
+                    String enteredNewPass = up_newpass.getText().toString();
 
-                if(TextUtils.isEmpty(enteredCurPass) || TextUtils.isEmpty(enteredNewPass)){
-                    Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
-                    return;
+                    if(TextUtils.isEmpty(enteredCurPass) || TextUtils.isEmpty(enteredNewPass)){
+                        Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    else if(enteredNewPass.length()<6){
+                        Toast.makeText(getApplicationContext(), "Password must be atleast 6 characters!", Toast.LENGTH_LONG).show();
+                        return;
+                    }
+
+                    progress.show();
+
+                    SettingActivity.EditUserPass getCompany= new SettingActivity.EditUserPass();
+                    getCompany.execute(MainActivity.userid,enteredCurPass,enteredNewPass);
                 }
-
-                else if(enteredNewPass.length()<6){
-                    Toast.makeText(getApplicationContext(), "Password must be atleast 6 characters!", Toast.LENGTH_LONG).show();
-                    return;
+                else{
+                    AlertDialog.Builder builder;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder = new AlertDialog.Builder(SettingActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                    } else {
+                        builder = new AlertDialog.Builder(SettingActivity.this);
+                    }
+                    builder.setTitle("Genqu3")
+                            .setCancelable(false)
+                            .setMessage("No Internet Connection!")
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(R.drawable.icon3)
+                            .show();
                 }
-
-                progress.show();
-
-                SettingActivity.EditUserPass getCompany= new SettingActivity.EditUserPass();
-                getCompany.execute(MainActivity.userid,enteredCurPass,enteredNewPass);
             }
         });
 

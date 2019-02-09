@@ -183,6 +183,15 @@
 
             </LinearLayout>
 
+            <Button android:id="@+id/cancel_tran"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@drawable/buttonstyle"
+                android:layout_marginTop="20dp"
+                android:layout_marginBottom="15dp"
+                android:text="Cancel Transaction"
+                android:visibility="visible"/>
+
         </LinearLayout>
 
     </ScrollView>

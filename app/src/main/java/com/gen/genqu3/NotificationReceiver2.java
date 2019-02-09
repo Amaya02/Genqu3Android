@@ -25,8 +25,8 @@ import java.util.ArrayList;
 
 public class NotificationReceiver2 extends BroadcastReceiver {
 
-    String URL= "http://192.168.43.43/Android_Login/updatemessage.php";
-    String URL2= "http://192.168.43.43/Android_Login/expired.php";
+    String URL= "http://genqu3.000webhostapp.com/Android_Login/updatemessage.php";
+    String URL2= "http://genqu3.000webhostapp.com/Android_Login/expired.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 

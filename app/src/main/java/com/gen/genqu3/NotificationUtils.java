@@ -2,6 +2,7 @@ package com.gen.genqu3;
 
 import android.app.ActivityManager;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.ComponentName;
@@ -110,9 +111,13 @@ public class NotificationUtils {
                     PendingIntent.FLAG_UPDATE_CURRENT
             );
 
-            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+            NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
 
-            inboxStyle.addLine(message);
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                NotificationChannel mChannel = new NotificationChannel(Config.CHANNNEL_ID, Config.CHANNNEL_NAME, importance);
+                notificationManager.createNotificationChannel(mChannel);
+            }
 
             Notification notification;
             notification = mBuilder.setSmallIcon(icon).setTicker(title).setWhen(0)
@@ -123,20 +128,24 @@ public class NotificationUtils {
                     .setPriority(Notification.PRIORITY_MAX)
                     .setWhen(getTimeMilliSec(timeStamp))
                     .setSmallIcon(R.drawable.icon3)
-                    .addAction(0, "Can Go", morePendingIntent)
-                    .addAction(0, "Cannot Go", helpPendingIntent)
+                    .addAction(0, "Can Go Now", morePendingIntent)
+                    .addAction(0, "Cannot Go Yet", helpPendingIntent)
                     .setContentText(message)
-                    .setStyle(inboxStyle)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(message) .setBigContentTitle(title))
                     .build();
 
-            NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(Config.NOTIFICATION_ID, notification);
 
         }
         else{
-            NotificationCompat.InboxStyle inboxStyle = new NotificationCompat.InboxStyle();
+            NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
+            int importance = NotificationManager.IMPORTANCE_HIGH;
 
-            inboxStyle.addLine(message);
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+                NotificationChannel mChannel = new NotificationChannel(Config.CHANNNEL_ID, Config.CHANNNEL_NAME, importance);
+                notificationManager.createNotificationChannel(mChannel);
+            }
 
             Notification notification;
             notification = mBuilder.setSmallIcon(icon).setTicker(title).setWhen(0)
@@ -148,10 +157,10 @@ public class NotificationUtils {
                     .setWhen(getTimeMilliSec(timeStamp))
                     .setSmallIcon(R.drawable.icon3)
                     .setContentText(message)
-                    .setStyle(inboxStyle)
+                    .setStyle(new NotificationCompat.BigTextStyle()
+                            .bigText(message) .setBigContentTitle(title))
                     .build();
 
-            NotificationManager notificationManager = (NotificationManager) mContext.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(Config.NOTIFICATION_ID, notification);
         }
 

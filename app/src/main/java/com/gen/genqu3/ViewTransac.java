@@ -31,7 +31,7 @@ import java.util.ArrayList;
 public class ViewTransac extends AppCompatActivity {
 
     ImageButton pastTran, pendingTran;
-    String URL2= "http://192.168.43.43/Android_Login/updatetoken.php";
+    String URL2= "http://genqu3.000webhostapp.com/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 

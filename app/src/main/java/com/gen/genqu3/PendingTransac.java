@@ -1,13 +1,16 @@
 package com.gen.genqu3;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -34,8 +37,8 @@ public class PendingTransac extends AppCompatActivity {
 
     //String URL= "http://192.168.254.2/Android_Login/getusertransaction.php";
 
-    String URL= "http://192.168.43.43/Android_Login/getusertransaction.php";
-    String URL2= "http://192.168.43.43/Android_Login/updatetoken.php";
+    String URL= "http://genqu3.000webhostapp.com/Android_Login/getusertransaction.php";
+    String URL2= "http://genqu3.000webhostapp.com/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -51,10 +54,32 @@ public class PendingTransac extends AppCompatActivity {
         progress.setMessage("Please wait..");
         progress.setCancelable(false);
 
-        progress.show();
-
-        PendingTransac.GetTransac getCompany= new PendingTransac.GetTransac();
-        getCompany.execute(MainActivity.userid,"pending");
+        if(CheckNetwork.isAvail(PendingTransac.this)){
+            progress.show();
+            PendingTransac.GetTransac getCompany= new PendingTransac.GetTransac();
+            getCompany.execute(MainActivity.userid,"pending");
+        }
+        else{
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(PendingTransac.this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(PendingTransac.this);
+            }
+            builder.setTitle("Genqu3")
+                    .setCancelable(false)
+                    .setMessage("No Internet Connection!")
+                    .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent= new Intent(PendingTransac.this, PendingTransac.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setIcon(R.drawable.icon3)
+                    .show();
+        }
     }
 
     private class GetTransac extends AsyncTask<String, String, JSONArray> {
@@ -118,7 +143,7 @@ public class PendingTransac extends AppCompatActivity {
                         tn.setTextColor(Color.BLACK);
 
                         TextView tn1 = new TextView(PendingTransac.this);
-                        tn1.setText("Window "+json_data.getString("transacid")+" - "+json_data.getString("transacname"));
+                        tn1.setText("Window "+json_data.getString("windowid")+" - "+json_data.getString("transacname"));
                         tn1.setTextSize(20);
                         tn1.setTextColor(Color.BLACK);
 
@@ -155,7 +180,7 @@ public class PendingTransac extends AppCompatActivity {
                         b[i].addView(ts1);
 
                         n[i]=json_data.getString("transacname");
-                        n1[i]=json_data.getString("transacid");
+                        n1[i]=json_data.getString("windowid");
                         id[i]=json_data.getString("u_tranid");
                         c[i]=json_data.getString("companyname");
                         d[i]=String.valueOf(json_data.getString("date_tran"));
@@ -176,6 +201,7 @@ public class PendingTransac extends AppCompatActivity {
                                 intent.putExtra("STATUS", s[count]);
                                 intent.putExtra("ID", id[count]);
                                 intent.putExtra("TIME", time[count]);
+                                intent.putExtra("HIDE", "PENDING");
                                 startActivity(intent);
                             }
                         });
@@ -189,7 +215,7 @@ public class PendingTransac extends AppCompatActivity {
             } catch (JSONException e) {
                 progress.dismiss();
                 Log.e("log_tag", "Error parsing data" + e.toString()+jArray);
-                Toast.makeText(getApplicationContext(), "JsonArray fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Unable to Connect to Server", Toast.LENGTH_SHORT).show();
             }
         }
     }

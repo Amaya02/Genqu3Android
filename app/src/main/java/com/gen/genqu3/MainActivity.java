@@ -1,14 +1,17 @@
 package com.gen.genqu3;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Handler;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v7.app.ActionBar;
@@ -48,8 +51,8 @@ public class MainActivity extends AppCompatActivity {
     public static int notifnum2 =0;
     public static String mes_notif;
 
-    String URL= "http://192.168.43.43/Android_Login/restartalarm.php";
-    String URL2= "http://192.168.43.43/Android_Login/updatetoken.php";
+    String URL= "http://genqu3.000webhostapp.com/Android_Login/restartalarm.php";
+    String URL2= "http://genqu3.000webhostapp.com/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -70,33 +73,55 @@ public class MainActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable(){
             @Override
             public void run(){
-                if(SaveSharedPreference.getUserName(MainActivity.this).length()==0) {
-                    Intent homeIntent = new Intent(MainActivity.this, LoginActivity.class);
-                    startActivity(homeIntent);
-                    finish();
+                if(CheckNetwork.isAvail(MainActivity.this)){
+                    if(SaveSharedPreference.getUserName(MainActivity.this).length()==0) {
+                        Intent homeIntent = new Intent(MainActivity.this, LoginActivity.class);
+                        startActivity(homeIntent);
+                        finish();
+                    }
+                    else{
+                        notifnum =0;
+                        notifnum2 =0;
+                        String id = SaveSharedPreference.getUserId(MainActivity.this);
+                        FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( MainActivity.this,  new OnSuccessListener<InstanceIdResult>() {
+                            @Override
+                            public void onSuccess(InstanceIdResult instanceIdResult) {
+                                String token = instanceIdResult.getToken();
+                                Log.d("FCM_TOKEN",token);
+                                storeRegIdInPref(token);
+                                MainActivity.EditToken getCompany= new MainActivity.EditToken();
+                                getCompany.execute(SaveSharedPreference.getUserId(MainActivity.this),token);
+                            }
+                        });
+                        MainActivity.RestartAlarm getCompany= new MainActivity.RestartAlarm();
+                        getCompany.execute(id);
+                        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+                        startActivity(intent);
+                        finish();
+                    }
                 }
-                else{
-                    notifnum =0;
-                    notifnum2 =0;
-                    String id = SaveSharedPreference.getUserId(MainActivity.this);
-                    FirebaseInstanceId.getInstance().getInstanceId().addOnSuccessListener( MainActivity.this,  new OnSuccessListener<InstanceIdResult>() {
-                        @Override
-                        public void onSuccess(InstanceIdResult instanceIdResult) {
-                            String token = instanceIdResult.getToken();
-                            Log.d("FCM_TOKEN",token);
-                            storeRegIdInPref(token);
-                            MainActivity.EditToken getCompany= new MainActivity.EditToken();
-                            getCompany.execute(SaveSharedPreference.getUserId(MainActivity.this),token);
-                        }
-                    });
-                    MainActivity.RestartAlarm getCompany= new MainActivity.RestartAlarm();
-                    getCompany.execute(id);
-                    Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
-                    startActivity(intent);
-                    finish();
+                else {
+                    AlertDialog.Builder builder;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder = new AlertDialog.Builder(MainActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                    } else {
+                        builder = new AlertDialog.Builder(MainActivity.this);
+                    }
+                    builder.setTitle("Genqu3")
+                            .setCancelable(false)
+                            .setMessage("No Internet Connection!")
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Intent intent= new Intent(MainActivity.this, MainActivity.class);
+                                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            })
+                            .setIcon(R.drawable.icon3)
+                            .show();
                 }
             }
-
         },SPLASH_TIME_OUT);
     }
 

@@ -1,9 +1,12 @@
 package com.gen.genqu3;
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -27,7 +30,7 @@ public class RegisterActivity extends AppCompatActivity {
 
     //String URL= "http://192.168.254.2/Android_Login/index.php";
 
-    String URL= "http://192.168.43.43/Android_Login/index.php";
+    String URL= "http://genqu3.000webhostapp.com/Android_Login/index.php";
 
     JSONParser jsonParser=new JSONParser();
 
@@ -65,30 +68,50 @@ public class RegisterActivity extends AppCompatActivity {
         btnReg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                progress.show();
-                String enteredUser = regName.getText().toString();
-                String enteredEmail = regEmail.getText().toString();
-                String enteredPassword = regPassword.getText().toString();
-                String enteredfname = fName.getText().toString();
-                String enteredlname = lName.getText().toString();
-                String enterednum = conNum.getText().toString();
+                if(CheckNetwork.isAvail(RegisterActivity.this)){
+                    progress.show();
+                    String enteredUser = regName.getText().toString();
+                    String enteredEmail = regEmail.getText().toString();
+                    String enteredPassword = regPassword.getText().toString();
+                    String enteredfname = fName.getText().toString();
+                    String enteredlname = lName.getText().toString();
+                    String enterednum = conNum.getText().toString();
 
 
-                if(TextUtils.isEmpty(enteredEmail) || TextUtils.isEmpty(enteredPassword) || TextUtils.isEmpty(enteredUser)
-                        || TextUtils.isEmpty(enteredfname) || TextUtils.isEmpty(enteredlname) || TextUtils.isEmpty(enterednum)){
-                    Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
-                    progress.dismiss();
-                    return;
+                    if(TextUtils.isEmpty(enteredEmail) || TextUtils.isEmpty(enteredPassword) || TextUtils.isEmpty(enteredUser)
+                            || TextUtils.isEmpty(enteredfname) || TextUtils.isEmpty(enteredlname) || TextUtils.isEmpty(enterednum)){
+                        Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
+                        progress.dismiss();
+                        return;
+                    }
+                    else if(enteredUser.length()<6 || enteredPassword.length()<6){
+                        Toast.makeText(getApplicationContext(), "Username and Password must be atleast 6 characters!", Toast.LENGTH_LONG).show();
+                        progress.dismiss();
+                        return;
+                    }
+
+                    RegisterActivity.AttemptLogin attemptLogin= new RegisterActivity.AttemptLogin();
+                    attemptLogin.execute(regName.getText().toString(),regPassword.getText().toString(),regEmail.getText().toString(),
+                            fName.getText().toString(),lName.getText().toString(),conNum.getText().toString());
                 }
-                else if(enteredUser.length()<6 || enteredPassword.length()<6){
-                    Toast.makeText(getApplicationContext(), "Username and Password must be atleast 6 characters!", Toast.LENGTH_LONG).show();
-                    progress.dismiss();
-                    return;
+                else{
+                    AlertDialog.Builder builder;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder = new AlertDialog.Builder(RegisterActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                    } else {
+                        builder = new AlertDialog.Builder(RegisterActivity.this);
+                    }
+                    builder.setTitle("Genqu3")
+                            .setCancelable(false)
+                            .setMessage("No Internet Connection!")
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(R.drawable.icon3)
+                            .show();
                 }
-
-                RegisterActivity.AttemptLogin attemptLogin= new RegisterActivity.AttemptLogin();
-                attemptLogin.execute(regName.getText().toString(),regPassword.getText().toString(),regEmail.getText().toString(),
-                        fName.getText().toString(),lName.getText().toString(),conNum.getText().toString());
             }
         });
 

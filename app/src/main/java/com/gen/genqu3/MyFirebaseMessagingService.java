@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class MyFirebaseMessagingService extends FirebaseMessagingService {
 
-    String URL2= "http://192.168.43.43/Android_Login/updatetoken.php";
+    String URL2= "http://genqu3.000webhostapp.com/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 

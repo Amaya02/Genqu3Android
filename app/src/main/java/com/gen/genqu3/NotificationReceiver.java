@@ -25,7 +25,7 @@ import java.util.ArrayList;
 
 public class NotificationReceiver extends BroadcastReceiver {
 
-    String URL= "http://192.168.43.43/Android_Login/updatemessage.php";
+    String URL= "http://genqu3.000webhostapp.com/Android_Login/updatemessage.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -43,13 +43,13 @@ public class NotificationReceiver extends BroadcastReceiver {
             Toast.makeText(context, "Message sent.. Thank you!", Toast.LENGTH_LONG).show();
             Log.e("API1234","Can't Go Yet");
             NotificationReceiver.updateMes getCompany= new NotificationReceiver.updateMes();
-            getCompany.execute(SaveSharedPreference.getTranId(context),"Cannot Go");
+            getCompany.execute(SaveSharedPreference.getTranId(context),"Cannot Go Yet");
         }
         else{
             Toast.makeText(context, "Message Sent.. Thank you!", Toast.LENGTH_LONG).show();
             Log.e("API1234","Can Go");
             NotificationReceiver.updateMes getCompany= new NotificationReceiver.updateMes();
-            getCompany.execute(SaveSharedPreference.getTranId(context),"Can Go");
+            getCompany.execute(SaveSharedPreference.getTranId(context),"Can Go Now");
         }
     }
 

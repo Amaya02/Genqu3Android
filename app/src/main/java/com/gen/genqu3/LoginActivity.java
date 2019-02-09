@@ -1,13 +1,16 @@
 package com.gen.genqu3;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,9 +43,9 @@ public class LoginActivity extends AppCompatActivity {
     EditText editPassword, editName;
     Button btnSignIn, btnRegister;
 
-    String URL= "http://192.168.43.43/Android_Login/index.php";
-    String URL2= "http://192.168.43.43/Android_Login/updatetoken.php";
-    String URL3= "http://192.168.43.43/Android_Login/restartalarm.php";
+    String URL= "http://genqu3.000webhostapp.com/Android_Login/index.php";
+    String URL2= "http://genqu3.000webhostapp.com/Android_Login/updatetoken.php";
+    String URL3= "http://genqu3.000webhostapp.com/Android_Login/restartalarm.php";
 
     JSONParser jsonParser=new JSONParser();
     JSONParser2 jsonParser2=new JSONParser2();
@@ -77,19 +80,38 @@ public class LoginActivity extends AppCompatActivity {
         btnSignIn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(CheckNetwork.isAvail(LoginActivity.this)){
+                    progress.show();
+                    String enteredUser = editName.getText().toString();
+                    String enteredPassword = editPassword.getText().toString();
 
-                progress.show();
-                String enteredUser = editName.getText().toString();
-                String enteredPassword = editPassword.getText().toString();
+                    if(TextUtils.isEmpty(enteredUser) || TextUtils.isEmpty(enteredPassword)){
+                        Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
+                        progress.dismiss();
+                        return;
+                    }
 
-                if(TextUtils.isEmpty(enteredUser) || TextUtils.isEmpty(enteredPassword)){
-                    Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
-                    progress.dismiss();
-                    return;
+                    LoginActivity.AttemptLogin attemptLogin= new LoginActivity.AttemptLogin();
+                    attemptLogin.execute(editName.getText().toString(),editPassword.getText().toString(),"");
                 }
-
-                LoginActivity.AttemptLogin attemptLogin= new LoginActivity.AttemptLogin();
-                attemptLogin.execute(editName.getText().toString(),editPassword.getText().toString(),"");
+                else {
+                    AlertDialog.Builder builder;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder = new AlertDialog.Builder(LoginActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                    } else {
+                        builder = new AlertDialog.Builder(LoginActivity.this);
+                    }
+                    builder.setTitle("Genqu3")
+                            .setCancelable(false)
+                            .setMessage("No Internet Connection!")
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(R.drawable.icon3)
+                            .show();
+                }
             }
         });
 

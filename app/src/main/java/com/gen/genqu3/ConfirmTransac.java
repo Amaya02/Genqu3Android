@@ -1,14 +1,17 @@
 package com.gen.genqu3;
 
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -42,13 +45,13 @@ public class ConfirmTransac extends AppCompatActivity {
     Spinner spinner;
     String dateNow, timeNow;
 
-    String URL= "http://192.168.43.43/Android_Login/confirmtransaction.php";
-    String URL2= "http://192.168.43.43/Android_Login/addtransaction.php";
-    String URL3= "http://192.168.43.43/Android_Login/updatetoken.php";
+    String URL= "http://genqu3.000webhostapp.com/Android_Login/confirmtransaction.php";
+    String URL2= "http://genqu3.000webhostapp.com/Android_Login/addtransaction.php";
+    String URL3= "http://genqu3.000webhostapp.com/Android_Login/updatetoken.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
-    String cn, transacname, starttime, endtime, estimatedtime, transacid;
+    String cn, transacname, starttime, endtime, estimatedtime, transacid, windowid;
 
     ProgressDialog progress;
     @Override
@@ -63,6 +66,7 @@ public class ConfirmTransac extends AppCompatActivity {
         endtime = intent.getStringExtra("ENDTIME");
         estimatedtime = intent.getStringExtra("ESTIMATEDTIME");
         transacid = intent.getStringExtra("TRANSACID");
+        windowid = intent.getStringExtra("WINDOWID");
         cn = intent.getStringExtra("COMPANYNAME");
 
         t_name = (TextView) findViewById(R.id.t_name);
@@ -73,7 +77,7 @@ public class ConfirmTransac extends AppCompatActivity {
         t_back = (Button) findViewById(R.id.t_back);
         t_confirm = (Button) findViewById(R.id.t_confirm);
 
-        t_name.setText("Window "+transacid+" - "+transacname);
+        t_name.setText("Window "+windowid+" - "+transacname);
         t_time.setText("TIME: "+starttime+" - "+endtime);
         t_esti.setText("ESTIMATED TIME: "+estimatedtime+" Minute/s");
 
@@ -89,10 +93,39 @@ public class ConfirmTransac extends AppCompatActivity {
         progress.setMessage("Please wait..");
         progress.setCancelable(false);
 
-        progress.show();
-
-        ConfirmTransac.GetTran getCompany= new ConfirmTransac.GetTran();
-        getCompany.execute(starttime,endtime,estimatedtime,transacid);
+        if(CheckNetwork.isAvail(ConfirmTransac.this)){
+            progress.show();
+            ConfirmTransac.GetTran getCompany= new ConfirmTransac.GetTran();
+            getCompany.execute(starttime,endtime,estimatedtime,transacid);
+        }
+        else{
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(ConfirmTransac.this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(ConfirmTransac.this);
+            }
+            builder.setTitle("Genqu3")
+                    .setCancelable(false)
+                    .setMessage("No Internet Connection!")
+                    .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent= new Intent(ConfirmTransac.this, ConfirmTransac.class);
+                            intent.putExtra("TRANSACID",transacid);
+                            intent.putExtra("WINDOWID",windowid);
+                            intent.putExtra("TRANSACNAME",transacname);
+                            intent.putExtra("STARTTIME",starttime);
+                            intent.putExtra("ENDTIME",endtime);
+                            intent.putExtra("ESTIMATEDTIME",estimatedtime);
+                            intent.putExtra("COMPANYNAME",cn);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setIcon(R.drawable.icon3)
+                    .show();
+        }
     }
 
     private class GetTran extends AsyncTask<String, String, JSONArray> {
@@ -156,12 +189,32 @@ public class ConfirmTransac extends AppCompatActivity {
                 t_confirm.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        final String arriv = String.valueOf(spinner.getSelectedItem());
-                        MainActivity.time_notif = arriv;
+                        if(CheckNetwork.isAvail(ConfirmTransac.this)){
+                            final String arriv = String.valueOf(spinner.getSelectedItem());
+                            MainActivity.time_notif = arriv;
 
-                        progress.show();
-                        ConfirmTransac.AddUserTran getCompany= new ConfirmTransac.AddUserTran();
-                        getCompany.execute(MainActivity.userid,transacid,"Pending",date,arriv);
+                            progress.show();
+                            ConfirmTransac.AddUserTran getCompany= new ConfirmTransac.AddUserTran();
+                            getCompany.execute(MainActivity.userid,transacid,"Pending",date,arriv);
+                        }
+                        else{
+                            AlertDialog.Builder builder;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                builder = new AlertDialog.Builder(ConfirmTransac.this, android.R.style.Theme_Material_Dialog_Alert);
+                            } else {
+                                builder = new AlertDialog.Builder(ConfirmTransac.this);
+                            }
+                            builder.setTitle("Genqu3")
+                                    .setCancelable(false)
+                                    .setMessage("No Internet Connection!")
+                                    .setPositiveButton("Back", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setIcon(R.drawable.icon3)
+                                    .show();
+                        }
                     }
                 });
 

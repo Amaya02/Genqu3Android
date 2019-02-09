@@ -10,13 +10,16 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -36,9 +39,9 @@ import android.widget.TableRow.LayoutParams;
 
 public class MakeTransac extends AppCompatActivity {
 
-    String URL= "http://192.168.43.43/Android_Login/getcompany.php";
-    String URL2= "http://192.168.43.43/Android_Login/searchcompany.php";
-    String URL3= "http://192.168.43.43/Android_Login/updatetoken.php";
+    String URL= "http://genqu3.000webhostapp.com/Android_Login/getcompany.php";
+    String URL2= "http://genqu3.000webhostapp.com/Android_Login/searchcompany.php";
+    String URL3= "http://genqu3.000webhostapp.com/Android_Login/updatetoken.php";
 
     Button search_but, search_cancel;
     EditText search;
@@ -57,8 +60,6 @@ public class MakeTransac extends AppCompatActivity {
         progress.setMessage("Please wait..");
         progress.setCancelable(false);
 
-        progress.show();
-
         search=(EditText)findViewById(R.id.search);
         search_but=(Button)findViewById(R.id.search_but);
         search_cancel=(Button)findViewById(R.id.search_cancel);
@@ -66,18 +67,38 @@ public class MakeTransac extends AppCompatActivity {
         search_but.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if(CheckNetwork.isAvail(MakeTransac.this)){
+                    progress.show();
+                    String enteredSearch = search.getText().toString();
 
-                progress.show();
-                String enteredSearch = search.getText().toString();
-
-                if(TextUtils.isEmpty(enteredSearch)){
-                    Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
-                    progress.dismiss();
-                    return;
+                    if(TextUtils.isEmpty(enteredSearch)){
+                        Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
+                        progress.dismiss();
+                        return;
+                    }
+                    search_cancel.setVisibility(View.VISIBLE);
+                    MakeTransac.SearchComp searchComp= new MakeTransac.SearchComp();
+                    searchComp.execute(search.getText().toString());
                 }
-                search_cancel.setVisibility(View.VISIBLE);
-                MakeTransac.SearchComp searchComp= new MakeTransac.SearchComp();
-                searchComp.execute(search.getText().toString());
+                else{
+                    AlertDialog.Builder builder;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                        builder = new AlertDialog.Builder(MakeTransac.this, android.R.style.Theme_Material_Dialog_Alert);
+                    } else {
+                        builder = new AlertDialog.Builder(MakeTransac.this);
+                    }
+                    builder.setTitle("Genqu3")
+                            .setCancelable(false)
+                            .setMessage("No Internet Connection!")
+                            .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                public void onClick(DialogInterface dialog, int which) {
+                                    dialog.dismiss();
+                                }
+                            })
+                            .setIcon(R.drawable.icon3)
+                            .show();
+                }
+
             }
         });
 
@@ -91,8 +112,32 @@ public class MakeTransac extends AppCompatActivity {
             }
         });
 
-        MakeTransac.GetCompany getCompany= new MakeTransac.GetCompany();
-        getCompany.execute("");
+        if(CheckNetwork.isAvail(MakeTransac.this)){
+            progress.show();
+            MakeTransac.GetCompany getCompany= new MakeTransac.GetCompany();
+            getCompany.execute("");
+        }
+        else{
+            AlertDialog.Builder builder;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                builder = new AlertDialog.Builder(MakeTransac.this, android.R.style.Theme_Material_Dialog_Alert);
+            } else {
+                builder = new AlertDialog.Builder(MakeTransac.this);
+            }
+            builder.setTitle("Genqu3")
+                    .setCancelable(false)
+                    .setMessage("No Internet Connection!")
+                    .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialog, int which) {
+                            Intent intent= new Intent(MakeTransac.this, MakeTransac.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setIcon(R.drawable.icon3)
+                    .show();
+        }
 
     }
 
@@ -193,7 +238,7 @@ public class MakeTransac extends AppCompatActivity {
             } catch (JSONException e) {
                 progress.dismiss();
                 Log.e("log_tag", "Error parsing data" + e.toString());
-                Toast.makeText(getApplicationContext(), "JsonArray fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Unable to Connect to Server", Toast.LENGTH_SHORT).show();
             }
 
 
@@ -298,7 +343,7 @@ public class MakeTransac extends AppCompatActivity {
             } catch (JSONException e) {
                 progress.dismiss();
                 Log.e("log_tag", "Error parsing data" + e.toString());
-                Toast.makeText(getApplicationContext(), "JsonArray fail", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getApplicationContext(), "Unable to Connect to Server", Toast.LENGTH_SHORT).show();
             }
 
 

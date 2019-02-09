@@ -81,14 +81,8 @@
             <TextView android:id="@+id/com_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Silang Cavite"
+                android:text="Silang Cavite - PH"
                 android:textSize="13dp" />
-
-            <TextView android:id="@+id/com_country"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textSize="13dp"
-                android:text=" - PH"/>
 
         </LinearLayout>
 

@@ -29,7 +29,7 @@ import java.util.Date;
 
 public class MyNewIntentService extends IntentService {
     private static int NOTIFICATION_ID =  MainActivity.notifnum2;
-    String URL= "http://192.168.43.43/Android_Login/getalarm.php";
+    String URL= "http://genqu3.000webhostapp.com/Android_Login/getalarm.php";
 
     JSONParser2 jsonParser=new JSONParser2();
 
@@ -84,7 +84,7 @@ public class MyNewIntentService extends IntentService {
         protected void onPostExecute(JSONArray jArray) {
             try {
                 if(!jArray.getJSONObject(0).getString("result").equals("empty")){
-                    notif3 = jArray.getJSONObject(0).getString("companyname") + " - Window " + jArray.getJSONObject(0).getString("transacid") + " - " + jArray.getJSONObject(0).getString("transacname");
+                    notif3 = jArray.getJSONObject(0).getString("companyname") + " - Window " + jArray.getJSONObject(0).getString("windowid") + " - " + jArray.getJSONObject(0).getString("transacname");
                     SaveSharedPreference.setTranId(MyNewIntentService.this,jArray.getJSONObject(0).getString("u_tranid"));
 
                     PendingIntent morePendingIntent = PendingIntent.getBroadcast(
@@ -124,7 +124,10 @@ public class MyNewIntentService extends IntentService {
                             .setAutoCancel(true)
                             .setPriority(Notification.PRIORITY_HIGH)
                             .addAction(0, "Can Go", morePendingIntent)
-                            .addAction(0, "Cannot Go", helpPendingIntent);
+                            .setStyle(new NotificationCompat.BigTextStyle()
+                                    .bigText(notif3+"\n1 HOUR BEFORE YOUR TURN!") .setBigContentTitle(notif3))
+                            .addAction(0, "Cancel Transaction", helpPendingIntent);
+
 
                     TaskStackBuilder stackBuilder = TaskStackBuilder.create(MyNewIntentService.this);
                     stackBuilder.addNextIntent(inte);
