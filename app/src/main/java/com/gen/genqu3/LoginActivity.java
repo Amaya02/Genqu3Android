@@ -9,16 +9,19 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ActivityInfo;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 import android.widget.Toast;
 
@@ -41,11 +44,12 @@ import java.util.Date;
 public class LoginActivity extends AppCompatActivity {
 
     EditText editPassword, editName;
-    Button btnSignIn, btnRegister;
+    Button btnSignIn, btnRegister, btnForgot;
 
     String URL= "http://genqu3.000webhostapp.com/Android_Login/index.php";
     String URL2= "http://genqu3.000webhostapp.com/Android_Login/updatetoken.php";
     String URL3= "http://genqu3.000webhostapp.com/Android_Login/restartalarm.php";
+    String URL4= "http://genqu3.000webhostapp.com/Android_Login/sendPass.php";
 
     JSONParser jsonParser=new JSONParser();
     JSONParser2 jsonParser2=new JSONParser2();
@@ -71,6 +75,7 @@ public class LoginActivity extends AppCompatActivity {
 
         btnSignIn=(Button)findViewById(R.id.btnSignIn);
         btnRegister=(Button)findViewById(R.id.btnRegister);
+        btnForgot=(Button)findViewById(R.id.btnForgot);
 
         progress = new ProgressDialog(this,R.style.AppCompatAlertDialogStyle);
         progress.setTitle("Loading");
@@ -120,6 +125,68 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(LoginActivity.this, RegisterActivity.class);
                 startActivity(intent);
+            }
+        });
+
+        btnForgot.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                AlertDialog.Builder builder = new AlertDialog.Builder(LoginActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                builder.setTitle("Forgot Password");
+                builder.setMessage("Please Enter your Email Address");
+                LinearLayout container = new LinearLayout(LoginActivity.this);
+                container.setOrientation(LinearLayout.VERTICAL);
+                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+                lp.setMargins(35, 0, 35, 0);
+                final EditText input = new EditText(LoginActivity.this);
+                input.setLayoutParams(lp);
+                input.setInputType(InputType.TYPE_CLASS_TEXT);
+                input.setTextColor(Color.WHITE);
+                container.addView(input);
+
+                builder.setView(container);
+                builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        String m_Text = input.getText().toString();
+                        if(CheckNetwork.isAvail(LoginActivity.this)){
+                            progress.show();
+                            if(TextUtils.isEmpty(m_Text)){
+                                Toast.makeText(getApplicationContext(), "Fields must be filled!", Toast.LENGTH_LONG).show();
+                                progress.dismiss();
+                                return;
+                            }
+                            LoginActivity.ForgotPass forgot= new LoginActivity.ForgotPass();
+                            forgot.execute(m_Text);
+                        }
+                        else {
+                            AlertDialog.Builder builder;
+                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+                                builder = new AlertDialog.Builder(LoginActivity.this, android.R.style.Theme_Material_Dialog_Alert);
+                            } else {
+                                builder = new AlertDialog.Builder(LoginActivity.this);
+                            }
+                            builder.setTitle("Genqu3")
+                                    .setCancelable(false)
+                                    .setMessage("No Internet Connection!")
+                                    .setPositiveButton("Retry", new DialogInterface.OnClickListener() {
+                                        public void onClick(DialogInterface dialog, int which) {
+                                            dialog.dismiss();
+                                        }
+                                    })
+                                    .setIcon(R.drawable.icon3)
+                                    .show();
+                        }
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
             }
         });
 
@@ -239,6 +306,47 @@ public class LoginActivity extends AppCompatActivity {
 
         protected void onPostExecute(JSONArray jArray) {
 
+        }
+
+    }
+
+    private class ForgotPass extends AsyncTask<String, String, JSONArray> {
+
+        @Override
+
+        protected void onPreExecute() {
+
+            super.onPreExecute();
+
+        }
+
+        @Override
+
+        protected JSONArray doInBackground(String... args) {
+
+            String email= args[0];
+            ArrayList<NameValuePair> params = new ArrayList<NameValuePair>();
+            params.add(new BasicNameValuePair("email", email));
+
+            JSONArray json = jsonParser2.makeHttpRequest(URL4, params);
+
+            return json;
+
+        }
+
+        protected void onPostExecute(JSONArray jArray) {
+            try {
+                if(!jArray.getJSONObject(0).getString("result").equals("empty")){
+                    progress.dismiss();
+                    Toast.makeText(getApplicationContext(), "Recovery Password Sent! Please check your email..", Toast.LENGTH_SHORT).show();
+                }
+                else{
+                    progress.dismiss();
+                    Toast.makeText(getApplicationContext(), "Email not Registered!", Toast.LENGTH_SHORT).show();
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
         }
 
     }
